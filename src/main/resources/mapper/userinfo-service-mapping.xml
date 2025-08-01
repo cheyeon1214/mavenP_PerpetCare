@@ -19,6 +19,9 @@
 		INSERT INTO User (u_email, u_name, u_bdate, u_gender, u_pwd, u_phone, u_grade)
 		VALUES (#{email}, #{name}, #{bdate},#{gender}, #{pwd}, #{phone}, #{grade})
 	</insert>
+
+
+
 </mapper>
 
  
