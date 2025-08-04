@@ -18,7 +18,7 @@
 
 	<update id="updateOpening" parameterType="Opening">
 		UPDATE Opening SET
-		o_careway = #{careway}, o_sdate = #{sdate}, o_edate = #{edate}, o_location = #{location},
+		o_careway = #{careWay}, o_sdate = #{sDate}, o_edate = #{eDate}, o_location = #{location},
 		o_price = #{price}, o_per = #{per}, o_prefer = #{prefer}, o_detail = #{detail}, o_close = #{close}
 		WHERE o_no = #{no}
 	</update>
