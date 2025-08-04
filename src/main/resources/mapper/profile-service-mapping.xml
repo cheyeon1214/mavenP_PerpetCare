@@ -4,16 +4,35 @@
 
 <mapper namespace="ns.sql.ProfileMapper">
 
-<!--	<resultMap id="userResultMap" type="User">-->
-<!--		<id property="email" column="u_email"/>-->
-<!--		<result property="name" column="u_name"/>-->
-<!--		<result property="bdate" column="u_bdate"/>-->
-<!--		<result property="gender" column="u_gender"/>-->
-<!--		<result property="pwd" column="u_pwd"/>-->
-<!--		<result property="phone" column="u_phone"/>-->
-<!--		<result property="grade" column="u_grade"/>-->
-<!--		<result property="image" column="u_image"/>-->
-<!--	</resultMap>-->
+	<resultMap id="userResultMap" type="User">
+		<id property="email" column="u_email"/>
+		<result property="name" column="u_name"/>
+		<result property="bdate" column="u_bdate"/>
+		<result property="gender" column="u_gender"/>
+		<result property="pwd" column="u_pwd"/>
+		<result property="phone" column="u_phone"/>
+		<result property="grade" column="u_grade"/>
+		<result property="image" column="u_image"/>
+		<association property="experiences" javaType="experience">
+			<id property="no" column="e_no" />
+			<result property="uEmail" column="u_email" />
+			<result property="category" column="e_category" />
+			<result property="sDate" column="e_sDate" />
+			<result property="eDate" column="e_eDate" />
+			<result property="species" column="e_species" />
+			<result property="breed" column="e_breed" />
+		</association>
+		<association property="rates" javaType="rate">
+			<id property="no" column="r_no"/>
+			<result property="fromEmail" column="from_email"/>
+			<result property="toEmail" column="to_email"/>
+			<result property="oNo" column="o_no"/>
+			<result property="textOfRate" column="r_text"/>
+			<result property="createAt" column="r_createAt"/>
+		</association>
+	</resultMap>
+
+	
 
 
 </mapper>

@@ -30,4 +30,28 @@ public class AuthTest {
 
         }
     }
+
+    @Test
+    public void login() throws Exception{
+        User user = new User("codus@naver.com","1234");
+        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+        SqlSession session = factory.openSession();
+
+        User result=session.selectOne("ns.sql.AuthMapper.login", user);
+        System.out.println(result);
+        session.close();
+    }
+
+    @Test
+    public void getUserByEmail() throws Exception{
+        String email = "codus@naver.com";
+        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+        SqlSession session = factory.openSession();
+
+        User result=session.selectOne("ns.sql.AuthMapper.getUserByEmail", email);
+        System.out.println(result);
+        session.close();
+    }
 }
