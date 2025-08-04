@@ -33,7 +33,10 @@ public class User {
         this.grade = grade;
         this.image = image;
     }
-
+    public User(String email, String pwd){
+        this.email = email;
+        this.pwd = pwd;
+    }
     public String getEmail() {
         return email;
     }
