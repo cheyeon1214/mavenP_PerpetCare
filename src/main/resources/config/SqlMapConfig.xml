@@ -27,6 +27,12 @@
  
 
 	<mappers>
-		<mapper resource = "mapper/userinfo-service-mapping.xml"/>
+		<mapper resource = "mapper/auth-service-mapping.xml"/>
+		<mapper resource = "mapper/profile-service-mapping.xml"/>
+		<mapper resource = "mapper/pet-service-mapping.xml"/>
+		<mapper resource = "mapper/opening-service-mapping.xml"/>
+		<mapper resource = "mapper/rate-service-mapping.xml"/>
+		<mapper resource = "mapper/apply-service-mapping.xml"/>
+		<mapper resource = "mapper/search-service-mapping.xml"/>
 	</mappers>
 </configuration>

@@ -3,6 +3,7 @@ package com.project.perpetcare.domain;
 import java.time.LocalDateTime;
 
 public class Experience {
+    private int no; //e_no
     private String uEmail; //u_email User의 외래키
     private String category; //e_category
     private LocalDateTime sDate; //e_sdate
