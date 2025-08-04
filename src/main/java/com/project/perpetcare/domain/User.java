@@ -2,19 +2,28 @@ package com.project.perpetcare.domain;
 
 import com.project.perpetcare.domain.enums.Grade;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class User {
-    private String email;
-    private String name;
-    private String bdate;
-    private String gender;
-    private String pwd;
-    private String phone;
-    private Grade grade;
-    private byte[] image;
+    private String email; //u_email
+    private String name; //u_name
+    private String bdate; //u_bdate
+    private String gender; //u_gender
+    private String pwd; //u_pwd
+    private String phone; //u_phone
+    private Grade grade; //u_grade
+    private int image; //u_image
+    private ArrayList<Experience> experiences;
+    private ArrayList<Opening> openings;
+    private ArrayList<Apply> applies;
+    private ArrayList<Pet> pets;
+    private ArrayList<Rate> rates;
 
-    public User(String email, String name, String bdate, String gender, String pwd, String phone, Grade grade) {
+    public User(){}
+
+    public User(String email, String name, String bdate, String gender, String pwd, String phone, Grade grade, int image) {
         this.email = email;
         this.name = name;
         this.bdate = bdate;
@@ -22,6 +31,7 @@ public class User {
         this.pwd = pwd;
         this.phone = phone;
         this.grade = grade;
+        this.image = image;
     }
 
     public String getEmail() {
@@ -79,11 +89,11 @@ public class User {
         this.grade = grade;
     }
 
-    public byte[] getImage() {
+    public int getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(int image) {
         this.image = image;
     }
 
@@ -97,7 +107,7 @@ public class User {
                 ", pwd='" + pwd + '\'' +
                 ", phone='" + phone + '\'' +
                 ", grade=" + grade +
-                ", image=" + Arrays.toString(image) +
+                ", image=" + image +
                 '}';
     }
 }
