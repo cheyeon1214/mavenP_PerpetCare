@@ -14,9 +14,21 @@
 <!--		<result property="grade" column="u_grade"/>-->
 <!--		<result property="image" column="u_image"/>-->
 <!--	</resultMap>-->
-
-
-
+<select id="">
+	select * from pet
+	where u_email=#{uEmail}
+</select>
+<insert id="insertPet" parameterType="Pet">
+	insert into pet(u_email,p_name,p_species,p_breed,p_bdate,p_gender,p_image)
+	values(#{uEmail},#{name},#{species},#{breed},#{bDate},#{gender},#{image})
+</insert>
+<update id="updatePet" parameterType="Pet">
+	update pet set p_name = #{name}, p_species=#{species},p_breed=#{breed},p_bdate=#{bDate},p_gender=#{gender},p_image=#{image, jdbcType=BLOB}
+	where p_no=#{no}
+</update>
+<delete id="deletePet" parameterType="int">
+	delete from pet where p_no=#{no}
+</delete>
 </mapper>
 
  
