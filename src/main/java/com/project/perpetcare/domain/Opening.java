@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Opening {
     private int no; //o_no
     private String uEmail; //u_email User의 외래키
-    private LocalDateTime createAt; //o_createdAt
+    private LocalDateTime createdAt; //o_createdAt
     private String careWay; //o_careway
     private LocalDateTime sDate; //o_sdate
     private LocalDateTime eDate; //o_edate
@@ -20,10 +20,10 @@ public class Opening {
     private ArrayList<Apply> applies;
 
     public Opening(){}
-    public Opening(int no, String uEmail, LocalDateTime createAt, String careWay, LocalDateTime sDate, LocalDateTime eDate, String price, String per,  String location, String prefer, String detail, boolean close, ArrayList<Pet> pets) {
+    public Opening(int no, String uEmail, LocalDateTime createdAt, String careWay, LocalDateTime sDate, LocalDateTime eDate, String price, String per,  String location, String prefer, String detail, boolean close, ArrayList<Pet> pets) {
         this.no = no;
         this.uEmail = uEmail;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.careWay = careWay;
         this.sDate = sDate;
         this.eDate = eDate;
@@ -52,12 +52,12 @@ public class Opening {
         this.uEmail = uEmail;
     }
 
-    public LocalDateTime getCreateAt() {
-        return createAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
+    public void setCreateAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getCareWay() {
@@ -153,7 +153,7 @@ public class Opening {
         return "Opening{" +
                 "no=" + no +
                 ", uEmail='" + uEmail + '\'' +
-                ", createAt=" + createAt +
+                ", createdAt=" + createdAt +
                 ", careWay='" + careWay + '\'' +
                 ", sDate=" + sDate +
                 ", eDate=" + eDate +

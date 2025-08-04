@@ -3,7 +3,19 @@
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ns.sql.ApplyMapper">
+	<insert id="applyToOpening" parameterType="Apply">
 
+	</insert>
+
+	<select id="getApplicants" parameterType="Integer" resultType="Apply">
+
+	</select>
+
+	<update id="updateApplyStatus" parameterType="map">
+		UPDATE Apply
+		SET a_status = #{status}
+		WHERE a_no = #{no}
+	</update>
 
 </mapper>
 
