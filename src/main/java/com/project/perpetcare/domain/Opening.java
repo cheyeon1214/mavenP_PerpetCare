@@ -1,7 +1,5 @@
 package com.project.perpetcare.domain;
 
-import org.springframework.cglib.core.Local;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -14,6 +12,7 @@ public class Opening {
     private LocalDateTime eDate; //o_edate
     private String price; //o_price
     private String per; //o_per
+    private String location; //o_location
     private String prefer; //o_prefer
     private String detail; //o_detail
     private boolean close; //o_close
@@ -21,7 +20,7 @@ public class Opening {
     private ArrayList<Apply> applies;
 
     public Opening(){}
-    public Opening(int no, String uEmail, LocalDateTime createAt, String careWay, LocalDateTime sDate, LocalDateTime eDate, String price, String per, String prefer, String detail, boolean close, ArrayList<Pet> pets) {
+    public Opening(int no, String uEmail, LocalDateTime createAt, String careWay, LocalDateTime sDate, LocalDateTime eDate, String price, String per,  String location, String prefer, String detail, boolean close, ArrayList<Pet> pets) {
         this.no = no;
         this.uEmail = uEmail;
         this.createAt = createAt;
@@ -30,6 +29,7 @@ public class Opening {
         this.eDate = eDate;
         this.price = price;
         this.per = per;
+        this.location = location;
         this.prefer = prefer;
         this.detail = detail;
         this.close = close;
@@ -100,6 +100,14 @@ public class Opening {
         this.per = per;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getPrefer() {
         return prefer;
     }
@@ -151,6 +159,7 @@ public class Opening {
                 ", eDate=" + eDate +
                 ", price='" + price + '\'' +
                 ", per='" + per + '\'' +
+                ", location='" + location + '\'' +
                 ", prefer='" + prefer + '\'' +
                 ", detail='" + detail + '\'' +
                 ", close=" + close +
