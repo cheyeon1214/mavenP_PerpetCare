@@ -19,7 +19,7 @@ public class AuthTest {
             Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
 	        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
 	        SqlSession session = factory.openSession();
-	        int result = session.insert("ns.sql.UserMapper.addUser", user);
+	        int result = session.insert("ns.sql.AuthMapper.register", user);
 
 	        session.commit();
 	        session.close();

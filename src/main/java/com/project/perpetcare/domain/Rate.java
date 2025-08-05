@@ -17,7 +17,7 @@ public class Rate {
         this.toEmail = toEmail;
         this.oNo = oNo;
         this.textOfRate = textOfRate;
-        this.createAt = createAt;
+        this.createdAt = createAt;
     }
 
     public int getNo() {
@@ -61,11 +61,11 @@ public class Rate {
     }
 
     public LocalDateTime getCreateAt() {
-        return createAt;
+        return createdAt;
     }
 
     public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
+        this.createdAt = createAt;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class Rate {
                 ", toEmail='" + toEmail + '\'' +
                 ", oNo=" + oNo +
                 ", textOfRate='" + textOfRate + '\'' +
-                ", createAt=" + createAt +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

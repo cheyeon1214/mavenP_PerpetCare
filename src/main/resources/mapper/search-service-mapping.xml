@@ -5,4 +5,5 @@
 <mapper namespace="ns.sql.SearchMapper">
 
 
+
 </mapper>
