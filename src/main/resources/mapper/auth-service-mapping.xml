@@ -20,14 +20,33 @@
 		VALUES (#{email}, #{name}, #{bdate},#{gender}, #{pwd}, #{phone}, #{grade})
 	</insert>
 
+	<insert id="insertGoogleUser" parameterType="User">
+		INSERT INTO user(u_email, u_name, u_gender, u_phone, u_grade)
+		VALUES (#{email}, #{name}, #{gender}, #{phone}, #{grade})
+	</insert>
+
+<!--  메일, 인증번호 table넣기	-->
+	<insert id="insertVerificationCode" parameterType="map">
+		INSERT INTO verification (email,code)
+		VALUES (#{email},#{code})
+	</insert>
+
+<!--  이메일 인증 코드 일치 확인 반환값 1일때 일치 0일때 불일치	-->
+	<select id="verifyCode" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM verification
+		WHERE email=#{email}
+		AND code=#{code}
+	</select>
+
 	<select id="login" parameterType="User" resultMap="userResultMap">
 		SELECT u_email,u_pwd
 		from User
 		WHERE u_email=#{email} AND u_pwd=#{pwd}
 	</select>
-
+	
 	<select id="getUserByEmail" parameterType="string" resultMap="userResultMap">
-		SELECT u_email
+		SELECT u_email, u_name, u_bdate, u_gender, u_pwd, u_phone, u_grade
 		from User
 		WHERE u_email=#{value}
 	</select>

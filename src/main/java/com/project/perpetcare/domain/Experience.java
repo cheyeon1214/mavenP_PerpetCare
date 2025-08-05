@@ -5,14 +5,23 @@ import java.time.LocalDateTime;
 public class Experience {
     private int no; //e_no
     private String uEmail; //u_email User의 외래키
-    private String category; //e_category
+    private int category; //e_category
     private LocalDateTime sDate; //e_sdate
     private LocalDateTime eDate; //e_edate
     private String species; //e_species
     private String breed; //e_breed
 
     public Experience(){}
-    public Experience(String uEmail, String category, LocalDateTime sDate, LocalDateTime eDate, String species, String breed) {
+    public Experience(String uEmail, int category, LocalDateTime sDate, LocalDateTime eDate, String species, String breed) {
+        this.uEmail = uEmail;
+        this.category = category;
+        this.sDate = sDate;
+        this.eDate = eDate;
+        this.species = species;
+        this.breed = breed;
+    }
+    public Experience(int no,String uEmail, int category, LocalDateTime sDate, LocalDateTime eDate, String species, String breed) {
+        this.no = no;
         this.uEmail = uEmail;
         this.category = category;
         this.sDate = sDate;
@@ -21,6 +30,7 @@ public class Experience {
         this.breed = breed;
     }
 
+    public int getNo(){return no;}
     public String getuEmail() {
         return uEmail;
     }
@@ -29,11 +39,11 @@ public class Experience {
         this.uEmail = uEmail;
     }
 
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
