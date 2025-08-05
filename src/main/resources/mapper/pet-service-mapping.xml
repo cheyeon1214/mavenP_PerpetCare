@@ -24,7 +24,7 @@
 		<result property="gender" column="p_gender"/>
 		<result property="image" column="p_image"/>
 	</resultMap>
-<select id="selectPet" parameterType="String" resultMap="petResultMap">
+<select id="getPets" parameterType="String" resultMap="petResultMap">
 	select * from pet
 	where u_email=#{value}
 </select>

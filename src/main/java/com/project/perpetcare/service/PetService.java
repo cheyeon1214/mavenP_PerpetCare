@@ -23,7 +23,7 @@ public class PetService {
     public void deletePet(int no)throws Exception{
         petDAO.deletePet(no);
     }
-    public List<Pet> selectPet(String uEmail)throws Exception{
-        return petDAO.selectPet(uEmail);
+    public List<Pet> getPets(String uEmail)throws Exception{
+        return petDAO.getPets(uEmail);
     }
 }

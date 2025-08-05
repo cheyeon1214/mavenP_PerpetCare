@@ -23,8 +23,8 @@ public class PetDAO {
     public void deletePet(int no)throws Exception{
         sqlSession.delete(NS+"deletePet",no);
     }
-    public List<Pet> selectPet(String uEmail)throws Exception{
-        return sqlSession.selectList(NS+"selectPet",uEmail);
+    public List<Pet> getPets(String uEmail)throws Exception{
+        return sqlSession.selectList(NS+"getPets",uEmail);
     }
 
 }

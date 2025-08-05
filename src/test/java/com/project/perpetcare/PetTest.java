@@ -52,11 +52,11 @@ public class PetTest {
 //        session.close();
 //    }
     @Test
-    public void selectPet() throws Exception{
+    public void getPets() throws Exception{
         SqlSession session = getSqlSession();
-        List<Pet> list = session.selectList(NS+"selectPet","codus@naver.com");
+        List<Pet> list = session.selectList(NS+"getPets","codus@naver.com");
         list.forEach(pet -> System.out.println(pet));
-        System.out.println("=============selectPet 완료==============");
+        System.out.println("=============getPets 완료==============");
         session.commit();
         session.close();
     }
