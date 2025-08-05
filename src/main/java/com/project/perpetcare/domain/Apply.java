@@ -8,7 +8,7 @@ public class Apply {
     private int no; //a_no
     private String uEmail; //u_email User 외래키
     private int oNo; //o_no Opening 외래키
-    private LocalDateTime createdAt; //a_createAt
+    private LocalDateTime createdAt; //a_createdAt
     private String text; //a_text
     private ApplyStatus applyStatus; //a_status
 

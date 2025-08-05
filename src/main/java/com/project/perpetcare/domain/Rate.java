@@ -8,16 +8,16 @@ public class Rate {
     private String toEmail; //to_email
     private int oNo; //o_no Opening 외래키
     private String textOfRate; //r_text
-    private LocalDateTime createdAt; //r_createAt
+    private LocalDateTime createAt; //r_createAt
 
     public Rate(){}
-    public Rate( int no, String fromEmail, String toEmail, int oNo, String textOfRate, LocalDateTime createdAt) {
+    public Rate( int no, String fromEmail, String toEmail, int oNo, String textOfRate, LocalDateTime createAt) {
         this.no = no;
         this.fromEmail = fromEmail;
         this.toEmail = toEmail;
         this.oNo = oNo;
         this.textOfRate = textOfRate;
-        this.createdAt = createdAt;
+        this.createAt = createAt;
     }
 
     public int getNo() {
@@ -60,12 +60,12 @@ public class Rate {
         this.textOfRate = textOfRate;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getCreateAt() {
+        return createAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class Rate {
                 ", toEmail='" + toEmail + '\'' +
                 ", oNo=" + oNo +
                 ", textOfRate='" + textOfRate + '\'' +
-                ", createAt=" + createdAt +
+                ", createAt=" + createAt +
                 '}';
     }
 }
