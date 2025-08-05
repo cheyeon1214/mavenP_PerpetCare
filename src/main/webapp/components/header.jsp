@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -48,13 +49,13 @@
 	<div class="header-left">
 		<a href='#'> 
             <!-- 홈 경로 설정 해야함 -->
-			<img alt="" src="../image/logo.png" id="logo" />
+			<img alt="" src="${pageContext.request.contextPath}/image/logo.png" id="logo" />
 		</a>
 	</div>
 	<div class="header-right">
         <a href="#" id="profile-link">
             <!-- profile 경로 설정 해야함 -->
-            <img alt="" src="../image/default1.svg" id="profile" />
+            <img alt="" src="${pageContext.request.contextPath}/image/default1.svg" id="profile" />
         </a>
 	</div>
 </nav>

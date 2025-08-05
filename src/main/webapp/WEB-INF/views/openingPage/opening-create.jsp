@@ -4,6 +4,8 @@
     <title>Title</title>
 </head>
 <body>
-    <h2>공고 작성하기2</h2>
+    <%@ include file="/components/header.jsp" %>
+    
+
 </body>
 </html>
