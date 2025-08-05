@@ -13,28 +13,70 @@
 		<result property="phone" column="u_phone"/>
 		<result property="grade" column="u_grade"/>
 		<result property="image" column="u_image"/>
-		<association property="experiences" javaType="experience">
-			<id property="no" column="e_no" />
-			<result property="uEmail" column="u_email" />
-			<result property="category" column="e_category" />
-			<result property="sDate" column="e_sDate" />
-			<result property="eDate" column="e_eDate" />
-			<result property="species" column="e_species" />
-			<result property="breed" column="e_breed" />
-		</association>
-		<association property="rates" javaType="rate">
-			<id property="no" column="r_no"/>
-			<result property="fromEmail" column="from_email"/>
-			<result property="toEmail" column="to_email"/>
-			<result property="oNo" column="o_no"/>
-			<result property="textOfRate" column="r_text"/>
-			<result property="createAt" column="r_createAt"/>
-		</association>
 	</resultMap>
 
+	<resultMap id="experienceResultMap" type="Experience">
+		<id property="no" column="e_no"/>
+		<result property="uEmail" column="u_email" />
+		<result property="category" column="e_category" />
+		<result property="sDate" column="e_sdate" />
+		<result property="eDate" column="e_edate" />
+		<result property="species" column="e_species" />
+		<result property="breed" column="e_breed" />
+	</resultMap>
+
+	<resultMap id="rateResultMap" type="Rate">
+		<id property="no" column="r_no"/>
+		<result property="fromEmail" column="from_email" />
+		<result property="toEmail" column="to_email" />
+		<result property="oNo" column="o_no" />
+		<result property="textOfRate" column="r_text" />
+		<result property="createdAt" column="r_createdAt" />
+	</resultMap>
+
+	<select id="getUserInfo" parameterType="string" resultMap="userResultMap">
+		SELECT u_email,u_name,u_bdate,u_gender,u_pwd,u_phone,u_grade,u_image
+		FROM user
+		where u_email=#{VALUE}
+	</select>
+
+	<select id="getUserExperience" parameterType="string" resultMap="experienceResultMap">
+		SELECT e_no,u_email,e_category,e_sdate,e_edate,e_species,e_breed
+		FROM experience
+		WHERE u_email = #{value}
+	</select>
+
+	<select id="getUserRate" parameterType="string" resultMap="rateResultMap">
+		SELECT r_no,from_email,to_email,o_no,r_text,r_createdAt
+		FROM rate
+		WHERE to_email = #{value}
+	</select>
+
+	<update id="updateUserInfo" parameterType="user">
+		UPDATE user
+		SET u_pwd=#{pwd},u_phone=#{phone}
+		WHERE u_email=#{email}
+	</update>
 	
+	<update id="updateUserImg" parameterType="HashMap">
+		UPDATE user
+		SET u_image=#{image}
+		WHERE u_email=#{email}
+	</update>
 
+	<update id="updateUserExperience" parameterType="HashMap">
+		UPDATE experience
+		SET e_sdate=#{experience.sDate},e_edate=#{experience.eDate},
+		e_species=#{experience.species},e_breed=#{experience.breed}
+		WHERE u_email=#{email}
+	</update>
 
+	<delete id="deleteUserExperience" parameterType="HashMap">
+		DELETE from experience
+		WHERE u_email=#{email}
+		AND
+		e_no=#{no}
+	</delete>
 </mapper>
 
  
