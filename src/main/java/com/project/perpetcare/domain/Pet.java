@@ -11,10 +11,10 @@ public class Pet {
     private String breed; //p_breed
     private LocalDateTime bDate; //p_bdate
     private String gender; //p_gender
-    private Blob image; //p_image
+    private byte[] image; //p_image
 
     public Pet(){}
-    public Pet(String uEmail, int no, String name, String species, String breed, LocalDateTime bDate, String gender, Blob image) {
+    public Pet( int no, String uEmail, String name, String species, String breed, LocalDateTime bDate, String gender, byte[] image) {
         this.uEmail = uEmail;
         this.no = no;
         this.name = name;
@@ -81,11 +81,11 @@ public class Pet {
         this.gender = gender;
     }
 
-    public Blob getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Blob image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

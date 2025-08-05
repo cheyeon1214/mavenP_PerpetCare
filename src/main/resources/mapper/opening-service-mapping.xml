@@ -3,7 +3,63 @@
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ns.sql.OpeningMapper">
+	<resultMap id="openingResultMap" type="Opening">
+		<id property="no" column="o_no"/>
+		<result property="uEmail" column="u_email"/>
+		<result property="createdAt" column="o_createdAt"/>
+		<result property="careWay" column="o_careway"/>
+		<result property="sDate" column="o_sdate"/>
+		<result property="eDate" column="o_edate"/>
+		<result property="location" column="o_location"/>
+		<result property="price" column="o_price"/>
+		<result property="per" column="o_per"/>
+		<result property="prefer" column="o_prefer"/>
+		<result property="detail" column="o_detail"/>
+		<result property="close" column="o_close"/>
+		<!-- PostPet 리스트 매핑 -->
+		<collection property="pets" ofType="Pet">
+			<id property="no" column="p_no"/>
+			<id property="name" column="p_name"/>
+			<id property="species" column="p_species"/>
+			<id property="breed" column="p_breed"/>
+			<id property="bDate" column="p_bdate"/>
+			<id property="gender" column="p_gender"/>
+			<id property="image" column="p_image"/>
+		</collection>
+	</resultMap>
 
+	<insert id="addOpening" parameterType="Opening">
+		INSERT
+		INTO Opening
+		(u_email, o_createdAt, o_careway, o_sdate, o_edate, o_location, o_price, o_per, o_prefer, o_detail, o_close)
+		VALUES
+		(#{uEmail}, #{createdAt}, #{careWay}, #{sDate}, #{eDate}, #{location}, #{price}, #{per}, #{prefer}, #{detail}, 0)
+	</insert>
+
+	<insert id="addPostPet" parameterType="map">
+		INSERT INTO PostPet (o_no, p_no)
+		VALUES (#{oNo}, #{pNo})
+	</insert>
+
+	<update id="updateOpening" parameterType="Opening">
+		UPDATE Opening SET
+		o_careway = #{careWay}, o_sdate = #{sDate}, o_edate = #{eDate}, o_location = #{location},
+		o_price = #{price}, o_per = #{per}, o_prefer = #{prefer}, o_detail = #{detail}, o_close = #{close}
+		WHERE o_no = #{no}
+	</update>
+
+	<delete id="deleteOpening" parameterType="Integer">
+		DELETE FROM Opening
+		WHERE o_no = #{VALUE}
+	</delete>
+
+	<select id="getUserOpening" parameterType="String" resultMap="openingResultMap">
+		SELECT *
+		FROM
+		Opening
+		JOIN PostPet ON Opening.o_no = PostPet.o_no
+		JOIN Pet ON PostPet.p_no = Pet.p_no
+	</select>
 
 </mapper>
 

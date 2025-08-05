@@ -8,7 +8,7 @@ public class Rate {
     private String toEmail; //to_email
     private int oNo; //o_no Opening 외래키
     private String textOfRate; //r_text
-    private LocalDateTime createdAt; //r_createAt
+    private LocalDateTime createAt; //r_createAt
 
     public Rate(){}
     public Rate( int no, String fromEmail, String toEmail, int oNo, String textOfRate, LocalDateTime createAt) {

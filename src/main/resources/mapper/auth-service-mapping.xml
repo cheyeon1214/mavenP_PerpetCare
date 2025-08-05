@@ -4,24 +4,33 @@
 
 <mapper namespace="ns.sql.AuthMapper">
 
-<!--	<resultMap id="userResultMap" type="User">-->
-<!--		<id property="email" column="u_email"/>-->
-<!--		<result property="name" column="u_name"/>-->
-<!--		<result property="bdate" column="u_bdate"/>-->
-<!--		<result property="gender" column="u_gender"/>-->
-<!--		<result property="pwd" column="u_pwd"/>-->
-<!--		<result property="phone" column="u_phone"/>-->
-<!--		<result property="grade" column="u_grade"/>-->
-<!--		<result property="image" column="u_image"/>-->
-<!--	</resultMap>-->
-
+	<resultMap id="userResultMap" type="User">
+		<id property="email" column="u_email"/>
+		<result property="name" column="u_name"/>
+		<result property="bdate" column="u_bdate"/>
+		<result property="gender" column="u_gender"/>
+		<result property="pwd" column="u_pwd"/>
+		<result property="phone" column="u_phone"/>
+		<result property="grade" column="u_grade"/>
+		<result property="image" column="u_image"/>
+	</resultMap>
 
 	<insert id="register" parameterType="User">
 		INSERT INTO User (u_email, u_name, u_bdate, u_gender, u_pwd, u_phone, u_grade)
 		VALUES (#{email}, #{name}, #{bdate},#{gender}, #{pwd}, #{phone}, #{grade})
 	</insert>
 
+	<select id="login" parameterType="User" resultMap="userResultMap">
+		SELECT u_email,u_pwd
+		from User
+		WHERE u_email=#{email} AND u_pwd=#{pwd}
+	</select>
 
+	<select id="getUserByEmail" parameterType="string" resultMap="userResultMap">
+		SELECT u_email
+		from User
+		WHERE u_email=#{value}
+	</select>
 
 </mapper>
 

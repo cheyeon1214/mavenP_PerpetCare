@@ -20,7 +20,7 @@ public class Opening {
     private ArrayList<Apply> applies;
 
     public Opening(){}
-    public Opening(int no, String uEmail, LocalDateTime createAt, String careWay, LocalDateTime sDate, LocalDateTime eDate, String price, String per,  String location, String prefer, String detail, boolean close, ArrayList<Pet> pets) {
+    public Opening(int no, String uEmail, LocalDateTime createdAt, String careWay, LocalDateTime sDate, LocalDateTime eDate, String price, String per,  String location, String prefer, String detail, boolean close, ArrayList<Pet> pets) {
         this.no = no;
         this.uEmail = uEmail;
         this.createdAt = createdAt;
@@ -52,11 +52,11 @@ public class Opening {
         this.uEmail = uEmail;
     }
 
-    public LocalDateTime getCreateAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
