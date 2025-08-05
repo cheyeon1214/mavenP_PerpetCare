@@ -11,13 +11,13 @@ public class Rate {
     private LocalDateTime createdAt; //r_createAt
 
     public Rate(){}
-    public Rate( int no, String fromEmail, String toEmail, int oNo, String textOfRate, LocalDateTime createAt) {
+    public Rate( int no, String fromEmail, String toEmail, int oNo, String textOfRate, LocalDateTime createdAt) {
         this.no = no;
         this.fromEmail = fromEmail;
         this.toEmail = toEmail;
         this.oNo = oNo;
         this.textOfRate = textOfRate;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
     }
 
     public int getNo() {
@@ -60,12 +60,12 @@ public class Rate {
         this.textOfRate = textOfRate;
     }
 
-    public LocalDateTime getCreateAt() {
-        return createAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class Rate {
                 ", toEmail='" + toEmail + '\'' +
                 ", oNo=" + oNo +
                 ", textOfRate='" + textOfRate + '\'' +
-                ", createAt=" + createAt +
+                ", createAt=" + createdAt +
                 '}';
     }
 }

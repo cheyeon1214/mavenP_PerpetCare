@@ -92,16 +92,43 @@ public class ApplyTest {
     }
 
     @Test
-    public void applyOpening() throws Exception {
+    public void applyToOpening() throws Exception {
         Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
         SqlSession session = factory.openSession();
-        Apply apply = new Apply(1, "codus@naver.com", 3, LocalDateTime.now(), "로미를사랑합니다", ApplyStatus.pending);
+        Apply apply = new Apply(2, "codus@naver.com", 3, LocalDateTime.now(), "뽑아주세요ㅠ", ApplyStatus.pending);
         int result = session.insert("ns.sql.ApplyMapper.applyToOpening", apply);
         session.commit();
         session.close();
         System.out.println("Insert result: " + result);
     }
+
+    @Test
+    public void getApplicants() throws Exception{
+        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+        SqlSession session = factory.openSession();
+        List<Apply> applys = session.selectList("ns.sql.ApplyMapper.getApplicants", 1);
+        for (Apply apply : applys) {
+            System.out.println(apply);
+        }
+    }
+
+    @Test
+    public void updateApplyStatus() throws Exception{
+        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+        SqlSession session = factory.openSession();
+        HashMap<String, Object> map = new HashMap<>(); // 타입을 Object로
+        map.put("no", 1);
+        map.put("status", ApplyStatus.accept.name()); // 문자열로 넣기
+        int result = session.update("ns.sql.ApplyMapper.updateApplyStatus", map);
+        session.commit();
+        session.close();
+        System.out.println("Update result: " + result);
+    }
+
+
 
 
 

@@ -4,12 +4,12 @@
 
 <mapper namespace="ns.sql.ApplyMapper">
 	<resultMap id="applyResultMap" type="Apply">
-	<id property="no" column="a_no"/>
-	<result property="uEmail" column="u_email"/>
-	<result property="oNo" column="o_no"/>
-	<result property="createdAt" column="a_createdAt"/>
-	<result property="text" column="a_text"/>
-	<result property="status" column="a_staus"/>
+		<id property="no" column="a_no"/>
+		<result property="uEmail" column="u_email"/>
+		<result property="oNo" column="o_no"/>
+		<result property="createdAt" column="a_createdAt"/>
+		<result property="text" column="a_text"/>
+		<result property="status" column="a_staus"/>
 	</resultMap>
 
 	<insert id="applyToOpening" parameterType="Apply">
@@ -18,8 +18,10 @@
 		VALUES (#{uEmail}, #{oNo}, #{createdAt}, #{text}, 'pending');
 	</insert>
 
-	<select id="getApplicants" parameterType="Integer" resultType="Apply">
-
+	<select id="getApplicants" parameterType="Integer" resultMap="applyResultMap">
+		SELECT *
+		FROM Apply
+		WHERE a_no = #{VALUE}
 	</select>
 
 	<update id="updateApplyStatus" parameterType="map">
