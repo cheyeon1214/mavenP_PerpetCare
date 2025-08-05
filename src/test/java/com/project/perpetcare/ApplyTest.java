@@ -1,7 +1,9 @@
 package com.project.perpetcare;
 
+import com.project.perpetcare.domain.Apply;
 import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.domain.Pet;
+import com.project.perpetcare.domain.enums.ApplyStatus;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -38,12 +40,12 @@ public class ApplyTest {
     @Test
     public void addPostPet() throws Exception{
         ArrayList<Pet> pets = new ArrayList<>();
-//        pets.add(new Pet(1, "codus@naver.com", "romi", "고양이", "코숏", LocalDateTime.now(), "f", null));
+        pets.add(new Pet(1, "codus@naver.com", "romi", "고양이", "코숏", LocalDateTime.now(), "f", null));
         Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
         SqlSession session = factory.openSession();
         HashMap<String, Integer> map = new HashMap<>();
-        map.put("oNo", 2);
+        map.put("oNo", 3);
         map.put("pNo", 1);
         int result = session.insert("ns.sql.OpeningMapper.addPostPet", map);
 
@@ -88,6 +90,19 @@ public class ApplyTest {
         session.close();
         System.out.println("Delete result: " + result);
     }
+
+    @Test
+    public void applyOpening() throws Exception {
+        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+        SqlSession session = factory.openSession();
+        Apply apply = new Apply(1, "codus@naver.com", 3, LocalDateTime.now(), "로미를사랑합니다", ApplyStatus.pending);
+        int result = session.insert("ns.sql.ApplyMapper.applyToOpening", apply);
+        session.commit();
+        session.close();
+        System.out.println("Insert result: " + result);
+    }
+
 
 
 
