@@ -10,6 +10,7 @@
 	 
 	<typeAliases>
 		<package name="com.project.perpetcare.domain"/>
+		<package name="com.project.perpetcare.dto"/>
 	</typeAliases>
 	
 <!-- 2. MyBatis Framework Unit Test하기 위한 DataSource 설정부분 -->

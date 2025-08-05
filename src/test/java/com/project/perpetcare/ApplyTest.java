@@ -4,6 +4,7 @@ import com.project.perpetcare.domain.Apply;
 import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.domain.Pet;
 import com.project.perpetcare.domain.enums.ApplyStatus;
+import com.project.perpetcare.dto.ApplyUserDTO;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -108,9 +109,9 @@ public class ApplyTest {
         Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
         SqlSession session = factory.openSession();
-        List<Apply> applys = session.selectList("ns.sql.ApplyMapper.getApplicants", 1);
-        for (Apply apply : applys) {
-            System.out.println(apply);
+        List<ApplyUserDTO> applys = session.selectList("ns.sql.ApplyMapper.getApplicants", 3);
+        for (ApplyUserDTO apply : applys) {
+            System.out.println(apply.toString());
         }
     }
 
