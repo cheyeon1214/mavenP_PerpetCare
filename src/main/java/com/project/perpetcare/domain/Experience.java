@@ -20,7 +20,17 @@ public class Experience {
         this.species = species;
         this.breed = breed;
     }
+    public Experience(int no,String uEmail, int category, LocalDateTime sDate, LocalDateTime eDate, String species, String breed) {
+        this.no = no;
+        this.uEmail = uEmail;
+        this.category = category;
+        this.sDate = sDate;
+        this.eDate = eDate;
+        this.species = species;
+        this.breed = breed;
+    }
 
+    public int getNo(){return no;}
     public String getuEmail() {
         return uEmail;
     }

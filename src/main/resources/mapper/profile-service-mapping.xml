@@ -52,7 +52,7 @@
 		WHERE to_email = #{value}
 	</select>
 
-	<update id="updateUserInfo" parameterType="user">
+	<update id="updateUserInfo" parameterType="User">
 		UPDATE user
 		SET u_pwd=#{pwd},u_phone=#{phone}
 		WHERE u_email=#{email}
@@ -69,6 +69,7 @@
 		SET e_sdate=#{experience.sDate},e_edate=#{experience.eDate},
 		e_species=#{experience.species},e_breed=#{experience.breed}
 		WHERE u_email=#{email}
+		AND e_no=#{experience.no}
 	</update>
 
 	<delete id="deleteUserExperience" parameterType="HashMap">

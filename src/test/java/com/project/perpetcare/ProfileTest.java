@@ -1,6 +1,7 @@
 package com.project.perpetcare;
 
 import com.project.perpetcare.domain.Experience;
+import com.project.perpetcare.domain.Rate;
 import com.project.perpetcare.domain.User;
 import com.project.perpetcare.domain.enums.Grade;
 import org.apache.ibatis.io.Resources;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProfileTest {
@@ -36,8 +38,8 @@ public class ProfileTest {
         SqlSession session = factory.openSession();
 
         String email = "codus@naver.com";
-        User user = session.selectOne(NS + "getUserExperience", email);
-        System.out.println(user);
+        List<Experience> list = session.selectList(NS + "getUserExperience", email);
+        list.forEach(e -> System.out.println(e));
         session.close();
     }
 
@@ -48,8 +50,8 @@ public class ProfileTest {
         SqlSession session = factory.openSession();
 
         String email = "codus@naver.com";
-        User user = session.selectOne(NS + "getUserRate", email);
-        System.out.println(user);
+        List<Rate> list= session.selectList(NS + "getUserRate", email);
+        list.forEach(l -> System.out.println(l));
         session.close();
     }
 
@@ -59,7 +61,7 @@ public class ProfileTest {
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
         SqlSession session = factory.openSession();
 
-        User user = new User("codus@naver.com", "곽채연", "2000-12-14", "f", "1111", "01055821857", Grade.Bronze, 1);
+        User user = new User("codus@naver.com", "곽채연", "2000-12-14", "f", "1122", "01055821857", Grade.Bronze, 1);
 
         int result = session.update(NS + "updateUserInfo",user);
         System.out.println(result);
@@ -90,7 +92,7 @@ public class ProfileTest {
         SqlSession session = factory.openSession();
 
         String email = "codus@naver.com";
-        Experience experience = new Experience("codus@naver.com",1,LocalDateTime.of(2023, 1, 4, 0, 0, 0),LocalDateTime.of(2023, 1, 10, 0, 0, 0),"강아지","포메라니안");
+        Experience experience = new Experience(3,"codus@naver.com",1,LocalDateTime.of(2023, 1, 4, 0, 0, 0),LocalDateTime.of(2023, 1, 10, 0, 0, 0),"고양이","코숏");
         Map<String,Object> map = new HashMap<>();
         map.put("experience", experience);
         map.put("email",email);
