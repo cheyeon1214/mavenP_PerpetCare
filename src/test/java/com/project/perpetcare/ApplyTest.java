@@ -14,6 +14,7 @@ import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ApplyTest {
     @Test
@@ -65,5 +66,29 @@ public class ApplyTest {
         System.out.println("Update result: " + result);
 
     }
+
+    @Test
+    public void getUserOpening() throws Exception{
+        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+        SqlSession session = factory.openSession();
+        List<Opening> openings = session.selectList("ns.sql.OpeningMapper.getUserOpening", "codus@naver.com");
+        for (Opening opening : openings) {
+            System.out.println(opening);
+        }
+    }
+
+    @Test
+    public void deleteOpening() throws Exception{
+        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+        SqlSession session = factory.openSession();
+        int result = session.delete("ns.sql.OpeningMapper.deleteOpening",2);
+        session.commit();
+        session.close();
+        System.out.println("Delete result: " + result);
+    }
+
+
 
 }
