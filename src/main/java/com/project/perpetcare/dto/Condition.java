@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Condition {
-    private Boolean close; // 컬럼명 o_close
+    private Boolean closeFilter; // 컬럼명 o_close
     private LocalDateTime sdate; // 컬럼명 o_sdate
     private LocalDateTime edate; // 컬럼명 o_edate
     private String location; // 컬럼명 o_location
@@ -16,8 +16,8 @@ public class Condition {
 
     public Condition() {
     }
-    public Condition(Boolean close, LocalDateTime sdate, LocalDateTime edate, String location, String careWay, String species, String orderBy) {
-        this.close = close;
+    public Condition(Boolean closeFilter, LocalDateTime sdate, LocalDateTime edate, String location, String careWay, String species, String orderBy) {
+        this.closeFilter = closeFilter;
         this.sdate = sdate;
         this.edate = edate;
         this.location = location;
@@ -26,11 +26,11 @@ public class Condition {
         this.orderBy = orderBy;
     }
 
-    public Boolean getClose() {
-        return close;
+    public Boolean getCloseFilter() {
+        return closeFilter;
     }
-    public void setClose(Boolean close) {
-        this.close = close;
+    public void setCloseFilter(Boolean closeFilter) {
+        this.closeFilter = closeFilter;
     }
     public LocalDateTime getSdate() {
         return sdate;
@@ -72,7 +72,7 @@ public class Condition {
     @Override
     public String toString() {
         return "Condition{" +
-                "close=" + close +
+                "closeFilter=" + closeFilter +
                 ", sdate=" + sdate +
                 ", edate=" + edate +
                 ", location='" + location + '\'' +

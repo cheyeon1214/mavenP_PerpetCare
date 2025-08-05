@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Opening {
     private int no; //o_no
     private String uEmail; //u_email User의 외래키
-    private LocalDateTime createAt; //o_createdAt
+    private LocalDateTime createdAt; //o_createdAt
     private String careWay; //o_careway
     private LocalDateTime sDate; //o_sdate
     private LocalDateTime eDate; //o_edate
@@ -56,7 +56,7 @@ public class Opening {
         return createdAt;
     }
 
-    public void setCreateAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
