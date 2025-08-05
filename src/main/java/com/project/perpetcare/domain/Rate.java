@@ -8,7 +8,7 @@ public class Rate {
     private String toEmail; //to_email
     private int oNo; //o_no Opening 외래키
     private String textOfRate; //r_text
-    private LocalDateTime createdAt; //r_createdAt
+    private LocalDateTime createAt; //r_createAt
 
     public Rate(){}
     public Rate( int no, String fromEmail, String toEmail, int oNo, String textOfRate, LocalDateTime createAt) {
@@ -17,7 +17,7 @@ public class Rate {
         this.toEmail = toEmail;
         this.oNo = oNo;
         this.textOfRate = textOfRate;
-        this.createdAt = createAt;
+        this.createAt = createAt;
     }
 
     public int getNo() {
@@ -61,11 +61,11 @@ public class Rate {
     }
 
     public LocalDateTime getCreateAt() {
-        return createdAt;
+        return createAt;
     }
 
     public void setCreateAt(LocalDateTime createAt) {
-        this.createdAt = createAt;
+        this.createAt = createAt;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class Rate {
                 ", toEmail='" + toEmail + '\'' +
                 ", oNo=" + oNo +
                 ", textOfRate='" + textOfRate + '\'' +
-                ", createAt=" + createdAt +
+                ", createAt=" + createAt +
                 '}';
     }
 }

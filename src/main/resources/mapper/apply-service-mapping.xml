@@ -3,12 +3,34 @@
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ns.sql.ApplyMapper">
-	<insert id="applyToOpening" parameterType="Apply">
+	<resultMap id="applyResultMap" type="Apply">
+		<id property="no" column="a_no"/>
+		<result property="uEmail" column="u_email"/>
+		<result property="oNo" column="o_no"/>
+		<result property="createdAt" column="a_createdAt"/>
+		<result property="text" column="a_text"/>
+		<result property="status" column="a_staus"/>
+	</resultMap>
 
+	<insert id="applyToOpening" parameterType="Apply">
+		INSERT INTO Apply
+		(u_email, o_no, a_createdAt, a_text, a_status)
+		VALUES (#{uEmail}, #{oNo}, #{createdAt}, #{text}, 'pending');
 	</insert>
 
-	<select id="getApplicants" parameterType="Integer" resultType="Apply">
-
+	<select id="getApplicants" parameterType="Integer" resultType="ApplyUserDTO">
+		SELECT
+		a.a_no      AS aNo,
+		a.o_no      AS oNo,
+		a.a_text    AS aText,
+		a.a_status  AS aStatus,
+		a.a_createdAt AS aCreatedAt,
+		u.u_email   AS uEmail,
+		u.u_grade   AS uGrade,
+		u.u_image   AS uImage
+		FROM Apply a
+		JOIN User u ON a.u_email = u.u_email
+		WHERE a.o_no = #{value}
 	</select>
 
 	<update id="updateApplyStatus" parameterType="map">
