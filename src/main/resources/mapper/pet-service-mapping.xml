@@ -14,9 +14,19 @@
 <!--		<result property="grade" column="u_grade"/>-->
 <!--		<result property="image" column="u_image"/>-->
 <!--	</resultMap>-->
-<select id="">
+	<resultMap id="petResultMap" type="Pet">
+		<id property="no" column="p_no"/>
+		<result property="uEmail" column="u_email"/>
+		<result property="name" column="p_name"/>
+		<result property="species" column="p_species"/>
+		<result property="breed" column="p_breed"/>
+		<result property="bDate" column="p_bdate"/>
+		<result property="gender" column="p_gender"/>
+		<result property="image" column="p_image"/>
+	</resultMap>
+<select id="selectPet" parameterType="String" resultMap="petResultMap">
 	select * from pet
-	where u_email=#{uEmail}
+	where u_email=#{value}
 </select>
 <insert id="insertPet" parameterType="Pet">
 	insert into pet(u_email,p_name,p_species,p_breed,p_bdate,p_gender,p_image)
