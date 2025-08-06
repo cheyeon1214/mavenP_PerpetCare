@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +17,7 @@
         }
 
         .pet-container {
+            margin: 50px;
             display: flex;
             align-items: flex-start;
             width: 700px;
@@ -53,7 +55,7 @@
             background-color: #ffc0cb;
             border-radius: 20px;
             padding: 20px;
-            height: 200px;
+            height: 150px;
             width: 480px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             position: relative;
@@ -202,44 +204,57 @@
             display: flex;
             align-items: flex-start;
         }
+        .header-top{
+            margin-top: 50px;
+            background-color: white;
+        }
     </style>
 </head>
 <body>
+<%@ include file="/components/header.jsp" %>
+<div class="header-top"></div>
 
+<c:forEach var="pet" items="${petList}">
 <div class="pet-container">
     <div class="pet-image">
-        <img src="image/petImage1.jpeg" alt="로미">
-        <div class="pet-name">로미</div>
+        <img src="../../../image/petImage1.jpeg">
+        <div class="pet-name">${pet.name}</div>
     </div>
 
     <div class="right-side">
         <div class="pet-info-box">
-            <p>종<span>고양이</span></p>
-            <p>품종<span>코숏</span></p>
-            <p>성별<span>여</span></p>
-            <p>나이<span>만세</span></p>
+            <p>종<span>${pet.species}</span></p>
+            <p>품종<span>${pet.breed}</span></p>
+            <p>성별<span>${pet.gender}</span></p>
+            <p>나이<span>${pet.age}</span></p>
         </div>
+
         <div class="pet-actions">
             <button class="btn btn-delete">삭제</button>
             <button class="btn btn-edit">수정</button>
         </div>
+
     </div>
+
 </div>
+ </c:forEach>
 <div class="add-card" id="addPetBtn">
     <div class="plus-icon">+</div>
     반려동물 추가하기
 </div>
 <div class="pet-add-container"  style="display: none">
-    <form id="addFormContainer" action="insertPet" method="post">
+    <form id="addFormContainer" action="registerPet" method="post">
         <div class="image-box">📷</div>
         <div class="form-fields">
             <div class="form-group">
+                <%-- session 넣으면 수정해야함!!!!!!!!!!!!!--%>
+                <input type="hidden" name="uEmail" value="codus@naver.com">
                 <label>이름</label>
-                <input type="text" name="petName" placeholder="이름을 입력해주세요">
+                <input type="text" name="name" placeholder="이름을 입력해주세요">
             </div>
             <div class="form-group">
                 <label>종</label>
-                <select name="petType">
+                <select name="species">
                     <option value="">반려동물 종을 선택해주세요</option>
                     <option value="개">개</option>
                     <option value="고양이">고양이</option>
@@ -252,18 +267,19 @@
             </div>
             <div class="form-group">
                 <label>품종</label>
-                <input type="text" name="petBreed" placeholder="품종을 입력해주세요">
+                <input type="text" name="breed" placeholder="품종을 입력해주세요">
             </div>
             <div class="form-group">
                 <label>성별</label>
                 <div class="radio-group">
-                    <label><input type="radio" name="petGender" value="여"> 여</label>
-                    <label><input type="radio" name="petGender" value="남"> 남</label>
+                    <label><input type="radio" name="gender" value="f"> 여</label>
+                    <label><input type="radio" name="gender" value="m"> 남</label>
+                    <label><input type="radio" name="gender" value="n"> 모름</label>
                 </div>
             </div>
             <div class="form-group">
                 <label>생년월일</label>
-                <input type="date" name="petBirth">
+                <input type="date" name="bDate">
             </div>
         </div>
     </form>
@@ -281,6 +297,10 @@
         $('.btn-cancel').on('click', function(e) { //취소
             e.preventDefault(); //폼에서 submit 안되게
             $('.pet-add-container').hide();
+        });
+        $('.btn-register').on('click', function() {
+            $('#addFormContainer').submit(); // 강제로 form submit
+            $('#addFormContainer')[0].reset(); // 폼 초기화
         });
     });
 </script>

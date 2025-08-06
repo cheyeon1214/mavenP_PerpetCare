@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,26 +30,33 @@ public class PetController {
         try {
             pets = petService.getPets(uEmail);
             msg = "getPets 호출";
-            path= "petPage";
+            path= "profilePage/petPage";
         }catch(Exception e){
-            e.printStackTrace();
+            msg="getPets 실패";
+            System.out.println(e);
         }
         return new ModelAndView(path,"petList",pets);
     }
     //요청/petPage?uEmail=codus@naver.com
     //파라미터값 전달해주기
 
-    @GetMapping("/registerForm")
-    public String registerForm(){
-        return "registerPet";
+    // 펫 등록
+    @PostMapping("/registerPet")
+    public ModelAndView registerPet(Pet pet) {
+        String msg = "";
+        String path = "redirect:/Error.jsp";
+        //에러페이지 만들까..
+        try {
+            petService.insertPet(pet);
+            msg = "insertPet 호출";
+            path = "redirect:/petPage?uEmail=codus@naver.com";// + pet.getuEmail(); 세션넣으면 수정!!!!!!!!
+        }catch(Exception e){
+            msg="insertPet 실패";
+            System.out.println(e);
+        }
+        return new ModelAndView(path);
     }
-//    // 펫 등록
-//    @PostMapping("/register")
-//    public String registerPet(Pet pet) {
-//        petService.insertPet(pet);
-//        return "redirect:/pet/list?email=" + pet.getUEmail();  // 등록 후 목록으로 리다이렉트
-//    }
-//
+
 //    // 펫 수정 폼 이동
 //    @GetMapping("/editForm")
 //    public String editForm(@RequestParam("no") int no, Model model) {
