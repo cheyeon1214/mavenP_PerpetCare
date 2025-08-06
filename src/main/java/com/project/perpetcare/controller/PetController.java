@@ -21,20 +21,20 @@ public class PetController {
     @Autowired
     private PetService petService;
 
-//    @GetMapping("/petPage")
-//    public ModelAndView getPets(@RequestParam("uEmail") String uEmail){
-//       String path="";
-//       String msg = "";
-//       List<Pet> pets = null;
-//        try {
-//            pets = petService.getPets(uEmail);
-//            msg = "getPets 호출";
-//            path= "petPage";
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        return new ModelAndView(path,"petList",pets);
-//    }
+    @GetMapping("/petPage")
+    public ModelAndView getPets(@RequestParam("uEmail") String uEmail){
+        String path="";
+        String msg = "";
+        List<Pet> pets = null;
+        try {
+            pets = petService.getPets(uEmail);
+            msg = "getPets 호출";
+            path= "petPage";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ModelAndView(path,"petList",pets);
+    }
     //요청/petPage?uEmail=codus@naver.com
     //파라미터값 전달해주기
 
