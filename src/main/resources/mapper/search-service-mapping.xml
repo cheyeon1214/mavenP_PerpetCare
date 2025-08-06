@@ -4,6 +4,52 @@
 
 <mapper namespace="ns.sql.SearchMapper">
 
+	<resultMap id="openingListRM" type="opening">
+		<id property="no" column="o_no" />
+		<result property="uEmail" column="u_email" />
+		<result property="createdAt" column="o_createdAt" />
+		<result property="careWay" column="o_careway" />
+		<result property="sDate" column="o_sdate" />
+		<result property="eDate" column="o_edate" />
+		<result property="price" column="o_price" />
+		<result property="per" column="o_per" />
+		<result property="location" column="o_location" />
+		<result property="close" column="o_close" />
+		<collection property="pet" javaType="pet">
+			<id property="no" column="p_no" />
+			<result property="species" column="p_species" />
+			<result property="image" column="p_image" />
+		</collection>
+	</resultMap>
 
+	<sql id="select-openings">
+		SELECT
+		o.o_no, o.u_email, o.o_createdAt, o.o_careway, o.o_sdate, o.o_edate, o.o_price, o.o_per, o.o_location, p.p_no, p.p_species, p.p_image
+		FROM Opening o
+		JOIN PostPet pp ON o.o_no = pp.o_no
+		JOIN pet p ON pp.p_no = p.p_no
+		WHERE o.o_createdAt &lt;= now()
+	</sql>
+
+	<select id="searchOpenings" parameterType="condition" resultType="opening" resultMap="openingListRM">
+		<include refid="select-openings" />
+		<where>
+			o.o_location = #{location}
+			<if test="closeFilter == true">
+				AND
+			</if>
+		</where>
+		<choose>
+			<when test="orderBy == 'old'">
+				ORDER BY o.o_createdAt ASC
+			</when>
+			<when test="orderBy == 'price'">
+				ORDER BY o.o_price DESC
+			</when>
+			<otherwise>
+				ORDER BY o.o_createdAt DESC
+			</otherwise>
+		</choose>
+	</select>
 
 </mapper>
