@@ -3,10 +3,8 @@
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
 	
 <configuration>
-
 <!-- 1. MyBatis Framework Unit Test하기 위한 DataSource 설정부분 -->
 	<properties resource="config/dbconn.properties" />
-
 	 
 	<typeAliases>
 		<package name="com.project.perpetcare.domain"/>
@@ -24,8 +22,7 @@
 				<property name="password" value="${jdbc.mysql.password}"/>
 			</dataSource>
 		</environment>
-	</environments> 
- 
+	</environments>
 
 	<mappers>
 		<mapper resource = "mapper/auth-service-mapping.xml"/>
