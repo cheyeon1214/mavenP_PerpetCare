@@ -19,4 +19,9 @@ public class OpeningController {
         return "openingPage/opening-create"; // JSP 경로
     }
 
+    @GetMapping("/view")
+    public String createView() {
+        return "openingPage/opening-view"; // JSP 경로
+    }
+
 }
