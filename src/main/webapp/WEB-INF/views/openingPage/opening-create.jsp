@@ -2,11 +2,25 @@
 <html>
 <head>
     <title>공고 작성하기</title>
-<!-- 1. jQuery -->
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
 <script>
     $(document).on("click", "#pet-profile", function() {
         $(this).toggleClass("selected");
+    });
+    
+    $(document).on("click", ".method-btn", function() {
+        $(".method-btn").removeClass("selected");
+        $(this).addClass("selected");
     });
 </script>
 </head>
@@ -71,7 +85,8 @@
     }
 
     #pet-profile.selected {
-        background-color: rgba(253, 149, 150, 0.5); 
+        background-color: rgba(253, 149, 150, 0.5);
+        transition: background-color 0.3s ease; 
         box-shadow: 0 4px 15px rgba(0,0,0,0.16);
     }
 
@@ -119,16 +134,73 @@
         background-color: white;
         border: none;
         border-radius: 20px;
-        width: 220px;
+        width: 216px;
         height: 50px;
-        margin-left: 20px;
+        margin-left: 28px;
+        font-size: 18px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.16);
+    }
+    .method-btn.selected{   
+        box-shadow: 0 4px 15px rgba(253, 149, 150, 0.8);
+        transition: box-shadow 0.3s ease; 
+    }
+
+    .method-text{
+        font-size: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .location-btn{
+        cursor: pointer;
+        background-color: white;
+        border: none;
+        border-radius: 20px;
+        width: 460px;
+        height: 50px;
+        margin-left: 28px;
         font-size: 18px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.16);
         
     }
-    .method-text{
-        font-size: 20px;
+    #location{
+        background: url('../../../image/location_icon.png') no-repeat 8px center;
+    }
+    .pay-dropdown {
+        border: 1.5px solid #FD9596;
+        border-radius: 50px;
+        color: #FD9596;
+        font-weight: 600;
+        background-color: white;
+        padding: 5px 15px;
+    }
+
+    .pay-dropdown:focus, .pay-dropdown:active {
+        box-shadow: none;
+    }
+
+    .pay-amount {
+        display: inline-block;
+        border: 1.5px solid #ddd;
+        border-radius: 8px;
+        padding: 8px 18px;
         margin-left: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        margin-left: 20px;
+        width: 150px
+    }
+
+    .pay-unit {
+        margin-left: 5px;
+        font-weight: bold;
+        margin-left: 18px;
+        font-size: 20px;
+    }
+
+    .pay-section{
+        display: flex;
+        align-items: center;
+        margin: 20px;
     }
 
 
@@ -243,13 +315,35 @@
                     </div>
                     <div class="method-line">
                         <div class="method-text">돌봄위치</div>
-                        <input type="button" class="location-btn" value="서울시 혜화동">
+                        <input type="button" class="location-btn" value="서울시 혜화동" id="location">
                     </div>
                     <div class="method-line">
                         <div class="method-text">돌봄기간</div>
                         <input type="button" class="location-btn" value="2025.08.21 ~ 2025.08.25">
                     </div>
                 </div>
+
+                <div class="sub-title-section">
+                    <img src="../../../image/subtitle_line.svg" alt="line">
+                    <span class="sub-title">가격</span>
+                </div>
+
+                <div class="pay-section">
+                    <div class="dropdown">
+                        <button class="btn pay-dropdown dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            일급
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">일급</a>
+                            <a class="dropdown-item" href="#">시급</a>
+                            <a class="dropdown-item" href="#">월급</a>
+                        </div>
+                    </div>
+                    <input type="text" class="pay-amount">
+                    <div class="pay-unit">원</div>
+                </div>
+
 
             </div>
         </div>
