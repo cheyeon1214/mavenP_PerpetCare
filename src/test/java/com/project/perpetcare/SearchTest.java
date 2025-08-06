@@ -1,5 +1,6 @@
 package com.project.perpetcare;
 
+import com.project.perpetcare.domain.Location;
 import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.dto.Condition;
 import org.apache.ibatis.io.Resources;
@@ -24,6 +25,21 @@ public class SearchTest {
             List<Opening> openings = session.selectList("ns.sql.SearchMapper.searchOpenings", condition);
             for (Opening opening : openings) {
                 System.out.println(opening);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void searchLoc() throws Exception{
+        try {
+            Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+            SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+            SqlSession session = factory.openSession();
+            List<Location> locs = session.selectList("ns.sql.SearchMapper.searchLoc", "대방동");
+            for(Location loc : locs){
+                System.out.println(loc);
             }
         } catch (Exception e) {
             e.printStackTrace();
