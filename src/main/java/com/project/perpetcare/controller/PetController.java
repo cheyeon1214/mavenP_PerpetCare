@@ -23,9 +23,9 @@ public class PetController {
 
     @GetMapping("/petPage")
     public ModelAndView getPets(@RequestParam("uEmail") String uEmail){
-       String path="";
-       String msg = "";
-       List<Pet> pets = null;
+        String path="";
+        String msg = "";
+        List<Pet> pets = null;
         try {
             pets = petService.getPets(uEmail);
             msg = "getPets 호출";
