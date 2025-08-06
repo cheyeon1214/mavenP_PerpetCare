@@ -4,6 +4,11 @@
     <title>공고 작성하기</title>
 <!-- 1. jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).on("click", ".profile-card", function() {
+        $(this).toggleClass("selected");
+    });
+</script>
 </head>
 <style>
     body {
@@ -66,7 +71,7 @@
     }
 
     .profile-card.selected {
-        border-color: #f8c9ec;
+        background-color: rgba(253, 149, 150, 0.5); 
         box-shadow: 0 4px 15px rgba(8, 145, 141, 0.4);
     }
 
