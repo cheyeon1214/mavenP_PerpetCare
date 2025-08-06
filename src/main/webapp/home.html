@@ -18,13 +18,21 @@
     <section class="home-content">
       <div class="sky">
         <img id="logo" src="image/logo.png" alt="Logo" />
-        <img id="cloud" src="image/homeImg/signincloud.png">
+        <img id="cloud" src="image/homeImg/signincloud.png" />
         <div class="search-bar">
-            <img src="image/homeImg/searchcloud.png" alt="Search" class="search-bg" />
-            <div class="search-content">
-                <span class="search-text">Search Here!</span>
-                <img src="image/homeImg/search.png" alt="돋보기" class="search-icon" />
-            </div>
+          <img
+            src="image/homeImg/searchcloud.png"
+            alt="Search"
+            class="search-bg"
+          />
+          <div class="search-content">
+            <span class="search-text">Search Here!</span>
+            <img
+              src="image/homeImg/search.png"
+              alt="돋보기"
+              class="search-icon"
+            />
+          </div>
         </div>
         <div class="sign-in">
           <img src="image/homeImg/signincloud.png" alt="Sign In" />
@@ -44,8 +52,12 @@
             <img src="image/homeImg/479-368.png" class="park1-man1-img" />
             <img src="image/homeImg/878-294.png" class="park1-man2-img" />
             <div class="opening-btn">
-                <img src="image/homeImg/opening-btn.png" class="opening-img" alt="공고버튼"/>
-                <div class="opening-text">공고 작성<br />하러 가기!!</div>
+              <img
+                src="image/homeImg/opening-btn.png"
+                class="opening-img"
+                alt="공고버튼"
+              />
+              <div class="opening-text">공고 작성<br />하러 가기!!</div>
             </div>
           </div>
           <div class="park2">
@@ -57,27 +69,45 @@
             <img src="image/homeImg/671-1060.png" class="park2-dog-img" />
             <img src="image/homeImg/879-989.png" class="park2-man-img" />
             <div class="section">
-                <div class="sec sec-1">
-                    <img src="image/homeImg/section.png" class="section-bg" />
-                    <img src="image/homeImg/sec1.svg" class="section-illustration-1" />
-                    <div class="section-text">
-                    여행 갈 때<br><strong style="color: #EF5D34; font-family: 'Madimi One',cursive;">perpetcare</strong>
-                    </div>
+              <div class="sec sec-1">
+                <img src="image/homeImg/section.png" class="section-bg" />
+                <img
+                  src="image/homeImg/sec1.svg"
+                  class="section-illustration-1"
+                />
+                <div class="section-text">
+                  여행 갈 때<br /><strong
+                    style="color: #ef5d34; font-family: 'Madimi One', cursive"
+                    >perpetcare</strong
+                  >
                 </div>
-                <div class="sec sec-2">
-                    <img src="image/homeImg/section.png" class="section-bg" />
-                    <img src="image/homeImg/sec2.png" class="section-illustration-2" />
-                    <div class="section-text">
-                    안전한 sitter가 필요할 때<br><strong style="color: #EF5D34; font-family: 'Madimi One',cursive;">perpetcare</strong>
-                    </div>
+              </div>
+              <div class="sec sec-2">
+                <img src="image/homeImg/section.png" class="section-bg" />
+                <img
+                  src="image/homeImg/sec2.png"
+                  class="section-illustration-2"
+                />
+                <div class="section-text">
+                  안전한 sitter가 필요할 때<br /><strong
+                    style="color: #ef5d34; font-family: 'Madimi One', cursive"
+                    >perpetcare</strong
+                  >
                 </div>
-                <div class="sec sec-3">
-                    <img src="image/homeImg/section.png" class="section-bg" />
-                    <img src="image/homeImg/sec3.png" class="section-illustration-3" />
-                    <div class="section-text">
-                    일이 바쁠 때<br><strong style="color: #EF5D34; font-family: 'Madimi One',cursive;">perpetcare</strong>
-                    </div>
+              </div>
+              <div class="sec sec-3">
+                <img src="image/homeImg/section.png" class="section-bg" />
+                <img
+                  src="image/homeImg/sec3.png"
+                  class="section-illustration-3"
+                />
+                <div class="section-text">
+                  일이 바쁠 때<br /><strong
+                    style="color: #ef5d34; font-family: 'Madimi One', cursive"
+                    >perpetcare</strong
+                  >
                 </div>
+              </div>
             </div>
           </div>
           <div class="park3">
@@ -116,6 +146,11 @@
     </section>
   </body>
   <script>
+    document
+      .querySelector(".sign-in")
+      .addEventListener("click", function () {
+        window.location.href = "login.jsp";
+      });
     const tree2 = document.querySelector(".park1-tree2-img");
     const tree3 = document.querySelector(".park1-tree3-img");
     const cat = document.querySelector(".park-cat-img");
@@ -142,7 +177,7 @@
             man.classList.add("grow");
 
             dog.classList.remove("run");
-            void dog.offsetWidth; 
+            void dog.offsetWidth;
             dog.classList.add("run");
 
             barkSound.currentTime = 0;
