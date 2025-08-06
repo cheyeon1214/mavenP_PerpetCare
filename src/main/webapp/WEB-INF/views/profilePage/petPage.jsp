@@ -144,6 +144,12 @@
             font-size: 32px;
             color: #888;
             border-radius: 20px;
+            cursor: pointer;
+        }
+        .image-box img {
+            width: 240px;
+            height: 240px;
+            object-fit: cover;
         }
 
         .form-fields {
@@ -205,7 +211,7 @@
             align-items: flex-start;
         }
         .header-top{
-            margin-top: 50px;
+            margin-top: 100px;
             background-color: white;
         }
     </style>
@@ -217,7 +223,7 @@
 <c:forEach var="pet" items="${petList}">
 <div class="pet-container">
     <div class="pet-image">
-        <img src="../../../image/petImage1.jpeg">
+        <img src="data:image/jpeg;base64,${pet.base64Image}" alt="펫 이미지">
         <div class="pet-name">${pet.name}</div>
     </div>
 
@@ -229,13 +235,11 @@
             <p>나이<span>${pet.age}</span></p>
         </div>
 
-        <div class="pet-actions">
-            <button class="btn btn-delete">삭제</button>
-            <button class="btn btn-edit">수정</button>
-        </div>
-
+      <div class="pet-actions">
+        <button class="btn btn-delete" data-uEmail="${pet.uEmail}" data-pet-no="${pet.no}">삭제</button>
+        <button class="btn btn-edit">수정</button>
+      </div>
     </div>
-
 </div>
  </c:forEach>
 <div class="add-card" id="addPetBtn">
@@ -243,8 +247,10 @@
     반려동물 추가하기
 </div>
 <div class="pet-add-container"  style="display: none">
-    <form id="addFormContainer" action="registerPet" method="post">
-        <div class="image-box">📷</div>
+    <form id="addFormContainer" action="/registerPet" method="post" enctype="multipart/form-data">
+        <div class="image-box">
+        <img id="preview" alt="미리보기 이미지"></div>
+        <input type="file" id="petImage" name="imageFile" accept="image/*" style="display:none;">
         <div class="form-fields">
             <div class="form-group">
                 <%-- session 넣으면 수정해야함!!!!!!!!!!!!!--%>
@@ -299,9 +305,30 @@
             $('.pet-add-container').hide();
         });
         $('.btn-register').on('click', function() {
-            $('#addFormContainer').submit(); // 강제로 form submit
-            $('#addFormContainer')[0].reset(); // 폼 초기화
+            $('#addFormContainer').submit()[0].reset(); // 강제로 form submit
         });
+        $('.image-box').on('click', function(){
+            $('#petImage').click();
+        });
+            $('#petImage').on('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#preview').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+            $('.btn-delete').on('click', function() {
+                // const uEmail = $(this).data('uEmail'); //session 할때 이거 임시로 밑에거
+                const uEmail = $('input[name="uEmail"]').val();
+                const no = $(this).data('pet-no');
+                const confirmDelete = confirm("정말로 이 펫을 삭제하시겠습니까?");
+                if (confirmDelete) {
+                    location.href = '/deletePet?uEmail='+uEmail+'&no='+no;
+                }
+            });
     });
 </script>
 </body>
