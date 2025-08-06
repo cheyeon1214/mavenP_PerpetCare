@@ -1,5 +1,7 @@
 package com.project.perpetcare.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.sql.Blob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +15,27 @@ public class Pet {
     private LocalDate bDate; //p_bdate
     private String gender; //p_gender
     private byte[] image; //p_image
+
+    private String base64Image;
+    private MultipartFile imageFile;
+
+    public MultipartFile getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
+    }
+
+    public String getBase64Image() {
+        return base64Image;
+    }
+
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }
+
+
 
     public Pet(){}
     public Pet( int no, String uEmail, String name, String species, String breed, LocalDate bDate, String gender, byte[] image) {
