@@ -81,9 +81,14 @@
   #search-button {
       cursor: pointer;
   }
-  .modal-footer {
+  .modal-body, .modal-footer {
       display: flex;
       justify-content: center;
+  }
+  .modal-body > input {
+      width: 80%;
+      padding: 0 10px;
+      margin-bottom: 10px;
   }
   .modal-footer > button {
       width: 80%;
@@ -95,11 +100,24 @@
   }
 </style>
 <script>
-    // $(function(){
-    //    $('#search-location').click(function(){
-    //
-    // });
-    // });
+    $(document).ready(function(){
+       $('#location-input').on("keyup", function(){
+            let keyword = $(this).val().trim();
+
+            if(keyword.length > 0) {
+                $.ajax({
+                    // 요청
+                    // url: "/location/search",
+                    // type: "GET",
+                    // 응답
+                    // success: function(data){
+                    //     let html = "";
+                    //     data.forEach(function(item))
+                    // }
+                })
+            }
+       });
+    });
 </script>
 <body>
     <%@ include file="/components/header.jsp" %>
@@ -134,7 +152,10 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
+                    <input type="text" id="location-input" placeholder="찾으시는 지역을 입력하세요" autocomplete="off">
+                    <div class="location-list">
 
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal">검색</button>
