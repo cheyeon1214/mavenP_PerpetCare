@@ -336,7 +336,7 @@
                     <div class="profile-card" id="pet-profile">
                         <div class="card-section">
                             <div class="card-left">
-                                <img src="../../../image/petImage2.png" alt="petImg" class="petImg">
+                                <img src="../../../image/petImage3.png" alt="petImg" class="petImg">
                             </div>
                             <div class="card-right">
                                 <div class="card-right-name">
@@ -348,11 +348,11 @@
                                 </div>
 
                                 <div class="card-right-text">
-                                    <div class="pet-text">로미</div>
+                                    <div class="pet-text">로디</div>
                                     <div class="pet-text">고양이</div>
                                     <div class="pet-text">코숏</div>
                                     <div class="pet-text">암컷</div>
-                                    <div class="pet-text">1세</div>
+                                    <div class="pet-text">2세</div>
                                 </div>
                                 
                             </div>
