@@ -10,11 +10,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.Reader;
+import java.time.LocalDate;
 
 public class AuthTest {
     @Test
     public void insertUser(){
-        User user = new User("qwert@gmail.com", "이태란", "2001-05-05", "f", "1234", "01090436414", Grade.Silver, 1);
+        User user = new User("qwert@gmail.com", "이태란", LocalDate.now(), "f", "1234", "01090436414", Grade.Silver, 1);
         try{
             Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
 	        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
