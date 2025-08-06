@@ -86,9 +86,25 @@ html,body{
     transform: translateX(-50%);
 }
 
+.park1-man1-img{
+    position: absolute;
+    z-index: 5;
+    top: 28%;
+    left: 40%;
+    transform: translateX(-50%);
+}
+
+.park1-man2-img{
+    position: absolute;
+    z-index: 5;
+    top: 25%;
+    left: 60%;
+    transform: translateX(-50%);
+}
+
 .park2 {
     position: absolute;
-    top: calc(100% - 740px);
+    top: calc(100% - 44%);
     left: 0;
     width: 100%;
     z-index: 3;
@@ -118,7 +134,7 @@ html,body{
 
 .park3 {
     position: absolute;
-    top: calc(100% - 380px);
+    top: calc(100% - 22%);
     left: 0;
     width: 100%;
     z-index: 2;
@@ -169,10 +185,11 @@ html,body{
   position: relative;
   z-index: 1;
   display: flex;
-  justify-content: space-between;
-  max-width: 1200px;
+  justify-content: space-around;
+  max-width: 1500px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 2%;
+  gap:40px;
 }
 
 .footer-right{
