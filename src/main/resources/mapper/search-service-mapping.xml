@@ -61,4 +61,9 @@
 		</choose>
 	</select>
 
+	<select id="searchLoc" parameterType="string" resultType="location">
+		SELECT lcode, address
+		FROM Location
+		WHERE address LIKE concat('%', #{VALUE}, '%')
+	</select>
 </mapper>
