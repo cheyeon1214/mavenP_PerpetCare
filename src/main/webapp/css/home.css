@@ -1,0 +1,233 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.home-content,.sky {
+    min-height: 100vh;
+    background-color: #64dafe;
+    position: relative;
+    overflow: visible;
+}
+
+.sky{
+    padding-bottom: 500px;
+}
+
+/* 로고 위치 */
+#logo {
+    top: 2%;
+    left: 5%;
+    width: 120px;
+}
+
+/* 검색창 */
+.search-bar {
+    top: 2%;
+    left: 40%;
+    transform: translateX(-50%);
+    width: 300px;
+}
+
+/* 로그인 버튼 */
+.sign-in {
+    top: 8%;
+    right: 10%;
+    width: 100px;
+}
+
+
+#logo, .search-bar, .sign-in {
+    position: absolute;
+    z-index: 10;
+}
+
+/*----------- 공원 ----------*/
+.park-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.park1 {
+    position: relative;
+    z-index: 4;
+    padding-top:15%;
+}
+
+.park1-img {
+    width: 100%;
+    height: auto;
+    position: relative; 
+    z-index: 4;
+    display: block;
+}
+
+.park1-tree2-img{
+    position:absolute;
+    z-index: 5;
+    top:17%;
+    left:45%;
+    transform: translateX(-50%);
+}
+.park1-tree3-img {
+    position: absolute;
+    z-index: 5;
+    top: 19%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.park1-man1-img{
+    position: absolute;
+    z-index: 5;
+    top: 28%;
+    left: 40%;
+    transform: translateX(-50%);
+}
+
+.park1-man2-img{
+    position: absolute;
+    z-index: 5;
+    top: 25%;
+    left: 60%;
+    transform: translateX(-50%);
+}
+
+.park2 {
+    position: absolute;
+    top: calc(100% - 44%);
+    left: 0;
+    width: 100%;
+    z-index: 3;
+}
+
+.park2-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.park2-dog-img{
+    position:absolute;
+    z-index: 5;
+    top:17%;
+    left:45%;
+    transform: translateX(-50%);
+}
+
+.park2-man-img{
+    position:absolute;
+    z-index: 5;
+    top:20%;
+    left:60%;
+    transform: translateX(-50%);
+}
+
+.park3 {
+    position: absolute;
+    top: calc(100% - 22%);
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    background-color: #A2A3A7;
+    height: auto;
+}
+
+.park3-img {
+    width: 100%;
+    height: auto;
+    display:block;
+}
+
+.section {
+    position: absolute;
+    z-index: 3;
+    top: 41%;
+    left:22%;
+    display: flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.park-spacer {
+  height: 70px;
+}
+
+.footer-content {
+  position: relative;
+  width: 100%;
+  padding-top: 100px;
+  padding-bottom: 60px;
+  color: #333;
+  font-family: 'Pretendard', sans-serif;
+  overflow: hidden;
+}
+
+.footer-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 0;
+}
+
+.footer-text-wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-around;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 2%;
+  gap:40px;
+}
+
+.footer-right{
+    text-align: right;
+}
+
+.footer-left{
+    text-align: left;
+}
+
+.footer-left,
+.footer-right {
+    margin-top:50px;
+    flex: 1;
+}
+
+.footer-left h4,
+.footer-right h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-left p,
+.footer-right p,
+.footer-left a {
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 0;
+  display: block;
+  color: #333;
+}
+
+.footer-bottom {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-top: 130px;
+  font-size: 14px;
+  color: #222;
+}
