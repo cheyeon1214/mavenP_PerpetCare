@@ -22,6 +22,31 @@
         $(".method-btn").removeClass("selected");
         $(this).addClass("selected");
     });
+
+    $(document).ready(function(){
+    $("#saveDateTime").on("click", function(){
+        const start = $("#startDateTime").val(); 
+        const end = $("#endDateTime").val();
+
+        if(!start || !end){
+            alert("시작과 종료 날짜·시간을 모두 선택해주세요.");
+            return;
+        }
+
+        const startDisplay = start.replace("T", " ");
+        const endDisplay = end.replace("T", " ");
+        $(".location-btn.period").attr("value", startDisplay +" ~ "+ endDisplay);
+        
+        // LocalDateTime 문자열로 서버 전송 가능
+        console.log("시작 LocalDateTime:", start);
+        console.log("종료 LocalDateTime:", end);
+
+        // 포커스를 버튼 외 다른 안전한 곳으로 이동
+        $(".location-btn.period").focus();
+        
+        $("#myModal").modal("hide");
+    });
+});
 </script>
 </head>
 <style>
@@ -54,9 +79,9 @@
         background-color: #fff;
     }
     #body-form{
-        border-radius: 80px;
+        border-radius: 80px 80px 0 0;
         box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 20px 20px rgba(0,0,0,0.5);
-        height: 2000px;
+        height: 2200px;
     }
     .body-center{
         margin: auto;
@@ -126,7 +151,7 @@
     .method-line{
         display: flex;
         align-items: center;
-        padding: 10px;
+        padding: 5px;
         margin-top: 20px;
     }
     .method-btn{
@@ -160,7 +185,11 @@
         margin-left: 28px;
         font-size: 18px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.16);
-        
+    }
+    .location-btn:hover{
+        background-color: rgba(253, 149, 150, 0.3);
+        transition: background-color 0.3s ease; 
+
     }
     #location{
         background: url('../../../image/location_icon.png') no-repeat 8px center;
@@ -201,6 +230,36 @@
         display: flex;
         align-items: center;
         margin: 20px;
+    }
+
+    .text-box{
+        margin-top: 20px;
+        width: 600px;
+        height: 100px;
+        border: 1.5px solid #ddd;
+        border-radius: 8px;
+        padding: 12px 18px;
+        font-size: 18px;
+        font-weight: 500;
+        text-align: left;    
+    }
+
+    .submit-button{
+        display: block; 
+        margin: auto;
+        margin-top: 100px;
+        width: 300px;
+        height: 50px;
+        font-size: 22px;
+        color: white;
+        background-color: #64DAFE;
+        border: none;
+        border-radius: 15px;
+    }
+
+    
+    #myModal .modal-dialog {
+        margin-top: 150px; 
     }
 
 
@@ -319,8 +378,9 @@
                     </div>
                     <div class="method-line">
                         <div class="method-text">돌봄기간</div>
-                        <input type="button" class="location-btn" value="2025.08.21 ~ 2025.08.25">
+                        <input type="button" class="location-btn period" value="날짜를 선택해주세요" data-toggle="modal" data-target="#myModal">
                     </div>
+                    
                 </div>
 
                 <div class="sub-title-section">
@@ -344,10 +404,54 @@
                     <div class="pay-unit">원</div>
                 </div>
 
+                <div class="sub-title-section">
+                    <img src="../../../image/subtitle_line.svg" alt="line">
+                    <span class="sub-title">우대사항</span>
+                </div>
+                <textarea class="text-box" id="prefer"></textarea>
+                
+                <div class="sub-title-section">
+                    <img src="../../../image/subtitle_line.svg" alt="line">
+                    <span class="sub-title">추가 안내 사항</span>
+                </div>
+                <textarea class="text-box" id="prefer"></textarea>
 
+                <div id="button-wrapper"></div>
+                    <input type="button" class="submit-button" value="작성하기">
+                </div>
             </div>
         </div>
     </div>
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        
+        <div class="modal-header">
+            <h5 class="modal-title" id="dateTimeModalLabel">날짜와 시간 선택</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
 
+        <div class="modal-body">
+            <div class="form-group">
+            <label>시작 날짜·시간</label>
+            <input type="datetime-local" id="startDateTime" class="form-control">
+            </div>
+            <div class="form-group">
+            <label>종료 날짜·시간</label>
+            <input type="datetime-local" id="endDateTime" class="form-control">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <button type="button" id="saveDateTime" class="btn btn-primary">저장</button>
+        </div>
+
+        </div>
+    </div>
+    </div>
 </body>
 </html>
