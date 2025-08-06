@@ -5,7 +5,7 @@
 <!-- 1. jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).on("click", ".profile-card", function() {
+    $(document).on("click", "#pet-profile", function() {
         $(this).toggleClass("selected");
     });
 </script>
@@ -50,8 +50,8 @@
     }
     .sub-title{
         padding-left: 10px;
-        font-size: 20px;
-        font-weight: 700;
+        font-size: 22px;
+        font-weight: 600;
     }
     .sub-title-section{
         padding-top: 50px;
@@ -65,14 +65,14 @@
         border-radius: 5px;
         padding: 20px;
         border-radius: 20px;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.16);
         transition: border-color 0.3s, box-shadow 0.3s;
         cursor: pointer;
     }
 
-    .profile-card.selected {
+    #pet-profile.selected {
         background-color: rgba(253, 149, 150, 0.5); 
-        box-shadow: 0 4px 15px rgba(8, 145, 141, 0.4);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.16);
     }
 
     .card-section{
@@ -108,6 +108,30 @@
         border-radius: 20px;
         object-fit: cover;
     }
+    .method-line{
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        margin-top: 20px;
+    }
+    .method-btn{
+        cursor: pointer;
+        background-color: white;
+        border: none;
+        border-radius: 20px;
+        width: 220px;
+        height: 50px;
+        margin-left: 20px;
+        font-size: 18px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.16);
+        
+    }
+    .method-text{
+        font-size: 20px;
+        margin-left: 10px;
+    }
+
+
     
 </style>
 <body>
@@ -153,7 +177,7 @@
                 </div>
 
                 <div class="pet-slider">
-                    <div class="profile-card">
+                    <div class="profile-card" id="pet-profile">
                         <div class="card-section">
                             <div class="card-left">
                                 <img src="../../../image/petImage2.png" alt="petImg" class="petImg">
@@ -178,7 +202,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="profile-card">
+                    <div class="profile-card" id="pet-profile">
                         <div class="card-section">
                             <div class="card-left">
                                 <img src="../../../image/petImage2.png" alt="petImg" class="petImg">
@@ -205,6 +229,28 @@
                     </div>
 
                 </div>
+
+                <div class="sub-title-section">
+                    <img src="../../../image/subtitle_line.svg" alt="line">
+                    <span class="sub-title">돌봄 방법 및 기간 선택</span>
+                </div>
+
+                <div class="method-section">
+                    <div class="method-line">
+                        <div class="method-text">돌봄방법</div>
+                        <input type="button" class="method-btn" value="여기로 와주세요">
+                        <input type="button" class="method-btn" value="잠시 맡아주세요">
+                    </div>
+                    <div class="method-line">
+                        <div class="method-text">돌봄위치</div>
+                        <input type="button" class="location-btn" value="서울시 혜화동">
+                    </div>
+                    <div class="method-line">
+                        <div class="method-text">돌봄기간</div>
+                        <input type="button" class="location-btn" value="2025.08.21 ~ 2025.08.25">
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
