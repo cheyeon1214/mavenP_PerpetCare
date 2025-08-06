@@ -1,6 +1,7 @@
 package com.project.perpetcare.domain;
 
 import java.sql.Blob;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Pet {
@@ -9,12 +10,12 @@ public class Pet {
     private String name; //p_name
     private String species; //p_species
     private String breed; //p_breed
-    private LocalDateTime bDate; //p_bdate
+    private LocalDate bDate; //p_bdate
     private String gender; //p_gender
     private byte[] image; //p_image
 
     public Pet(){}
-    public Pet( int no, String uEmail, String name, String species, String breed, LocalDateTime bDate, String gender, byte[] image) {
+    public Pet( int no, String uEmail, String name, String species, String breed, LocalDate bDate, String gender, byte[] image) {
         this.uEmail = uEmail;
         this.no = no;
         this.name = name;
@@ -65,11 +66,11 @@ public class Pet {
         this.breed = breed;
     }
 
-    public LocalDateTime getbDate() {
+    public LocalDate getbDate() {
         return bDate;
     }
 
-    public void setbDate(LocalDateTime bDate) {
+    public void setbDate(LocalDate bDate) {
         this.bDate = bDate;
     }
 
@@ -89,6 +90,9 @@ public class Pet {
         this.image = image;
     }
 
+    public String getAge(){
+        return LocalDate.now().getYear() - bDate.getYear()+1 +"살";
+    }
     @Override
     public String toString() {
         return "Pet{" +

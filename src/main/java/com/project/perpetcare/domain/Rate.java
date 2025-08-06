@@ -64,7 +64,7 @@ public class Rate {
         return createdAt;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
