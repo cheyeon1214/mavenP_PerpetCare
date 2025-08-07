@@ -34,12 +34,12 @@ public class AuthController {
                 session.setAttribute("user",rvo);
                 return "redirect:/home.html";
             }else{
-                return "redirect:login";
+                return "redirect:/login.jsp";
             }
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("msg","로그인 중 문제가 발생했습니다.");
-            return "redirect:error";
+            return "redirect:/error.jsp";
         }
     }
 

@@ -3,6 +3,7 @@ package com.project.perpetcare.controller;
 import com.project.perpetcare.dao.ProfileDAO;
 import com.project.perpetcare.service.AuthService;
 import com.project.perpetcare.service.ProfileService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,8 @@ public class ProfileController {
     public String getProfile(){
         return "profilePage/experiencePage";
     }
+
+
 
 
 }
