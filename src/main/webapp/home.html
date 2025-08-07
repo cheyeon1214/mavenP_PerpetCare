@@ -35,8 +35,10 @@
           </div>
         </div>
         <div class="sign-in">
-          <img src="image/homeImg/signincloud.png" alt="Sign In" />
-          <strong>Sign in</strong>
+          <a href="/login">
+            <img src="image/homeImg/signincloud.png" alt="Sign In" />
+            <strong>Sign in</strong>
+          </a>
         </div>
 
         <div class="park-container position-relative">
@@ -146,63 +148,58 @@
     </section>
   </body>
   <script>
-    document
-      .querySelector(".sign-in")
-      .addEventListener("click", function () {
-        window.location.href = "login.jsp";
-      });
-    const tree2 = document.querySelector(".park1-tree2-img");
-    const tree3 = document.querySelector(".park1-tree3-img");
-    const cat = document.querySelector(".park-cat-img");
+      const tree2 = document.querySelector(".park1-tree2-img");
+      const tree3 = document.querySelector(".park1-tree3-img");
+      const cat = document.querySelector(".park-cat-img");
 
-    function jumpCat() {
-      cat.classList.remove("tree-hover-jump");
-      void cat.offsetWidth;
-      cat.classList.add("tree-hover-jump");
-    }
-
-    tree2.addEventListener("mouseenter", jumpCat);
-    tree3.addEventListener("mouseenter", jumpCat);
-
-    const man = document.querySelector(".park2-man-img");
-    const dog = document.querySelector(".park2-dog-img");
-    const section = document.querySelector(".park2");
-
-    const barkSound = new Audio("sound/bark.mp3");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            man.classList.add("grow");
-
-            dog.classList.remove("run");
-            void dog.offsetWidth;
-            dog.classList.add("run");
-
-            barkSound.currentTime = 0;
-            barkSound.play();
-          } else {
-            man.classList.remove("grow");
-          }
-        });
-      },
-      {
-        threshold: 0.6,
+      function jumpCat() {
+        cat.classList.remove("tree-hover-jump");
+        void cat.offsetWidth;
+        cat.classList.add("tree-hover-jump");
       }
-    );
 
-    observer.observe(section);
+      tree2.addEventListener("mouseenter", jumpCat);
+      tree3.addEventListener("mouseenter", jumpCat);
 
-    document.addEventListener(
-      "click",
-      () => {
-        barkSound.play().then(() => {
-          barkSound.pause();
-          barkSound.currentTime = 0;
-        });
-      },
-      { once: true }
-    );
+      const man = document.querySelector(".park2-man-img");
+      const dog = document.querySelector(".park2-dog-img");
+      const section = document.querySelector(".park2");
+
+      const barkSound = new Audio("sound/bark.mp3");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              man.classList.add("grow");
+
+              dog.classList.remove("run");
+              void dog.offsetWidth;
+              dog.classList.add("run");
+
+              barkSound.currentTime = 0;
+              barkSound.play();
+            } else {
+              man.classList.remove("grow");
+            }
+          });
+        },
+        {
+          threshold: 0.6,
+        }
+      );
+
+      observer.observe(section);
+
+      document.addEventListener(
+        "click",
+        () => {
+          barkSound.play().then(() => {
+            barkSound.pause();
+            barkSound.currentTime = 0;
+          });
+        },
+        { once: true }
+      );
   </script>
 </html>
