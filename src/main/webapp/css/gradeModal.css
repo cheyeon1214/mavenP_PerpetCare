@@ -1,0 +1,28 @@
+.modal-title {
+    color: #00bcd4;
+    margin-top: 20px;
+    margin-left: 120px;
+}
+.grade-each {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 115px;
+    margin: 5px 0;
+}
+.grade-each-image > img {
+    width: 40px;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+.grade-each-text {
+    width: 330px;
+}
+.grade-each-title {
+    font-size: larger;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.grade-each-sub {
+    margin-bottom: 2px;
+}
