@@ -4,6 +4,7 @@ import com.project.perpetcare.domain.Apply;
 import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.domain.User;
 import com.project.perpetcare.domain.enums.Grade;
+import com.project.perpetcare.dto.ApplyUserDTO;
 import com.project.perpetcare.service.ApplyService;
 import com.project.perpetcare.service.OpeningService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ApplyController {
@@ -46,11 +49,20 @@ public class ApplyController {
         apply.setCreatedAt(LocalDateTime.now());
         applyService.applyToOpening(apply);
 
-        return "openingPage/apply-list";
+        return "redirect:/applyList?no=" + apply.getoNo();
     }
 
     @GetMapping("/applyList")
-    public String getApplyList(Model model) {
+    public String getApplyList(int no,Model model) throws Exception {
+        Opening opening = openingService.getOpening(no);
+        model.addAttribute("opening", opening);
+        model.addAttribute("firstPet", opening.getPets().get(0));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        model.addAttribute("sDateStr", opening.getsDate().format(formatter));
+        model.addAttribute("eDateStr", opening.geteDate().format(formatter));
+        List<ApplyUserDTO> applies = applyService.getApplicants(no);
+
+        model.addAttribute("applies", applies);
         return "openingPage/apply-list"; // JSP 경로
     }
 

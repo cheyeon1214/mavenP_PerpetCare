@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>공고 지원</title>
@@ -27,7 +28,6 @@ body{
 .body-section{
     width: 1000px;
     margin: auto;
-    height: 2000px;
 }
 .header-top{
     height: 100px;
@@ -109,16 +109,6 @@ body{
     font-size: 20px;
     margin-top: 5px;
     margin-left: 10px;
-}
-.profile-card{
-    display: flex;
-    background-color: white;
-    border-radius: 5px;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.16);
-    transition: border-color 0.3s, box-shadow 0.3s;
-    cursor: pointer;
 }
 
 .applicant-table {
@@ -214,6 +204,7 @@ body{
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 200px;
 }
 
 .chart-card {
@@ -238,6 +229,21 @@ body{
     font-weight: 600;
 }
 
+.text-ellipsis {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;       /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis; /* 말줄임 (...) 처리 */
+}
+
+/*.footer-space {*/
+/*    height: 100px;*/
+/*    width: 100%;*/
+/*    background-color: transparent;*/
+/*    display: block;*/
+/*    position: relative;  !* 혹은 필요하면 absolute 대신 relative 사용 *!*/
+/*    z-index: -1;*/
+/*}*/
 </style>
 
 <body>
@@ -258,38 +264,43 @@ body{
                     <div class="pet-name">나이</div>
                 </div>
                 <div class="card-pet-right">
-                    <div class="pet-text">로미</div>
-                    <div class="pet-text">고양이</div>
-                    <div class="pet-text">코숏</div>
-                    <div class="pet-text">암컷</div>
-                    <div class="pet-text">1세</div>
-                </div>            
+                    <div class="pet-text">${firstPet.name}</div>
+                    <div class="pet-text">${firstPet.species}</div>
+                    <div class="pet-text">${firstPet.breed}</div>
+                    <c:choose>
+                        <c:when test="${firstPet.gender == 'f'}">
+                            <div class="pet-text">암컷</div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="pet-text">수컷</div>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="pet-text">${firstPet.age}</div>
+                </div>
             </div>
             <hr id="line">
             <div class="opening-section">
                 <div class="method">
                     <div class="sub-title">돌봄 방법</div>
-                    <div class="sub-text">여기로 와주세요</div>
+                    <div class="sub-text">${opening.careWay}</div>
                 </div>
                 <div class="period">
                     <div class="sub-title">돌봄 기간</div>
-                    <div class="sub-text">codus001214@naver.com</div>
+                    <div class="sub-text">${sDateStr} ~ ${eDateStr}</div>
                 </div>
                 <div class="price">
                     <div class="sub-title">가격</div>
-                    <div class="sub-text">20,000원 / 시급</div>
+                    <div class="sub-text">${opening.price}원 / ${opening.per}</div>
                 </div>
             </div>
             <div class="opening-section">
                 <div class="method">
                     <div class="sub-title">돌봄 주소</div>
-                    <div class="sub-text">경기 부천시 범박동</div>
+                    <div class="sub-text">${opening.location}</div>
                 </div>
                 <div class="prefer">
                     <div class="sub-title">우대사항</div>
-                    <div class="sub-text">실버 이상이상이면 좋을 것 같습니다. 흡연은 안 하셨으면 좋겠고,  
-                        동물을 키워보신 분이시면 좋겠습니다.   
-                    </div>
+                    <div class="sub-text">${opening.prefer}</div>
                 </div>
             </div>
         </div>
@@ -305,35 +316,31 @@ body{
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><img src="../../../image/default1.svg" class="user-profile" alt="userImg"></td>
-                    <td>codus001214@naver.com</td>
-                    <td>
-                        <img src="../../../image/grade_Silver.png" class="grade-img" alt="gradeImg">
-                        <div class="grade-space">실버</div>
-                    </td>
-                    <td>언제나 아이들을 먼저 생각합니다.</td>
-                    <td>
-                        <button class="accept-btn">수락</button>
-                        <br>
-                        <button class="reject-btn">거절</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><img src="../../../image/default1.svg" class="user-profile" alt="userImg"></td>
-                    <td>abracadabra@gmail.com</td>
-                    <td>
-                        <img src="../../../image/grade_Silver.png" class="grade-img" alt="gradeImg">
-                        <div class="grade-space">실버</div>
-                    </td>
-                    <td>그 누구보다 열심히 하겠습니다!</td>
-                    <td>
-                        <button class="accept-btn">수락</button>
-                        <br>
-                        <button class="reject-btn">거절</button>
-                        
-                    </td>
-                </tr>
+                <c:forEach var="apply" items="${applies}">
+                    <tr>
+                        <td>
+                            <c:choose>
+                                <c:when test="${empty apply.uImage}">
+                                    <img src="../../../image/profile_1.svg" class="user-profile" alt="userImg"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="../../../image/profile_${apply.uImage}.svg" class="user-profile" alt="userImg"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>${apply.uEmail}</td>
+                        <td>
+                            <img src="../../../image/grade/grade_${apply.uGrade}.svg" class="grade-img" alt="gradeImg">
+                            <div class="grade-space">${apply.uGrade}</div>
+                        </td>
+                        <td class="text-ellipsis">${apply.aText}</td>
+                        <td>
+                            <button class="accept-btn" data-ano="${apply.aNo}">수락</button>
+                            <br>
+                            <button class="reject-btn" data-ano="${apply.aNo}">거절</button>
+                        </td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
 
@@ -349,9 +356,8 @@ body{
             </div>
         </div>
     </div>
-        
-    
-</div>
+
+    <div class="footer-space"></div>
 <script>
     // Chart.js 예시
 const ctx1 = document.getElementById('genderChart').getContext('2d');
