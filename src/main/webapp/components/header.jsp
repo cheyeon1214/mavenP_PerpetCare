@@ -42,7 +42,7 @@
 </style>
 </head>
 <body>
-<nav class="nav" id="header">
+<header id="header">
 	<div class="header-left">
 		<a href='home.html'> 
             <!-- 홈 경로 설정 해야함 -->
@@ -55,6 +55,6 @@
             <img alt="" src="${pageContext.request.contextPath}/image/default1.svg" id="profile" />
         </a>
 	</div>
-</nav>
+</header>
 </body>
 </html>
