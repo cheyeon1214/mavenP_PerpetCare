@@ -28,9 +28,8 @@
 		</collection>
 	</resultMap>
 
-	<insert id="addOpening" parameterType="Opening">
-		INSERT
-		INTO Opening
+	<insert id="addOpening" parameterType="Opening" useGeneratedKeys="true" keyProperty="no">
+		INSERT INTO Opening
 		(u_email, o_createdAt, o_careway, o_sdate, o_edate, o_location, o_price, o_per, o_prefer, o_detail, o_close)
 		VALUES
 		(#{uEmail}, #{createdAt}, #{careWay}, #{sDate}, #{eDate}, #{location}, #{price}, #{per}, #{prefer}, #{detail}, 0)
@@ -59,6 +58,16 @@
 		Opening
 		JOIN PostPet ON Opening.o_no = PostPet.o_no
 		JOIN Pet ON PostPet.p_no = Pet.p_no
+		WHERE Opening.u_email = #{VALUE}
+	</select>
+
+	<select id="getOpening" parameterType="Integer" resultMap="openingResultMap">
+		SELECT *
+		FROM
+		Opening
+		JOIN PostPet ON Opening.o_no = PostPet.o_no
+		JOIN Pet ON PostPet.p_no = Pet.p_no
+		WHERE Opening.o_no = #{VALUE}
 	</select>
 
 </mapper>

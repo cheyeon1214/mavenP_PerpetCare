@@ -35,4 +35,8 @@ public class OpeningService {
         return openingDAO.getUserOpening(email);
     }
 
+    public Opening getOpening(int no) throws Exception{
+        return openingDAO.getOpening(no);
+    }
+
 }

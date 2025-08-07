@@ -38,4 +38,7 @@ public class OpeningDAO {
         sqlSession.delete(NS + "deleteOpening", oNo);
     }
 
+    public Opening getOpening(int no) {
+        return sqlSession.selectOne(NS+"getOpening", no);
+    }
 }
