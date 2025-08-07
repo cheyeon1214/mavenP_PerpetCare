@@ -218,7 +218,7 @@
                 <div class="profile-card">
                     <div class="card-section">
                         <div class="card-left">
-                            <img src="../../../image/default1.svg" alt="profileImg">
+                            <img src="../../../image/profile_1.svg" alt="profileImg">
                         </div>
                         <div class="card-right">
                             <div class="card-right-name">
@@ -338,7 +338,10 @@
                 </div>
 
                 <div id="button-wrapper"></div>
-                    <input type="button" class="submit-button" value="지원하기">
+                <form action="/apply" method="get">
+                    <input type="hidden" name="no" value="${opening.no}">
+                    <input type="submit" class="submit-button" value="지원하기">
+                </form>
                 </div>
             </div>
         </div>

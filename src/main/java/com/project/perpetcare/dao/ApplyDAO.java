@@ -22,7 +22,7 @@ public class ApplyDAO {
     }
 
     public List<ApplyUserDTO> getApplicants(int oNo) throws Exception{
-        return sqlSession.selectOne(NS+"getApplicants", oNo);
+        return sqlSession.selectList(NS+"getApplicants", oNo);
     }
 
     public void updateApplyStatus(ApplyStatus status, int no) throws Exception{

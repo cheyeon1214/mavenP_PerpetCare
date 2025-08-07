@@ -52,7 +52,7 @@
 	<div class="header-right">
         <a href="#" id="profile-link">
             <!-- profile 경로 설정 해야함 -->
-            <img alt="" src="${pageContext.request.contextPath}/image/default1.svg" id="profile" />
+            <img alt="" src="${pageContext.request.contextPath}/image/profile_1.svg" id="profile" />
         </a>
 	</div>
 </header>

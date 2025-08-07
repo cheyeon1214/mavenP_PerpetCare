@@ -102,6 +102,14 @@ $(document).ready(function() {
             return;
         }
 
+
+        // 시작일이 종료일보다 뒤인 경우
+        if (new Date(sDate) > new Date(eDate)) {
+            alert("시작일은 종료일보다 빠르거나 같아야 합니다.");
+            e.preventDefault();
+            return;
+        }
+
         if (!payType) {
             alert("급여 단위를 선택해주세요.");
             e.preventDefault();
@@ -354,7 +362,7 @@ $(document).ready(function() {
                 <div class="profile-card">
                     <div class="card-section">
                         <div class="card-left">
-                            <img src="../../../image/default1.svg" alt="profileImg">
+                            <img src="../../../image/profile_1.svg" alt="profileImg">
                         </div>
                         <input type="hidden" name="uEmail" value="${user.email}">
                         <div class="card-right">

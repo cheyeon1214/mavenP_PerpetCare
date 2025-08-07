@@ -11,9 +11,12 @@
     <title>Title</title>
 </head>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<%--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/i18n/datepicker-ko.js"></script>--%>
 <style>
   #header {
      box-shadow: none !important;
@@ -22,7 +25,10 @@
      height: 100px;
      background-color: white;
   }
+  /* 상단 검색창 */
   #search-bar{
+    position: fixed;
+    z-index: 50;
     background-color: #64DAFE;
     width: 100%;
     height: 100px;
@@ -76,9 +82,10 @@
       padding: 7px 14px;
       margin-right: 10px;
   }
-  #search-button {
+  #arrow-button {
       cursor: pointer;
   }
+  /* 지역 검색 모달창 */
   #modal-body-first, .modal-footer {
       display: flex;
       justify-content: center;
@@ -87,9 +94,6 @@
       width: 80%;
       padding: 0 10px;
       margin-bottom: 10px;
-  }
-  #main {
-      display: flex;
   }
   #modal-body-second {
       width: 90%;
@@ -107,29 +111,168 @@
       border-radius: 10px;
       padding: 10px 0;
   }
+  /* 메인 바디 부분 */
   #main {
-      margin-top: 50px;
+      display: flex;
+      margin-top: 150px;
   }
+  /* 검색 필터 부분 */
   #filter {
-      margin-left: 50px;
-      margin-right: 10px;
-      float: right;
+      display: flex;
+      justify-content: end;
   }
   #filter-box {
-      height:100px;
+      width: 60%;
       background-color: white;
+      padding: 20px 0 10px 0;
       border-radius: 10px;
       box-shadow: 2px 2px 5px rgba(59, 59, 59, 0.5);
+  }
+  #filter-box > div, #filter-sdate-box, #filter-edate-box {
+      margin-bottom: 20px;
+  }
+  .filter-title {
+      font-weight: bold;
+      font-size: large;
+      padding-left: 20px;
+  }
+  .filter-sub {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+  }
+  #filterSdate, #filterEdate {
+      width: 80%;
+      text-align: center;
+      padding: 4px 10px;
+      border: 2px solid #fdb4b5;
+      border-radius: 20px;
+  }
+  input[name=careWayBtn] {
+      width: 80%;
+      color: dimgray;
+      background-color: white;
+      padding: 5px 0;
+      margin-bottom: 10px;
+      text-align: center;
+      font-weight: bold;
+      border: 2px solid #fdb4b5;
+      border-radius: 20px;
+  }
+  input[name=careWayBtn].selected {
+      color: white;
+      background-color: #fdb4b5;
+      transition: box-shadow 0.3s ease;
+  }
+  input[name=speciesBtn] {
+      font-size: small;
+      color: dimgray;
+      background-color: white;
+      padding: 5px 20px;
+      margin: 5px;
+      text-align: center;
+      font-weight: bold;
+      border: 2px solid #fdb4b5;
+      border-radius: 20px;
+  }
+  input[name=speciesBtn].selected {
+      color: white;
+      background-color: #fdb4b5;
+      transition: box-shadow 0.3s ease;
+  }
+  #filter-button-box {
+      display: flex;
+      justify-content: center;
+  }
+  #filterBtn {
+      width: 80%;
+      padding: 5px 0;
+      color: white;
+      font-weight: bold;
+      background-color: #64DAFE;
+      border: none;
+      border-radius: 5px;
+  }
+  /* 공고 리스트 부분 */
+  #opening-list {
+      padding-right: 150px;
+  }
+  #list-order-section {
+      display: flex;
+      justify-content: end;
+      padding-right: 100px;
+  }
+  form[name='filterOrder'] select {
+      appearance: none;          /* 브라우저 기본 스타일 제거 */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 120px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      box-shadow: 2px 2px 5px rgba(59, 59, 59, 0.5);
+      cursor: pointer;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='20' height='20' fill='gray' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 8l5 5 5-5H5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px 16px;
+  }
+  #list-card-section {
+      display:flex;
+      justify-content: start;
+      flex-wrap: wrap;
+  }
+  .opening-card {
+      background-color: white;
+      width: 250px;
+      height: 350px;
+      margin: 20px;
+      padding: 5px 15px;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 2px 2px 5px rgba(59, 59, 59, 0.5);
+  }
+  .opening-card-image {
+      display:flex;
+      justify-content: center;
+  }
+  .opening-card-image > img {
+      width: 90%;
+      margin-top: 10px;
+      border-radius: 20px;
+  }
+  .opening-card-date {
+      display: flex;
+      justify-content: start;
+      margin: 10px;
+      font-size: large;
+      font-weight: bold;
+  }
+  .opening-card-careway {
+      display: flex;
+      justify-content: start;
       margin: 10px;
   }
-  #opening-list {
-      margin-right: 50px;
-      height: 500px;
-      background-color: lightskyblue;
+  .opening-card-priceper {
+      display: flex;
+      justify-content: end;
+      margin: 10px;
+      font-size: large;
+      font-weight: bold;
   }
 </style>
 <script>
+    $.datepicker.setDefaults({
+        dateFormat: "yy-mm-dd",
+        dayNamesMin: ["일","월","화","수","목","금","토"],
+        monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월",
+            "7월", "8월", "9월", "10월", "11월", "12월"],
+        showMonthAfterYear: true,
+        yearSuffix: "년"
+    });
+
     $(document).ready(function(){
+
        $('#location-input').on("keyup", function(){
             let keyword = $(this).val().trim();
 
@@ -146,6 +289,72 @@
                 })
             }
        });
+
+        // 시작일 선택 제한
+        $("#filterSdate").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selectedDate) {
+                $("#filterEdate").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        // 종료일 선택 제한
+        $("#filterEdate").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selectedDate) {
+                $("#filterSdate").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+
+        // 시작일 선택
+
+        // 마감일 선택
+
+        // 방법 선택
+        $('input[name=careWayBtn]').click(function() {
+            if($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                // 다른 버튼은 모두 해제
+                $('input[name="careWayBtn"]').removeClass('selected');
+                // 현재 버튼만 선택
+                $(this).addClass('selected');
+            }
+        })
+
+        // 종 선택
+        $('input[name=speciesBtn]').click(function() {
+            if($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                // 다른 버튼은 모두 해제
+                $('input[name="speciesBtn"]').removeClass('selected');
+                // 현재 버튼만 선택
+                $(this).addClass('selected');
+            }
+        })
+
+        // 필터 적용
+        $('#filterBtn').click(function() {
+            // 선택된 지역
+
+            // 선택된 마감 제외 여부
+            let selectedClose = false;
+            if($('[type=checkbox]:checked')) selectedClose = true;
+            // 선택된 기간
+
+            // 선택된 돌봄 방법
+            let selectedCareWay = $('input[name="careWayBtn"].selected').val();
+            let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
+            // 선택된 반려동물 종
+            let selectedSpecies = $('input[name="speciesBtn"].selected').val();
+            let species = selectedSpecies ? selectedSpecies.substring(1) : null;
+
+            // alert("마감 여부 : "+selectedClose+", 돌봄 방법 : "+careWay+", 동물 종 : "+species);
+        })
     });
 </script>
 <body>
@@ -166,7 +375,7 @@
                 <a>위치를 기반으로 원하는 공고를 검색해주세요</a>
                 <span class="keyword" style="display:none">잠시 맡아주세요</span>
             </div>
-            <div id="search-button">
+            <div id="arrow-button">
                 <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M41.8333 21C41.8333 9.49374 32.5062 0.166656 20.9999 0.166656C9.49367 0.166656 0.166588 9.49374 0.166588 21C0.166588 32.5062 9.49367 41.8333 20.9999 41.8333C32.5062 41.8333 41.8333 32.5062 41.8333 21ZM21.0083 12.1625C20.6177 12.5532 20.3983 13.083 20.3983 13.6354C20.3983 14.1878 20.6177 14.7176 21.0083 15.1083L24.8187 18.9167L12.1603 18.9167C11.6078 18.9167 11.0779 19.1362 10.6872 19.5268C10.2965 19.9176 10.077 20.4475 10.077 21C10.077 21.5525 10.2965 22.0824 10.6872 22.4731C11.0779 22.8638 11.6078 23.0833 12.1603 23.0833L24.8187 23.0833L21.0083 26.8937C20.6176 27.2847 20.3983 27.8147 20.3985 28.3674C20.3987 28.92 20.6184 29.45 21.0093 29.8406C21.4002 30.2313 21.9303 30.4506 22.4829 30.4504C23.0356 30.4502 23.5655 30.2305 23.9562 29.8396L31.3208 22.4729C31.7113 22.0822 31.9307 21.5524 31.9307 21C31.9307 20.4476 31.7113 19.9178 31.3208 19.5271L23.9583 12.1625C23.7648 11.9688 23.535 11.8151 23.2821 11.7103C23.0292 11.6054 22.7581 11.5515 22.4843 11.5515C22.2105 11.5515 21.9394 11.6054 21.6865 11.7103C21.4336 11.8151 21.2038 11.9688 21.0103 12.1625H21.0083Z" fill="#FD9596"/>
                 </svg>
@@ -195,13 +404,95 @@
         </div>
     </div>
     <div id="main">
-        <div class="col-3" id="filter">
+        <div class="col-4" id="filter">
             <div id="filter-box">
-
+                <div id="filter-close-box">
+                    <p></ㅔ><span class="filter-title">마감 제외</span>&nbsp;&nbsp;
+                    <input type="checkbox" name="filterClose" value="close"></p>
+                </div>
+                <form>
+                    <div id="filter-sdate-box">
+                        <p class="filter-title"><label for="filterSdate">돌봄 시작일</label></p>
+                        <div class="filter-sub">
+                            <input type="text" name="filterSdate" id="filterSdate" placeholder="원하는 시작일을 선택하세요">
+                        </div>
+                    </div>
+                    <div id="filter-edate-box">
+                        <p class="filter-title"><label for="filterEdate">돌봄 마감일</label></p>
+                        <div class="filter-sub">
+                            <input type="text" name="filterEdate" id="filterEdate" placeholder="원하는 시작일을 선택하세요">
+                        </div>
+                    </div>
+                </form>
+                <div id="filter-careWay-box">
+                    <p class="filter-title">방법</p>
+                    <div class="filter-sub">
+                        <input type="button" name="careWayBtn" value="#여기로 와주세요">
+                        <input type="button" name="careWayBtn" value="#잠시 맡아주세요">
+                    </div>
+                </div>
+                <div id="filter-species-box">
+                    <p class="filter-title">반려동물</p>
+                    <div class="filter-sub">
+                        <input type="button" name="speciesBtn" value="#개">
+                        <input type="button" name="speciesBtn" value="#고양이">
+                        <input type="button" name="speciesBtn" value="#토끼">
+                        <input type="button" name="speciesBtn" value="#물고기">
+                        <input type="button" name="speciesBtn" value="#새">
+                        <input type="button" name="speciesBtn" value="#햄스터">
+                        <input type="button" name="speciesBtn" value="#기타">
+                    </div>
+                </div>
+                <div id="filter-button-box">
+                    <button id="filterBtn">필터 적용</button>
+                </div>
             </div>
         </div>
-        <div class="col-9" id="opening-list">
+        <div class="col-8" id="opening-list">
+            <div id="list-order-section">
+                <form action="#" name="filterOrder">
+                    <select id="orderWay">
+                        <option value="recent">최근순</option>
+                        <option value="old">오래된순</option>
+                        <option value="price">금액순</option>
+                    </select>
+                </form>
+            </div>
+            <div id="list-card-section">
+                <div class="opening-card">
+                    <div class="opening-card-image">
+                        <img src="${pageContext.request.contextPath}/image/petImage3.png">
+                    </div>
+                    <div class="opening-card-date">
+                        <span class="opening-card-sdate">8월 15일</span>
+                        &nbsp;~&nbsp;
+                        <span class="opening-card-sdate">8월 17일</span>
+                    </div>
+                    <div class="opening-card-careway">
+                        <p>여기로 와주세요</p>
+                    </div>
+                    <div class="opening-card-priceper">
+                        <span class="opening-card-price">30000</span>
+                        원&nbsp;/&nbsp;
+                        <span class="opening-card-per">일</span>
+                    </div>
+                </div>
+<%--                <div class="opening-card">--%>
 
+<%--                </div>--%>
+<%--                <div class="opening-card">--%>
+
+<%--                </div>--%>
+<%--                <div class="opening-card">--%>
+
+<%--                </div>--%>
+<%--                <div class="opening-card">--%>
+
+<%--                </div>--%>
+<%--                <div class="opening-card">--%>
+
+<%--                </div>--%>
+            </div>
         </div>
     </div>
 </body>

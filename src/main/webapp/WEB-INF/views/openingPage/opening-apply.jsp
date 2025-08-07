@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
@@ -112,7 +111,6 @@ body{
 .profile-card{
     display: flex;
     background-color: white;
-    border-radius: 5px;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.16);
@@ -260,7 +258,7 @@ textarea::placeholder {
         <div class="profile-card my-profile">
             <div class="card-section">
                 <div class="card-left">
-                    <img src="../../../image/default1.svg" alt="profileImg">
+                    <img src="../../../image/profile_1.svg" alt="profileImg">
                 </div>
                 <div class="card-right">
                     <div class="card-pet-left">
