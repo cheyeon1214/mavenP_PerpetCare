@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import java.io.Reader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 public class RateTest {
 
@@ -33,12 +35,12 @@ public class RateTest {
 
     @Test
     public void getRateNum() throws Exception {
-        User user = new User("codus@naver.com", "곽채연", LocalDate.now(), "f", "1122", "01055821857", Grade.Bronze, 1);
+        String email = "codus@naver.com";
         try {
             Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
             SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
             SqlSession session = factory.openSession();
-            int num = session.selectOne("ns.sql.RateMapper.getRateNum", user);
+            int num = session.selectOne("ns.sql.RateMapper.getRateNum", email);
             System.out.println("Num of User's Rate : "+num);
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,12 +49,12 @@ public class RateTest {
 
     @Test
     public void getNRatioOfRate() throws Exception {
-        User user = new User("codus@naver.com", "곽채연", LocalDate.now(), "f", "1122", "01055821857", Grade.Bronze, 1);
+        String email = "codus@naver.com";
         try {
             Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
             SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
             SqlSession session = factory.openSession();
-            double nRatio = session.selectOne("ns.sql.RateMapper.getNRatioOfRate", user);
+            double nRatio = session.selectOne("ns.sql.RateMapper.getNRatioOfRate", email);
             System.out.println("Negative Ratio of User's Rate : "+nRatio);
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,6 +72,39 @@ public class RateTest {
             session.commit();
             session.close();
             System.out.println("Update Result : "+result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getUserGrade() throws Exception {
+        String email = "codus@naver.com";
+        try {
+            Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+            SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+            SqlSession session = factory.openSession();
+            String grade = session.selectOne("ns.sql.RateMapper.getUserGrade", email);
+            System.out.println("User Grade : "+grade);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getUserTopRate() throws Exception {
+        String email = "codus@naver.com";
+        try {
+            Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+            SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+            SqlSession session = factory.openSession();
+            // List<String> rates = session.selectList("ns.sql.RateMapper.getUserTopRate", email);
+            List<Map<String, Integer>> rates = session.selectList("ns.sql.RateMapper.getUserTopRate", email);
+            for(Map<String, Integer> rate : rates) {
+                for(Map.Entry<String, Integer> data : rate.entrySet()) {
+                    System.out.println(data.getKey()+" : "+data.getValue());
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
