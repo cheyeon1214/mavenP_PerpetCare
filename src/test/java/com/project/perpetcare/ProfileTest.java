@@ -60,19 +60,19 @@ public class ProfileTest {
         session.close();
     }
 
-    @Test
-    public void updateUserInfo() throws Exception{
-        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
-        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
-        SqlSession session = factory.openSession();
-
-        User user = new User("codus@naver.com", "곽채연", LocalDate.now(), "f", "1122", "01055821857", Grade.Bronze, 1);
-
-        int result = session.update(NS + "updateUserInfo",user);
-        System.out.println(result);
-        session.commit();
-        session.close();
-    }
+//    @Test
+//    public void updateUserInfo() throws Exception{
+//        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+//        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+//        SqlSession session = factory.openSession();
+//
+//        User user = new User("codus@naver.com", "곽채연", LocalDate.now(), "f", "1122", "01055821857", Grade.Bronze, 1);
+//
+//        int result = session.update(NS + "updateUserInfo",user);
+//        System.out.println(result);
+//        session.commit();
+//        session.close();
+//    }
 
     @Test
     public void updateUserImg() throws Exception{

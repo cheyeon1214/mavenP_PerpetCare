@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class User {
     private String email; //u_email
     private String name; //u_name
-    private LocalDate bdate; //u_bdate
+    private String bdate; //u_bdate
     private String gender; //u_gender
     private String pwd; //u_pwd
     private String phone; //u_phone
@@ -24,7 +24,7 @@ public class User {
 
     public User(){}
 
-    public User(String email, String name, LocalDate bdate, String gender, String pwd, String phone, Grade grade, int image) {
+    public User(String email, String name, String bdate, String gender, String pwd, String phone, Grade grade, int image) {
         this.email = email;
         this.name = name;
         this.bdate = bdate;
@@ -53,11 +53,11 @@ public class User {
         this.name = name;
     }
 
-    public LocalDate getBdate() {
+    public String getBdate() {
         return bdate;
     }
 
-    public void setBdate(LocalDate bdate) {
+    public void setBdate(String bdate) {
         this.bdate = bdate;
     }
 
@@ -142,11 +142,11 @@ public class User {
     }
 
     public String getAgeGroup() {
-        // 연령대 계산
-        int birthYear = getBdate().getYear();
-        int age = LocalDate.now().getYear() - birthYear;
-        String ageGroup = (age / 10) * 10 + "대";
-        return ageGroup;
+        if (bdate == null || bdate.isEmpty()) return "미상";
+
+        LocalDate birthDate = LocalDate.parse(bdate); // "YYYY-MM-DD" 형식이어야 함
+        int age = LocalDate.now().getYear() - birthDate.getYear();
+        return (age / 10) * 10 + "대";
     }
 
     @Override

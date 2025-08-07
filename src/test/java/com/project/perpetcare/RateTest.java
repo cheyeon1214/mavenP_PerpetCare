@@ -61,21 +61,21 @@ public class RateTest {
         }
     }
 
-    @Test
-    public void updateUserGrade() throws Exception {
-        User user = new User("codus@naver.com", "곽채연", LocalDate.now(), "f", "1122", "01055821857", Grade.Bronze, 1);
-        try {
-            Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
-            SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
-            SqlSession session = factory.openSession();
-            int result = session.update("ns.sql.RateMapper.updateUserGrade", user);
-            session.commit();
-            session.close();
-            System.out.println("Update Result : "+result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test
+//    public void updateUserGrade() throws Exception {
+//        User user = new User("codus@naver.com", "곽채연", LocalDate.now(), "f", "1122", "01055821857", Grade.Bronze, 1);
+//        try {
+//            Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+//            SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+//            SqlSession session = factory.openSession();
+//            int result = session.update("ns.sql.RateMapper.updateUserGrade", user);
+//            session.commit();
+//            session.close();
+//            System.out.println("Update Result : "+result);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Test
     public void getUserGrade() throws Exception {

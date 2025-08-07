@@ -23,7 +23,7 @@ import java.util.List;
 
 @Controller
 public class ApplyController {
-    User user =  new User("codus@naver.com", "곽채연", LocalDate.now(), "f",
+    User user =  new User("codus@naver.com", "곽채연", "2025-05-07", "f",
             "1234", "01055821857", Grade.Silver,1);
 
 
