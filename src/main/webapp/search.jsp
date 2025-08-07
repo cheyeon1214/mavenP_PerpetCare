@@ -23,15 +23,13 @@
      background-color: white;
   }
   #search-bar{
-    position: fixed;
-    /* top: 100px; 헤더 높이만큼 아래 */
-    left: 0;
     background-color: #64DAFE;
     width: 100%;
     height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 2px 2px 5px rgba(59, 59, 59, 0.5);
   }
   #search-location, #conditions {
       background-color: white;
@@ -81,14 +79,25 @@
   #search-button {
       cursor: pointer;
   }
-  .modal-body, .modal-footer {
+  #modal-body-first, .modal-footer {
       display: flex;
       justify-content: center;
   }
-  .modal-body > input {
+  #location-input {
       width: 80%;
       padding: 0 10px;
       margin-bottom: 10px;
+  }
+  #main {
+      display: flex;
+  }
+  #modal-body-second {
+      width: 90%;
+      padding-left: 50px;
+  }
+  .location-list {
+      padding: 0 0 5px 0;
+      border-bottom: 1px solid #a2a3a7;
   }
   .modal-footer > button {
       width: 80%;
@@ -97,6 +106,26 @@
       border: #64DAFE;
       border-radius: 10px;
       padding: 10px 0;
+  }
+  #main {
+      margin-top: 50px;
+  }
+  #filter {
+      margin-left: 50px;
+      margin-right: 10px;
+      float: right;
+  }
+  #filter-box {
+      height:100px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(59, 59, 59, 0.5);
+      margin: 10px;
+  }
+  #opening-list {
+      margin-right: 50px;
+      height: 500px;
+      background-color: lightskyblue;
   }
 </style>
 <script>
@@ -152,15 +181,27 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="location-input" placeholder="찾으시는 지역을 입력하세요" autocomplete="off">
-                    <div class="location-list">
-
+                    <div id="modal-body-first">
+                        <input type="text" id="location-input" placeholder="찾으시는 지역을 입력하세요" autocomplete="off">
+                    </div>
+                    <div id="modal-body-second">
+                        <p class="location-list" style="display: none">서울시, 종로구</p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal">검색</button>
                 </div>
             </div>
+        </div>
+    </div>
+    <div id="main">
+        <div class="col-3" id="filter">
+            <div id="filter-box">
+
+            </div>
+        </div>
+        <div class="col-9" id="opening-list">
+
         </div>
     </div>
 </body>

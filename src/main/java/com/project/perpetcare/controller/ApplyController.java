@@ -18,4 +18,9 @@ public class ApplyController {
         return "openingPage/opening-apply"; // JSP 경로
     }
 
+    @GetMapping("/applyList")
+    public String createUI() {
+        return "openingPage/apply-list"; // JSP 경로
+    }
+
 }
