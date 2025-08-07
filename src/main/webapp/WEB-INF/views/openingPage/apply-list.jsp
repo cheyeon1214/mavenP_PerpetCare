@@ -211,16 +211,31 @@ body{
 }
 
 .chart-container {
+    margin-top: 30px;
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
 }
 
 .chart-card {
-    flex: 1;
     background: white;
     border-radius: 15px;
-    padding: 20px;
+    padding: 50px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+#genderChart{
+    margin: 30px;
+}
+
+#ageChart{
+    margin: 30px;
+}
+
+.chart-title{
+    text-align: center;
+    padding-bottom: 20px;
+    font-size: 25px;
+    font-weight: 600;
 }
 
 </style>
@@ -325,11 +340,11 @@ body{
         <div class="title">지원자 통계</div>
         <div class="chart-container">
             <div class="chart-card">
-                <h3>지원자 성별</h3>
+                <h3 class="chart-title">지원자 성별</h3>
                 <canvas id="genderChart"></canvas>
             </div>
             <div class="chart-card">
-                <h3>지원자 나이대</h3>
+                <h3 class="chart-title">지원자 나이대</h3>
                 <canvas id="ageChart"></canvas>
             </div>
         </div>
@@ -357,14 +372,47 @@ new Chart(ctx2, {
     data: {
         labels: ['20대', '30대', '40대', '50대'],
         datasets: [{
-            data: [1, 5, 3, 1],
-            backgroundColor: '#FFC107'
+            label: '지원자 수',
+            data: [1, 4, 3, 1],
+            backgroundColor: '#FDC814',
+            borderRadius: 9 
         }]
     },
     options: {
+        aspectRatio: 1, 
+        maxBarThickness: 30, 
+        plugins: {
+            legend: {
+                display: false
+            },
+        },
         scales: {
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    font: {
+                        size: 14
+                    }
+                }
+            },
             y: {
-                beginAtZero: true
+                beginAtZero: true,
+                max: 5, 
+                ticks: {
+                    stepSize: 1,
+                    callback: function(value) {
+                        return value + '명';
+                    },
+                    font: {
+                        size: 14
+                    }
+                },
+                grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                }
             }
         }
     }
