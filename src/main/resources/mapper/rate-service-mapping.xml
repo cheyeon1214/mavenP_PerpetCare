@@ -3,7 +3,7 @@
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ns.sql.RateMapper">
-	<resultMap id="rateRM" type="rate">
+	<!-- <resultMap id="rateRM" type="rate">
 		<id property="no" column="r_no" />
 		<result property="fromEmail" column="from_email" />
 		<result property="toEmail" column="to_email" />
@@ -12,7 +12,7 @@
 		<result property="createdAt" column="r_createdAt" />
 	</resultMap>
 
-	<resultMap id="userRM" type="User">
+	<resultMap id="userRM" type="user">
 		<id property="email" column="u_email"/>
 		<result property="name" column="u_name"/>
 		<result property="bdate" column="u_bdate"/>
@@ -26,7 +26,7 @@
 			<result property="toEmail" column="to_email" />
 			<result property="textOfRate" column="r_text" />
 		</collection>
-	</resultMap>
+	</resultMap> -->
 
 	<sql id="rate-num">
 		SELECT COUNT(r_no)
@@ -45,20 +45,20 @@
 		VALUES (#{fromEmail}, #{toEmail}, #{oNo}, #{textOfRate}, sysdate())
 	</insert>
 
-	<select id="getRateNum" parameterType="user" resultType="int">
-		SELECT COUNT(r.r_no)
-		FROM User u JOIN Rate r ON u.u_email = r.to_email
-		WHERE u.u_email = #{email}
+	<select id="getRateNum" parameterType="string" resultType="int">
+		SELECT COUNT(r_no)
+		FROM Rate
+		WHERE to_email =  #{VALUE}
 	</select>
 
-	<select id="getNRatioOfRate" parameterType="user" resultType="double">
-		SELECT COUNT(CASE WHEN r.r_text LIKE concat('N','%') THEN 1 END) * 1.0 / COUNT(r.r_no) AS n_ratio
-		FROM User u JOIN Rate r ON u.u_email = r.to_email
-		WHERE u.u_email = #{email}
+	<select id="getNRatioOfRate" parameterType="string" resultType="double">
+		SELECT COUNT(CASE WHEN r_text LIKE concat('N','%') THEN 1 END) * 1.0 / COUNT(r_no)
+		FROM Rate
+		WHERE to_email = #{VALUE}
 	</select>
 
 	<update id="updateUserGrade" parameterType="user">
-		UPDATE user
+		UPDATE User
 		SET u_grade = CASE
 						WHEN ((<include refid="nratio" />) &gt;= 0.3) THEN 'Iron'
 						WHEN (((<include refid="rate-num" />) &lt; 20) AND ((<include refid="nratio" />) &gt;= 0.2)) THEN 'Bronze'
@@ -70,30 +70,17 @@
 	</update>
 
 	<select id="getUserGrade" parameterType="string" resultType="string">
-
+		SELECT u_grade
+		FROM User
+		WHERE u_email = #{VALUE}
 	</select>
 
-	<select id="getUserTopRate" parameterType="string" resultType="rate">
-
+	<select id="getUserTopRate" parameterType="string" resultType="map">
+		SELECT r_text, COUNT(r_text) AS count
+		FROM Rate
+		WHERE to_email = #{VALUE}
+		GROUP BY r_text
+		ORDER BY count DESC, r_text DESC LIMIT 3;
 	</select>
 
 </mapper>
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
