@@ -238,7 +238,7 @@
                                         <div class="card-text">남성</div>
                                     </c:otherwise>
                                 </c:choose>
-                                <div class="card-text">${ageGroup}</div>
+                                <div class="card-text">${user.ageGroup}</div>
                                 <div class="card-text">${user.grade}</div>
                             </div>
                             

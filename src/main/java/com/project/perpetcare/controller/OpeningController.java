@@ -40,25 +40,16 @@ public class OpeningController {
         Opening opening = openingService.getOpening(no);
         model.addAttribute("opening", opening);
         User user = profileService.getUserInfo(opening.getuEmail());
-        // 연령대 계산
-        int birthYear = user.getBdate().getYear();
-        int age = LocalDate.now().getYear() - birthYear;
-        String ageGroup = (age / 10) * 10 + "대";
 
         model.addAttribute("user", user);
-        model.addAttribute("ageGroup", ageGroup);
         return "openingPage/opening-view";
     }
 
     @GetMapping("/create")
     public String getCreateOpening(Model model, HttpSession session) throws Exception {
         model.addAttribute("user", user);
-        int birthYear = user.getBdate().getYear();
-        int age = LocalDate.now().getYear() - birthYear;
-        String ageGroup = (age / 10) * 10 + "대";
 
         model.addAttribute("pets", petService.getPets(user.getEmail()));
-        model.addAttribute("ageGroup", ageGroup);
         return "openingPage/opening-create";
     }
 
@@ -66,11 +57,7 @@ public class OpeningController {
     public String doCreateOpening(Opening opening, String petIds, Model model) throws Exception {
 
         opening.setCreatedAt(LocalDateTime.now());
-
-
         openingService.addOpening(opening);
-
-        System.out.println(">>> 생성된 PK: " + opening.getNo());
 
         int openingNo = opening.getNo();
 

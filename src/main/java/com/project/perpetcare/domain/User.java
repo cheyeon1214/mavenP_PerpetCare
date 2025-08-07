@@ -141,6 +141,14 @@ public class User {
         this.rates = rates;
     }
 
+    public String getAgeGroup() {
+        // 연령대 계산
+        int birthYear = getBdate().getYear();
+        int age = LocalDate.now().getYear() - birthYear;
+        String ageGroup = (age / 10) * 10 + "대";
+        return ageGroup;
+    }
+
     @Override
     public String toString() {
         return "User{" +
