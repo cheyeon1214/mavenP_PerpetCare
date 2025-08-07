@@ -34,7 +34,7 @@ public class AuthTest {
 
     @Test
     public void login() throws Exception{
-        User user = new User("codus@naver.com","1234");
+        User user = new User("codus@naver.com","1122");
         Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
         SqlSession session = factory.openSession();
