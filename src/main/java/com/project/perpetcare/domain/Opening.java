@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Opening {
-    private int no; //o_no
+    private Integer no; //o_no
     private String uEmail; //u_email User의 외래키
     private LocalDateTime createdAt; //o_createdAt
     private String careWay; //o_careway
