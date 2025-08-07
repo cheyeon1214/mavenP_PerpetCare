@@ -344,6 +344,7 @@ body {
 }
 
 .section {
+  width: fit-content;
   position: absolute; /* 버스 안에서 위치 잡기 */
   top: 41%;
   left: 22%;

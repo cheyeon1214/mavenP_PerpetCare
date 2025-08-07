@@ -4,7 +4,7 @@
 
 <mapper namespace="ns.sql.AuthMapper">
 
-	<resultMap id="userResultMap" type="User">
+	<resultMap id="userResultMap" type="user">
 		<id property="email" column="u_email"/>
 		<result property="name" column="u_name"/>
 		<result property="bdate" column="u_bdate"/>
@@ -15,12 +15,12 @@
 		<result property="image" column="u_image"/>
 	</resultMap>
 
-	<insert id="register" parameterType="User">
+	<insert id="register" parameterType="user">
 		INSERT INTO User (u_email, u_name, u_bdate, u_gender, u_pwd, u_phone, u_grade)
 		VALUES (#{email}, #{name}, #{bdate},#{gender}, #{pwd}, #{phone}, #{grade})
 	</insert>
 
-	<insert id="insertGoogleUser" parameterType="User">
+	<insert id="insertGoogleUser" parameterType="user">
 		INSERT INTO user(u_email, u_name, u_gender, u_phone, u_grade)
 		VALUES (#{email}, #{name}, #{gender}, #{phone}, #{grade})
 	</insert>
@@ -39,8 +39,8 @@
 		AND code=#{code}
 	</select>
 
-	<select id="login" parameterType="User" resultMap="userResultMap">
-		SELECT u_email,u_pwd
+	<select id="login" parameterType="user" resultMap="userResultMap">
+		SELECT u_email, u_name, u_bdate, u_gender, u_pwd, u_phone, u_grade
 		from User
 		WHERE u_email=#{email} AND u_pwd=#{pwd}
 	</select>

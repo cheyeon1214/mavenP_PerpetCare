@@ -97,10 +97,10 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                             </div>
                         </div>
                         <!-- 수정모드 -->
-                        <div class="edit-mode" style="display: none;">
-                            <input type="date" class="input-sdate" value="2012-04-05" />
+                        <form class="edit-mode" style="display: none;">
+                            <input type="date" class="input-sdate" value="sdate" />
                             ~
-                            <input type="date" class="input-edate" value="2023-11-18" />
+                            <input type="date" class="input-edate" value="edate" />
                             <select class="input-care-spe">
                                 <option>개</option>
                                 <option>고양이</option>
@@ -111,7 +111,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                                 <option>기타</option>
                             </select>
                             <input type="text" class="input-tag" value="허스키" />
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <!-- 수정 버튼 -->

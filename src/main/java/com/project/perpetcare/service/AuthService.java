@@ -2,7 +2,6 @@ package com.project.perpetcare.service;
 
 import com.project.perpetcare.dao.AuthDAO;
 import com.project.perpetcare.domain.User;
-import com.project.perpetcare.dto.GoogleAuthDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
