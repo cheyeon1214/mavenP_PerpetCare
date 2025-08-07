@@ -37,7 +37,7 @@ public class AuthDAO {
     }
 
     public User login(User user) throws Exception {
-        return sqlSession.selectOne(NS+"login", user);
+        return sqlSession.selectOne("ns.sql.AuthMapper.login", user);
     }
 
     public void insertGoogleUser(User user) throws Exception {

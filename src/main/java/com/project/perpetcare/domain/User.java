@@ -2,10 +2,8 @@ package com.project.perpetcare.domain;
 
 import com.project.perpetcare.domain.enums.Grade;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class User {
     private String email; //u_email
