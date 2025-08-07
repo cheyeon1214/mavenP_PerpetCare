@@ -3,16 +3,17 @@ package com.project.perpetcare.controller;
 import com.project.perpetcare.domain.Apply;
 import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.domain.User;
+import com.project.perpetcare.domain.enums.ApplyStatus;
 import com.project.perpetcare.domain.enums.Grade;
 import com.project.perpetcare.dto.ApplyUserDTO;
 import com.project.perpetcare.service.ApplyService;
 import com.project.perpetcare.service.OpeningService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,6 +65,24 @@ public class ApplyController {
 
         model.addAttribute("applies", applies);
         return "openingPage/apply-list"; // JSP 경로
+    }
+
+    @PostMapping("/acceptApply")
+    @ResponseBody
+    public String acceptApply(int aNo, int oNo) throws Exception {
+        applyService.acceptAndRejectOthers(aNo, oNo);  // 전체 처리 위임
+        return "ok";
+    }
+
+    @PostMapping("/rejectApply")
+    @ResponseBody
+    public ResponseEntity<?> rejectApply(@RequestParam("aNo") int aNo) {
+        try {
+            applyService.updateApplyStatus(ApplyStatus.reject, aNo);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("거절 처리 실패");
+        }
     }
 
 }
