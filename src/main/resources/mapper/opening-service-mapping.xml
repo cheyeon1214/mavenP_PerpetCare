@@ -59,6 +59,16 @@
 		Opening
 		JOIN PostPet ON Opening.o_no = PostPet.o_no
 		JOIN Pet ON PostPet.p_no = Pet.p_no
+		WHERE Opening.u_email = #{VALUE}
+	</select>
+
+	<select id="getOpening" parameterType="Integer" resultMap="openingResultMap">
+		SELECT *
+		FROM
+		Opening
+		JOIN PostPet ON Opening.o_no = PostPet.o_no
+		JOIN Pet ON PostPet.p_no = Pet.p_no
+		WHERE Opening.o_no = #{VALUE}
 	</select>
 
 </mapper>
