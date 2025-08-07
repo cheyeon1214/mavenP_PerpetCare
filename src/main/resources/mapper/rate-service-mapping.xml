@@ -69,6 +69,14 @@
 		WHERE u_email = #{email};
 	</update>
 
+	<select id="getUserGrade" parameterType="string" resultType="string">
+
+	</select>
+
+	<select id="getUserTopRate" parameterType="string" resultType="rate">
+
+	</select>
+
 </mapper>
 
  
