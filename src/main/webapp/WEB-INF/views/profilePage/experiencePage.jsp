@@ -9,6 +9,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="../../../css/experiencePage.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -120,6 +121,58 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 <!-- 추가 버튼 -->
                 <div id="add-btn-wrapper" class="hidden">
                 <button class="add-btn">+ 돌봄 이력 추가하기</button>
+                </div>
+                <!-- 폼 -->
+                <div id="careFormWrapper" class="container mp-4 mb-5" style="display: none;">
+                <div class="card shadow p-4 mb-5" id="add-form">
+                    <h4 class="text-center fw-bold mb-4" style="font-size: 1.6rem;">돌봄 이력 작성</h4>
+                    
+                    <form>
+                        <div class="form-group mb-3">
+                            <label class="col-sm-2 col-form-label" for="type">종</label>
+                            <div class="col-sm-10">
+                            <select class="form-control" id="type">
+                                <option disabled selected>선택해주세요</option>
+                                <option>개</option>
+                                <option>고양이</option>
+                                <option>새</option>
+                                <option>토끼</option>
+                                <option>물고기</option>
+                                <option>햄스터</option>
+                                <option>기타</option>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="col-sm-2 col-form-label" for="breed">품종</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="breed" placeholder="품종을 입력해주세요" />
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="col-sm-2 col-form-label">함께한 기간</label>
+                            <div class="d-flex align-items-center flex-wrap gap-2">
+                                <div class="col-sm-4">
+                                <input type="date" class="form-control" id="sdate" />
+                                </div>
+                                <div class="col-sm-2">
+                                <span class="mx-2">~</span>
+                                </div>
+                                <div class="col-sm-4">
+                                <input type="date" class="form-control" id="edate" />
+                                </div>
+                                <div class="col-sm-2">
+                                <button type="button" class="btn btn-outline-danger" id="no-end-btn">종료일 없음</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="form-btn-wrap">
+                        <button type="submit" class="form-btn">저장</button>
+                        </div>
+                    </form>
+                </div>
                 </div>
                 <h3>
                 PerpetCare 시터 이력
@@ -245,6 +298,30 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
        
     });
     });
+    $(document).ready(function () {
+    $('.add-btn').click(function () {
+        $('#careFormWrapper').slideDown('fast', function () {
+            // 폼 위치로 스크롤
+            $('html, body').animate({
+            scrollTop: $('#careFormWrapper').offset().top - 100
+            }, 500);
+        });
+        });
+    });
+
+    $(document).ready(function () {
+    $('.btn-outline-danger').click(function () {
+        const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식
+        $('#edate').val(today); // 종료일 input에 값 설정
+        });
+
+        $('form').on('submit', function (e) {
+            if ($('#type').val() !== '선택해주세요' && $('#breed').val().trim()) {
+            $('#careFormWrapper').fadeOut();
+            }
+        });
+    });
+
     </script>
 
 </html>
