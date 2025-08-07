@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/opening")
 public class OpeningController {
-    User user =  new User("codus@naver.com", "곽채연", LocalDate.now(), "f",
+    User user =  new User("codus@naver.com", "곽채연", "2025-02-02", "f",
             "1234", "01055821857", Grade.Silver,1);
 
     @Autowired

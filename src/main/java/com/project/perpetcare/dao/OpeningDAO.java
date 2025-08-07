@@ -41,4 +41,8 @@ public class OpeningDAO {
     public Opening getOpening(int no) {
         return sqlSession.selectOne(NS+"getOpening", no);
     }
+
+    public void closeOpening(int oNo) {
+        sqlSession.update(NS+"closeOpening", oNo);
+    }
 }

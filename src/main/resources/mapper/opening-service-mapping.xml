@@ -70,6 +70,10 @@
 		WHERE Opening.o_no = #{VALUE}
 	</select>
 
+	<update id="closeOpening">
+		UPDATE Opening SET o_close = 1 WHERE o_no = #{oNo}
+	</update>
+
 </mapper>
 
  

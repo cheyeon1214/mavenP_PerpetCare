@@ -39,6 +39,13 @@
 		WHERE a_no = #{no}
 	</update>
 
+	<update id="rejectOthers">
+		UPDATE Apply
+		SET a_status = 'reject'
+		WHERE o_no = #{oNo}
+		AND a_no != #{aNo}
+	</update>
+
 </mapper>
 
  

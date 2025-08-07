@@ -28,7 +28,7 @@ public class AuthController {
     public String doLogin(User pvo, HttpSession session){
         System.out.println("pvo>>"+pvo);
         try{
-            User rvo = authDAO.login(pvo);
+            User rvo = authService.login(pvo);
             System.out.println("rvo>>"+rvo);
             if(rvo!=null){
                 session.setAttribute("user",rvo);

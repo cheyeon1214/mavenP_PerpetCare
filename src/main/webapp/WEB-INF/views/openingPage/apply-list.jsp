@@ -18,6 +18,52 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $(".accept-btn").click(function() {
+            const aNo = $(this).data("ano");
+            const oNo = $(this).data("ono");
+
+            if (confirm("이메일을 전송하시겠습니까?")) {
+                $.ajax({
+                    url: "/acceptApply",
+                    type: "POST",
+                    data: {
+                        aNo: aNo,
+                        oNo: oNo
+                    },
+                    success: function(res) {
+                        alert("수락 처리 및 이메일 전송이 완료되었습니다.");
+                        location.href = "/applyList?no=" + oNo; // 새로고침
+                    },
+                    error: function() {
+                        alert("처리 중 오류가 발생했습니다.");
+                    }
+                });
+            }
+        });
+
+        $(".reject-btn").click(function () {
+            const aNo = $(this).data("ano");
+            const oNo = $(this).data("ono");
+
+            if (confirm("정말 거절하시겠습니까?")) {
+                $.ajax({
+                    url: "/rejectApply",
+                    type: "POST",
+                    data: {
+                        aNo: aNo
+                    },
+                    success: function () {
+                        alert("거절 처리 완료");
+                        location.href = "/applyList?no=" + oNo;
+                    },
+                    error: function () {
+                        alert("거절 처리 중 오류 발생");
+                    }
+                });
+            }
+        });
+    });
 
 </script>
 </head>
@@ -236,14 +282,14 @@ body{
     text-overflow: ellipsis; /* 말줄임 (...) 처리 */
 }
 
-/*.footer-space {*/
-/*    height: 100px;*/
-/*    width: 100%;*/
-/*    background-color: transparent;*/
-/*    display: block;*/
-/*    position: relative;  !* 혹은 필요하면 absolute 대신 relative 사용 *!*/
-/*    z-index: -1;*/
-/*}*/
+.rejected-row {
+    background-color: #f0f0f0;
+}
+
+.accepted-row {
+    background-color: #e6f4ff;
+}
+
 </style>
 
 <body>
@@ -317,7 +363,7 @@ body{
             </thead>
             <tbody>
                 <c:forEach var="apply" items="${applies}">
-                    <tr>
+                    <tr class="${apply.aStatus eq 'reject' ? 'rejected-row' : (apply.aStatus eq 'accept' ? 'accepted-row' : '')}">
                         <td>
                             <c:choose>
                                 <c:when test="${empty apply.uImage}">
@@ -334,11 +380,21 @@ body{
                             <div class="grade-space">${apply.uGrade}</div>
                         </td>
                         <td class="text-ellipsis">${apply.aText}</td>
-                        <td>
-                            <button class="accept-btn" data-ano="${apply.aNo}">수락</button>
-                            <br>
-                            <button class="reject-btn" data-ano="${apply.aNo}">거절</button>
-                        </td>
+                        <c:choose>
+                            <c:when test="${apply.aStatus == 'accept'}">
+                                <td><div class="status-text">수락됨</div></td>
+                            </c:when>
+                            <c:when test="${apply.aStatus == 'reject'}">
+                                <td><div class="status-text">거절됨</div></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>
+                                    <button class="accept-btn" data-ano="${apply.aNo}" data-ono="${apply.oNo}">수락</button>
+                                    <br>
+                                    <button class="reject-btn" data-ano="${apply.aNo}" data-ono="${apply.oNo}">거절</button>
+                                </td>
+                            </c:otherwise>
+                        </c:choose>
                     </tr>
                 </c:forEach>
             </tbody>

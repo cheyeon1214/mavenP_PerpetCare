@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ApplyDAO {
@@ -33,4 +34,11 @@ public class ApplyDAO {
     }
 
 
+    public void rejectOthers(int oNo, int aNo) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("oNo", oNo);
+        map.put("aNo", aNo);
+
+        sqlSession.update(NS + "rejectOthers", map);
+    }
 }

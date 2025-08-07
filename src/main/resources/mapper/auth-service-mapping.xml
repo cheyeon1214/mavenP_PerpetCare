@@ -40,7 +40,7 @@
 	</select>
 
 	<select id="login" parameterType="user" resultMap="userResultMap">
-		SELECT u_email, u_name, u_bdate, u_gender, u_pwd, u_phone, u_grade
+		SELECT u_email, u_name, u_bdate, u_gender, u_pwd, u_phone, u_grade, u_image
 		from User
 		WHERE u_email=#{email} AND u_pwd=#{pwd}
 	</select>

@@ -13,28 +13,28 @@ import java.io.Reader;
 import java.time.LocalDate;
 
 public class AuthTest {
-    @Test
-    public void insertUser(){
-        User user = new User("qwert@gmail.com", "이태란", LocalDate.now(), "f", "1234", "01090436414", Grade.Silver, 1);
-        try{
-            Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
-	        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
-	        SqlSession session = factory.openSession();
-	        int result = session.insert("ns.sql.AuthMapper.register", user);
-
-	        session.commit();
-	        session.close();
-
-	        System.out.println("Insert result: " + result);
-        }catch (Exception e){
-            e.printStackTrace();
-
-        }
-    }
+//    @Test
+//    public void insertUser(){
+//        User user = new User("qwert@gmail.com", "이태란", LocalDate.now(), "f", "1234", "01090436414", Grade.Silver, 1);
+//        try{
+//            Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+//	        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+//	        SqlSession session = factory.openSession();
+//	        int result = session.insert("ns.sql.AuthMapper.register", user);
+//
+//	        session.commit();
+//	        session.close();
+//
+//	        System.out.println("Insert result: " + result);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//
+//        }
+//    }
 
     @Test
     public void login() throws Exception{
-        User user = new User("codus@naver.com","1122");
+        User user = new User("codus@naver.com","1234");
         Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
         SqlSession session = factory.openSession();
