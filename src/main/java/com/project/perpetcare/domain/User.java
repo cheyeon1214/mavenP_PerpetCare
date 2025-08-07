@@ -101,6 +101,46 @@ public class User {
         this.image = image;
     }
 
+    public ArrayList<Experience> getExperiences() {
+        return experiences;
+    }
+
+    public void setExperiences(ArrayList<Experience> experiences) {
+        this.experiences = experiences;
+    }
+
+    public ArrayList<Opening> getOpenings() {
+        return openings;
+    }
+
+    public void setOpenings(ArrayList<Opening> openings) {
+        this.openings = openings;
+    }
+
+    public ArrayList<Apply> getApplies() {
+        return applies;
+    }
+
+    public void setApplies(ArrayList<Apply> applies) {
+        this.applies = applies;
+    }
+
+    public ArrayList<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(ArrayList<Pet> pets) {
+        this.pets = pets;
+    }
+
+    public ArrayList<Rate> getRates() {
+        return rates;
+    }
+
+    public void setRates(ArrayList<Rate> rates) {
+        this.rates = rates;
+    }
+
     @Override
     public String toString() {
         return "User{" +
