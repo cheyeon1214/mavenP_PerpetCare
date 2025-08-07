@@ -99,11 +99,11 @@ public class RateTest {
             SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
             SqlSession session = factory.openSession();
             // List<String> rates = session.selectList("ns.sql.RateMapper.getUserTopRate", email);
-            List<Map<String, Integer>> rates = session.selectList("ns.sql.RateMapper.getUserTopRate", email);
-            for(Map<String, Integer> rate : rates) {
-                for(Map.Entry<String, Integer> data : rate.entrySet()) {
-                    System.out.println(data.getKey()+" : "+data.getValue());
-                }
+            List<Map<String, Object>> rates = session.selectList("ns.sql.RateMapper.getUserTopRate", email);
+            for(Map<String, Object> rate : rates) {
+                String key = (String) rate.get("r_text");
+                Integer value = ((Number) rate.get("count")).intValue();
+                System.out.println(key+", "+value);
             }
         } catch (Exception e) {
             e.printStackTrace();
