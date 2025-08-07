@@ -44,7 +44,7 @@
 <body>
 <nav class="nav" id="header">
 	<div class="header-left">
-		<a href='#'> 
+		<a href='home.html'> 
             <!-- 홈 경로 설정 해야함 -->
 			<img alt="" src="${pageContext.request.contextPath}/image/logo.png" id="logo" />
 		</a>
