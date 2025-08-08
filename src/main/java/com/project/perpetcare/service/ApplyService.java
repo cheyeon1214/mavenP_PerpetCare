@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ApplyService {
@@ -48,4 +49,11 @@ public class ApplyService {
 //        emailService.sendAcceptanceEmail(accepted.getuEmail()); // 이메일 전송
     }
 
+    public Map<String, Integer> getGenderStats(int oNo) {
+        return applyDAO.selectGenderStats(oNo);
+    }
+
+    public Map<String, Integer> getAgeGroupStats(int oNo) {
+        return applyDAO.selectAgeGroupStats(oNo);
+    }
 }
