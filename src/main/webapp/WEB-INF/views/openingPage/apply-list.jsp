@@ -282,12 +282,13 @@ body{
     text-overflow: ellipsis; /* 말줄임 (...) 처리 */
 }
 
-.rejected-row {
-    background-color: #f0f0f0;
+.status-text{
+    font-size: 18px;
+    font-weight: 600;
+    color: #FD9596;
 }
-
-.accepted-row {
-    background-color: #e6f4ff;
+.rejected-row {
+    background-color: #F6F6F6 !important;
 }
 
 </style>
@@ -336,7 +337,10 @@ body{
                 </div>
                 <div class="price">
                     <div class="sub-title">가격</div>
-                    <div class="sub-text">${opening.price}원 / ${opening.per}</div>
+                    <div class="sub-text">
+                        <jsp:include page="../../components/price.jsp">
+                            <jsp:param name="price" value="${opening.price}"/>
+                        </jsp:include> 원 / ${opening.per}</div>
                 </div>
             </div>
             <div class="opening-section">
@@ -415,27 +419,38 @@ body{
 
     <div class="footer-space"></div>
 <script>
-    // Chart.js 예시
+const genderF = ${gender.f};
+const genderM = ${gender.m};
+const genderN = ${gender.n};
+
 const ctx1 = document.getElementById('genderChart').getContext('2d');
 new Chart(ctx1, {
     type: 'pie',
     data: {
-        labels: ['여성', '남성'],
+        labels: ['여성', '남성', '미선택'],
         datasets: [{
-            data: [8, 2],
-            backgroundColor: ['#FD9596', '#64DAFE']
+            data: [genderF, genderM, genderN],
+            backgroundColor: ['#FD9596', '#64DAFE', '#FDC814']
         }]
     }
 });
+
+const ageGroupData = [
+    ${ageGroup['20대'] != null ? ageGroup['20대'] : 0},
+    ${ageGroup['30대'] != null ? ageGroup['30대'] : 0},
+    ${ageGroup['40대'] != null ? ageGroup['40대'] : 0},
+    ${ageGroup['미상'] != null ? ageGroup['미상'] : 0}
+];
+
 
 const ctx2 = document.getElementById('ageChart').getContext('2d');
 new Chart(ctx2, {
     type: 'bar',
     data: {
-        labels: ['20대', '30대', '40대', '50대'],
+        labels: ['20대', '30대', '40대', '미상'],
         datasets: [{
             label: '지원자 수',
-            data: [1, 4, 3, 1],
+            data: ageGroupData,
             backgroundColor: '#FDC814',
             borderRadius: 9 
         }]

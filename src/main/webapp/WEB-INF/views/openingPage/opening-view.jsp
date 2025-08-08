@@ -255,7 +255,7 @@
                     <div class="profile-card" id="pet-profile">
                         <div class="card-section">
                             <div class="card-left">
-                                <img src="../../../image/petImage2.png" alt="petImg" class="petImg">
+                                <img src="data:image/jpeg;base64,${pet.base64Image}" alt="petImg" class="petImg">
                             </div>
                             <div class="card-right">
                                 <div class="card-right-name">
@@ -306,7 +306,7 @@
                     </div>
                     <div class="method-line">
                         <div class="method-text">돌봄기간</div>
-                        <input type="button" class="location-btn period" value="${opening.sDate}" data-toggle="modal" data-target="#myModal">
+                        <input type="button" class="location-btn period" value="${sDateStr} ~ ${eDateStr}" data-toggle="modal" data-target="#myModal">
                     </div>
                     
                 </div>
@@ -318,7 +318,11 @@
 
                 <div class="pay-section">
                     <div class="pay-dropdown">${opening.per}</div>
-                    <div class="pay-amount">${opening.price} 원</div>
+                    <div class="pay-amount">
+                        <jsp:include page="../../components/price.jsp">
+                            <jsp:param name="price" value="${opening.price}"/>
+                        </jsp:include> 원
+                    </div>
                 </div>
 
                 <div class="sub-title-section">

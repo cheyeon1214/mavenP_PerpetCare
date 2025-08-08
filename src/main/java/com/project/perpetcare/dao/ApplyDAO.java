@@ -41,4 +41,26 @@ public class ApplyDAO {
 
         sqlSession.update(NS + "rejectOthers", map);
     }
+
+    public Map<String, Integer> selectGenderStats(int oNo) {
+        @SuppressWarnings("unchecked")
+        Map<String, Integer> res = (Map<String, Integer>) sqlSession.selectOne(NS + "selectGenderStats", oNo);
+        if (res == null) res = new HashMap<>();
+        // null 일때 기본값 0 넣기
+        res.putIfAbsent("f", 0);
+        res.putIfAbsent("m", 0);
+        res.putIfAbsent("n", 0);
+        return res;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, Integer> selectAgeGroupStats(int oNo) {
+        Map<String, Object> raw = (Map<String, Object>) sqlSession.selectOne(NS + "selectAgeGroupStats", oNo);
+        Map<String, Integer> res = new HashMap<>();
+        for (String k : List.of("20대","30대","40대","미상")) {
+            res.put(k, raw == null ? 0 : ((Number) raw.getOrDefault(k, 0)).intValue());
+        }
+        return res;
+    }
+
 }
