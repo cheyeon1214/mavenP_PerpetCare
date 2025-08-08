@@ -1,5 +1,6 @@
 package com.project.perpetcare.controller;
 
+import com.project.perpetcare.domain.Location;
 import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.domain.Pet;
 import com.project.perpetcare.dto.Condition;
@@ -24,13 +25,15 @@ public class SearchController {
     @Autowired
     PetService petService;
 
-//    @PostMapping("/filter")
-//    public String searchOpenings(@RequestBody Condition condition, Model model) throws Exception {
-//        System.out.println("Controller 도착 확인");
-//        List<Opening> openings = searchService.searchOpenings(condition);
-//        model.addAttribute("openings", openings);
-//        return "search.jsp";
-//    }
+    @GetMapping("/location")
+    public List<Location> searchLoc(@RequestParam String word) {
+        try {
+            return searchService.searchLoc(word);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @PostMapping("/filter")
     public List<Opening> searchOpenings(@RequestBody Condition condition) {
