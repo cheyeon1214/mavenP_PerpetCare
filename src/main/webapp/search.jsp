@@ -97,6 +97,8 @@
     }
     #modal-body-second {
         width: 90%;
+        height: 400px;
+        overflow-y: auto;
         padding-left: 50px;
     }
     .location-list {
@@ -123,6 +125,7 @@
     }
     #filter-box {
         width: 60%;
+        height: 700px;
         background-color: white;
         padding: 20px 0 10px 0;
         border-radius: 10px;
@@ -272,19 +275,30 @@
 
     $(document).ready(function(){
 
+        // 지역 검색 비동기
         $('#location-input').on("keyup", function(){
-            let keyword = $(this).val().trim();
+            let word = $(this).val().trim();
 
-            if(keyword.length > 0) {
+            if(word.length > 0) {
                 $.ajax({
                     // 요청
-                    // url: "/location/search",
-                    // type: "GET",
+                    url: "/api/search/location",
+                    type: "GET",
+                    data: {word: word}, // 서버에 ?word=검색어 로 전달
                     // 응답
-                    // success: function(data){
-                    //     let html = "";
-                    //     data.forEach(function(item))
-                    // }
+                    success: function(data){
+                        console.log("주소 검색 응답 데이터 : "+data);
+                        var html = "";
+                        data.forEach(function(item){
+                            html += "<p class='location-list'>"
+                                    +item.address
+                                    +"</p>";
+                        })
+                        $('#modal-body-second').html(html);
+                    },
+                    error: function(xhr, status, error){
+                        console.log("에러 발생 : ", xhr.responseText);
+                    }
                 })
             }
         });
@@ -435,8 +449,8 @@
                     console.log(data);
                     var html = "";
                     data.forEach(function(item){
-                        html += "<div class='opening-card'> <div class='opening-card-image'> <img src='"
-                            +item.pets[0].image
+                        html += "<div class='opening-card'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
+                            +item.pets[0].base64Image
                             +"'> </div> <div class='opening-card-date'> <span>"
                             +item.sDate.split('T')[0]
                             +"</span> &nbsp;~&nbsp; <span>"
