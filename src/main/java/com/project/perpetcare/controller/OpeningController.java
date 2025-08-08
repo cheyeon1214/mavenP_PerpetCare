@@ -52,7 +52,7 @@ public class OpeningController {
         }catch (Exception e){
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "redirect:/Error.jsp";
+            return "Error";
         }
 
     }

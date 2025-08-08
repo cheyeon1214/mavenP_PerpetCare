@@ -39,7 +39,7 @@
     /* 내용 스크롤 영역 */
     #scroll-body {
         position:relative;
-        top: 300px; 
+        top: 300px;
         left: 0;
         right: 0;
         bottom: 0;
@@ -50,7 +50,6 @@
     #body-form{
         border-radius: 80px 80px 0 0;
         box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 20px 20px rgba(0,0,0,0.5);
-        height: 2200px;
     }
     .body-center{
         margin: auto;
@@ -347,8 +346,10 @@
                     <input type="submit" class="submit-button" value="지원하기">
                 </form>
                 </div>
+            <%@ include file="/components/footer.html" %>
             </div>
+
         </div>
-    <%@ include file="/components/footer.html" %>
+
 </body>
 </html>
