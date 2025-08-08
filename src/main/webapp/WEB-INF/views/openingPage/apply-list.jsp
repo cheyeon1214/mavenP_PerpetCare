@@ -282,12 +282,13 @@ body{
     text-overflow: ellipsis; /* 말줄임 (...) 처리 */
 }
 
-.rejected-row {
-    background-color: #f0f0f0;
+.status-text{
+    font-size: 18px;
+    font-weight: 600;
+    color: #FD9596;
 }
-
-.accepted-row {
-    background-color: #e6f4ff;
+.rejected-row {
+    background-color: #F6F6F6 !important;
 }
 
 </style>

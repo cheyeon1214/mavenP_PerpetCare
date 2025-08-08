@@ -21,10 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/opening")
 public class OpeningController {
-    User user =  new User("codus@naver.com", "곽채연", "2025-02-02", "f",
-            "1234", "01055821857", Grade.Silver,1);
 
     @Autowired
     private OpeningService openingService;
@@ -35,7 +32,7 @@ public class OpeningController {
     @Autowired
     private PetService petService;
 
-    @GetMapping("/view")
+    @GetMapping("/openingDetail")
     public String getOpening(int no, Model model) throws Exception {
         Opening opening = openingService.getOpening(no);
         model.addAttribute("opening", opening);
@@ -45,15 +42,25 @@ public class OpeningController {
         return "openingPage/opening-view";
     }
 
-    @GetMapping("/create")
-    public String getCreateOpening(Model model, HttpSession session) throws Exception {
-        model.addAttribute("user", user);
-
-        model.addAttribute("pets", petService.getPets(user.getEmail()));
-        return "openingPage/opening-create";
+    @GetMapping("/openingCreate")
+    public String getCreateOpening(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        try {
+            model.addAttribute("user", user);
+            model.addAttribute("pets", petService.getPets(user.getEmail()));
+            return "openingPage/opening-create";
+        } catch (Exception e) {
+            model.addAttribute("status", 500);
+            model.addAttribute("error", "Internal Server Error");
+            model.addAttribute("message", e.getMessage());
+            return "error"; // /WEB-INF/views/error.jsp 로 매핑된다고 가정
+        }
     }
 
-    @PostMapping("/create")
+    @PostMapping("/openingCreate")
     public String doCreateOpening(Opening opening, String petIds, Model model) throws Exception {
 
         opening.setCreatedAt(LocalDateTime.now());
