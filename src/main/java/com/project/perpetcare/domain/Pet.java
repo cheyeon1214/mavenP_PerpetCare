@@ -114,6 +114,9 @@ public class Pet {
     }
 
     public String getAge(){
+        if(bDate == null) {
+            return "null";
+        }
         return LocalDate.now().getYear() - bDate.getYear()+1 +"살";
     }
     @Override

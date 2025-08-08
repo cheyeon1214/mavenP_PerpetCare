@@ -29,9 +29,9 @@ public class SearchController {
     public List<Opening> searchOpenings(@RequestBody Condition condition) {
         System.out.println("필터 조건 : "+condition);
         try{
-            List<Opening> rvo = searchService.searchOpenings(condition);
-            System.out.println("controller rvo: "+rvo);
-            return rvo;
+            List<Opening> openings = searchService.searchOpenings(condition);
+            System.out.println("controller rvo: "+openings);
+            return openings;
         } catch (Exception e) {
             e.printStackTrace();
         }
