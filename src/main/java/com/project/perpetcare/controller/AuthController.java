@@ -21,7 +21,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String getLogin(){
-        return "login";
+        return "redirect:/login.jsp";
     }
 
     @PostMapping("/login")
