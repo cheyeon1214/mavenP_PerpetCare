@@ -34,7 +34,7 @@ public class AuthController {
             System.out.println("rvo>>"+rvo);
             if(rvo!=null){
                 session.setAttribute("user",rvo);
-                return "redirect:/home.html";
+                return "redirect:/home.jsp";
             }else{
                 return "redirect:/login.jsp";
             }
@@ -68,7 +68,7 @@ public class AuthController {
                 return "redirect:/login.jsp";
             }else {
                 authService.register(pvo);
-                return "redirect:home.html";
+                return "redirect:home.jsp";
             }
         } catch (Exception e) {
             e.printStackTrace();

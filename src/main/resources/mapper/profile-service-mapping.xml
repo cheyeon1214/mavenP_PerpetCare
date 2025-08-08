@@ -34,6 +34,11 @@
 		<result property="createdAt" column="r_createdAt" />
 	</resultMap>
 
+	<insert id="addExperience" parameterType="experience">
+		INSERT INTO experience(u_email,e_category,e_sdate,e_edate,e_species,e_breed)
+		VALUES (#{uEmail},#{category},#{sDate},#{eDate},#{species},#{breed})
+	</insert>
+
 	<select id="getUserInfo" parameterType="string" resultMap="userResultMap">
 		SELECT u_email,u_name,u_bdate,u_gender,u_pwd,u_phone,u_grade,u_image
 		FROM user
