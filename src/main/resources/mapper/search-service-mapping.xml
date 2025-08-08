@@ -18,13 +18,12 @@
 		<collection property="pets" ofType="pet">
 			<id property="no" column="p_no" />
 			<result property="species" column="p_species" />
-			<result property="image" column="p_image" />
 		</collection>
 	</resultMap>
 
 	<sql id="select-openings">
 		SELECT
-		o.o_no, o.u_email, o.o_createdAt, o.o_careway, o.o_sdate, o.o_edate, o.o_price, o.o_per, o.o_location, o.o_close, p.p_no, p.p_species, p.p_image
+		o.o_no, o.u_email, o.o_createdAt, o.o_careway, o.o_sdate, o.o_edate, o.o_price, o.o_per, o.o_location, o.o_close, p.p_no, p.p_species
 		FROM Opening o
 		JOIN PostPet pp ON o.o_no = pp.o_no
 		JOIN pet p ON pp.p_no = p.p_no
@@ -38,8 +37,11 @@
 			<if test="closeFilter == true">
 				AND o.o_close != 1
 			</if>
-			<if test="sdate != null and edate != null">
-				AND o.o_sdate &gt;= #{sdate} AND o.o_sdate &lt;= #{edate}
+			<if test="sdate != null">
+				AND o.o_sdate &gt;= #{sdate}
+			</if>
+			<if test="edate != null">
+				AND o.o_edate &lt;= #{edate}
 			</if>
 			<if test="careWay != null">
 				AND o.o_careway = #{careWay}

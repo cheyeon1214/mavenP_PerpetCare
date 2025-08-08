@@ -74,7 +74,7 @@
       margin-left: 100px;
       color: #888888;
   }
-  .keyword {
+  #keyword-careWay, #keyword-species {
       height: 42px;
       color: white;
       background-color: #FD9596;
@@ -309,51 +309,81 @@
             }
         });
 
-        // 시작일 선택
-
-        // 마감일 선택
-
         // 방법 선택
         $('input[name=careWayBtn]').click(function() {
             if($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
+                $('#keyword-careWay').css('display', 'none');
             } else {
+                $('#keywords>a').detach();
                 // 다른 버튼은 모두 해제
                 $('input[name="careWayBtn"]').removeClass('selected');
                 // 현재 버튼만 선택
                 $(this).addClass('selected');
+                let keyword = $(this).val();
+                $('#keyword-careWay').html(keyword).css('display', 'inline');
             }
         })
-
         // 종 선택
         $('input[name=speciesBtn]').click(function() {
             if($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
+                $('#keyword-species').css('display', 'none');
             } else {
+                $('#keywords>a').detach();
                 // 다른 버튼은 모두 해제
                 $('input[name="speciesBtn"]').removeClass('selected');
                 // 현재 버튼만 선택
                 $(this).addClass('selected');
+                let keyword = $(this).val();
+                $('#keyword-species').html(keyword).css('display', 'inline');
             }
         })
 
         // 필터 적용
         $('#filterBtn').click(function() {
             // 선택된 지역
-
+            let selectedLocation = null;
             // 선택된 마감 제외 여부
             let selectedClose = false;
-            if($('[type=checkbox]:checked')) selectedClose = true;
+            if($('[type=checkbox]').is(':checked')) selectedClose = true;
             // 선택된 기간
-
+            let selectedSdate = $('#filterSdate').val() || null;
+            let selectedEdate = $('#filterEdate').val() || null;
             // 선택된 돌봄 방법
             let selectedCareWay = $('input[name="careWayBtn"].selected').val();
             let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
             // 선택된 반려동물 종
             let selectedSpecies = $('input[name="speciesBtn"].selected').val();
             let species = selectedSpecies ? selectedSpecies.substring(1) : null;
+            // 정렬 순
+            let selectedOrder = $('#orderWay').val();
 
-            // alert("마감 여부 : "+selectedClose+", 돌봄 방법 : "+careWay+", 동물 종 : "+species);
+            // alert("지역: "+selectedLocation+", 마감 여부 : "+selectedClose+", 시작일: "+selectedSdate+", 종료일: "+selectedEdate+", 돌봄 방법 : "+careWay+", 동물 종 : "+species+", 정렬 :"+selectedOrder);
+
+            $.ajax({
+                // 요청
+                url: "/api/search/filter",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    closeFilter: selectedClose,
+                    sdate: selectedSdate,
+                    edate: selectedEdate,
+                    location: selectedLocation,
+                    careWay: careWay || null,
+                    species: species || null,
+                    orderBy: selectedOrder
+                }),
+                // 응답
+                success: function(data){
+                    console.log("결과 : ", data);
+                    // console.log("결과 : ", JSON.stringify(data));
+                },
+                error: function(xhr, status, error){
+                    console.log("에러 발생 : ", xhr.responseText);
+                }
+            }); // ajax
         })
     });
 </script>
@@ -373,7 +403,8 @@
         <div id="conditions">
             <div id="keywords">
                 <a>위치를 기반으로 원하는 공고를 검색해주세요</a>
-                <span class="keyword" style="display:none">잠시 맡아주세요</span>
+                <span id="keyword-careWay" style="display:none">#잠시 맡아주세요</span>
+                <span id="keyword-species" style="display:none">#개</span>
             </div>
             <div id="arrow-button">
                 <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -412,13 +443,13 @@
                 </div>
                 <form>
                     <div id="filter-sdate-box">
-                        <p class="filter-title"><label for="filterSdate">돌봄 시작일</label></p>
+                        <p class="filter-title"><label for="filterSdate">시작일</label></p>
                         <div class="filter-sub">
                             <input type="text" name="filterSdate" id="filterSdate" placeholder="원하는 시작일을 선택하세요">
                         </div>
                     </div>
                     <div id="filter-edate-box">
-                        <p class="filter-title"><label for="filterEdate">돌봄 마감일</label></p>
+                        <p class="filter-title"><label for="filterEdate">마감일</label></p>
                         <div class="filter-sub">
                             <input type="text" name="filterEdate" id="filterEdate" placeholder="원하는 시작일을 선택하세요">
                         </div>
@@ -459,39 +490,26 @@
                 </form>
             </div>
             <div id="list-card-section">
-                <div class="opening-card">
-                    <div class="opening-card-image">
-                        <img src="${pageContext.request.contextPath}/image/petImage3.png">
+                <c:forEach var="opening" items="${openings}">
+                    <div class="opening-card">
+                        <div class="opening-card-image">
+                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
+                        </div>
+                        <div class="opening-card-date">
+                            <span>${opening.sDate}</span>
+                            &nbsp;~&nbsp;
+                            <span>${opening.eDate}</span>
+                        </div>
+                        <div class="opening-card-careway">
+                            <p>${opening.careWay}</p>
+                        </div>
+                        <div class="opening-card-priceper">
+                            <span class="opening-card-price">${opening.price}</span>
+                            원&nbsp;/&nbsp;
+                            <span class="opening-card-per">${opening.per}</span>
+                        </div>
                     </div>
-                    <div class="opening-card-date">
-                        <span class="opening-card-sdate">8월 15일</span>
-                        &nbsp;~&nbsp;
-                        <span class="opening-card-sdate">8월 17일</span>
-                    </div>
-                    <div class="opening-card-careway">
-                        <p>여기로 와주세요</p>
-                    </div>
-                    <div class="opening-card-priceper">
-                        <span class="opening-card-price">30000</span>
-                        원&nbsp;/&nbsp;
-                        <span class="opening-card-per">일</span>
-                    </div>
-                </div>
-<%--                <div class="opening-card">--%>
-
-<%--                </div>--%>
-<%--                <div class="opening-card">--%>
-
-<%--                </div>--%>
-<%--                <div class="opening-card">--%>
-
-<%--                </div>--%>
-<%--                <div class="opening-card">--%>
-
-<%--                </div>--%>
-<%--                <div class="opening-card">--%>
-
-<%--                </div>--%>
+                </c:forEach>
             </div>
         </div>
     </div>
