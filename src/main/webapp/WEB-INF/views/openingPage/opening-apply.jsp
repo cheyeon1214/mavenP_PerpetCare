@@ -238,7 +238,11 @@ textarea::placeholder {
                 </div>
                 <div class="price">
                     <div class="sub-title">가격</div>
-                    <div class="sub-text">${opening.price}원 / ${opening.per}</div>
+                    <div class="sub-text">
+                         <jsp:include page="../../components/price.jsp">
+                            <jsp:param name="price" value="${opening.price}"/>
+                        </jsp:include>
+                        원 / ${opening.per}</div>
                 </div>
             </div>
             <div class="opening-section">
