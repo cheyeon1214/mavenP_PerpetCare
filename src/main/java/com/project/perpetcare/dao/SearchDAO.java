@@ -21,6 +21,8 @@ public class SearchDAO {
     }
 
     public List<Opening> searchOpenings(Condition condition) throws Exception {
-        return sqlSession.selectList(NS+"searchOpenings", condition);
+        List<Opening> rvo = sqlSession.selectList(NS+"searchOpenings", condition);
+        System.out.println("rvoprint = "+rvo);
+        return rvo;
     }
 }
