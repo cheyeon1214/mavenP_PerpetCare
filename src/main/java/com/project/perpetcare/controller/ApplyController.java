@@ -3,10 +3,8 @@ package com.project.perpetcare.controller;
 import com.project.perpetcare.domain.Apply;
 import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.domain.Pet;
-import com.project.perpetcare.domain.Pet;
 import com.project.perpetcare.domain.User;
 import com.project.perpetcare.domain.enums.ApplyStatus;
-import com.project.perpetcare.domain.enums.Grade;
 import com.project.perpetcare.dto.ApplyUserDTO;
 import com.project.perpetcare.service.ApplyService;
 import com.project.perpetcare.service.OpeningService;
@@ -19,10 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +65,7 @@ public class ApplyController {
                 applyService.applyToOpening(apply);
 
                 //return "redirect:/applyList?no=" + apply.getoNo();
-                return "openingPage/opening-success";
+                return "apply-success";
             } catch (Exception e) {
                 model.addAttribute("message", e.getMessage());
                 return "Error";
