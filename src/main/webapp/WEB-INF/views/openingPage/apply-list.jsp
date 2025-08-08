@@ -301,7 +301,7 @@ body{
         <div class="container-box">
             <div class="pet-section">
                 <div class="pet-img">
-                    <img src="../../../image/petImage2.png" alt="petImg" id="pet-img">
+                    <img src="data:image/jpeg;base64,${firstPet.base64Image}" alt="petImg" id="pet-img">
                 </div>
                 <div class="card-pet-left">
                     <div class="pet-name">이름</div>

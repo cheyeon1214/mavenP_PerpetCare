@@ -262,7 +262,7 @@ textarea::placeholder {
         <div class="profile-card my-profile">
             <div class="card-section">
                 <div class="card-left">
-                    <img src="../../../image/profile_1.svg" alt="profileImg">
+                    <img src="../../../image/profile_${user.image}.svg" alt="profileImg">
                 </div>
                 <div class="card-right">
                     <div class="card-pet-left">

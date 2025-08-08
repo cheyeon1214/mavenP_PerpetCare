@@ -240,9 +240,13 @@
         justify-content: center;
     }
     .opening-card-image > img {
-        width: 90%;
-        margin-top: 10px;
+        /*width: 90%;*/
+        /*margin-top: 10px;*/
+        /*border-radius: 20px;*/
+        width: 200px;
+        height: 200px;
         border-radius: 20px;
+        object-fit: cover;
     }
     .opening-card-date {
         display: flex;

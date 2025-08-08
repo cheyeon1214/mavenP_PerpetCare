@@ -477,7 +477,7 @@ $(document).ready(function() {
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#">일급</a>
                             <a class="dropdown-item" href="#">시급</a>
-                            <a class="dropdown-item" href="#">월급</a>
+                            <a class="dropdown-item" href="#">건당</a>
                         </div>
                     </div>
                     <input type="text" class="pay-amount" name="price" placeholder="금액 입력">

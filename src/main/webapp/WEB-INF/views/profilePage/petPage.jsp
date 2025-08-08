@@ -194,10 +194,10 @@
             flex-direction: column;
         }
 
-        #preview {
-            width: 100px;
-            height: 100px;
-        }
+        /*#preview {*/
+        /*    width: 100px;*/
+        /*    height: 100px;*/
+        /*}*/
 
         .image-box {
             width: 240px;

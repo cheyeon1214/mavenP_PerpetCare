@@ -62,10 +62,18 @@ public class ApplyController {
         public String doApply (Apply apply, Model model){
             try {
                 apply.setCreatedAt(LocalDateTime.now());
+                Opening opening = openingService.getOpening(apply.getoNo());
+                List<Pet> pets = opening.getPets();
+                petService.encodePetImages(pets);
+                model.addAttribute("firstPet", pets.get(0));
                 applyService.applyToOpening(apply);
+                model.addAttribute("opening", opening);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                model.addAttribute("sDateStr", opening.getsDate().format(formatter));
+                model.addAttribute("eDateStr", opening.geteDate().format(formatter));
 
                 //return "redirect:/applyList?no=" + apply.getoNo();
-                return "apply-success";
+                return "openingPage/apply-success";
             } catch (Exception e) {
                 model.addAttribute("message", e.getMessage());
                 return "Error";
@@ -78,7 +86,9 @@ public class ApplyController {
         try{
             Opening opening = openingService.getOpening(no);
             model.addAttribute("opening", opening);
-            model.addAttribute("firstPet", opening.getPets().get(0));
+            List<Pet> pets = opening.getPets();
+            petService.encodePetImages(pets);
+            model.addAttribute("firstPet", pets.get(0));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             model.addAttribute("sDateStr", opening.getsDate().format(formatter));
             model.addAttribute("eDateStr", opening.geteDate().format(formatter));
