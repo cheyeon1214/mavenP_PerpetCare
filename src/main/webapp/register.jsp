@@ -111,12 +111,11 @@
       $.post('/sendCode', {email},function(result){
         if(result === 'ok'){
             alert("이메일 전송 완료 ");
+            button.css("background-color", "#FD9596");
+            button.css("color", "white");
         }else{
             alert("이메일 전송 실패!!");
         }
-
-        button.css("background-color", "#FD9596");
-        button.css("color", "white");
       });
     });
 
@@ -128,11 +127,11 @@
       $.post('/verifyCode',{email,code},function(result){
         if(result === "ok" ){
             alert("인증 완료!");
-        }else{
-            alert("인증 실패!");
+            button.css("background-color", "#FD9596");
+            button.css("color", "white");
+        }else {
+          alert("인증 실패!");
         }
-        button.css("background-color", "#FD9596");
-        button.css("color", "white");
 
       });
     });

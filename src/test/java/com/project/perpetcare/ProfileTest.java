@@ -75,6 +75,15 @@ public class ProfileTest {
 //    }
 
     @Test
+    public void addExperience() throws Exception{
+        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+        SqlSession session = factory.openSession();
+
+        Experience e = new Experience();
+    }
+
+    @Test
     public void updateUserImg() throws Exception{
         Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
@@ -97,7 +106,7 @@ public class ProfileTest {
         SqlSession session = factory.openSession();
 
         String email = "codus@naver.com";
-        Experience experience = new Experience(3,"codus@naver.com",1,LocalDateTime.of(2023, 1, 4, 0, 0, 0),LocalDateTime.of(2023, 1, 10, 0, 0, 0),"고양이","코숏");
+        Experience experience = new Experience(3,"codus@naver.com",1,"20240503","20250403","고양이","코숏");
         Map<String,Object> map = new HashMap<>();
         map.put("experience", experience);
         map.put("email",email);
@@ -116,7 +125,7 @@ public class ProfileTest {
 
         String email="codus@naver.com";
         int no = 1;
-        Experience experience = new Experience("codus@naver.com",1,LocalDateTime.of(2023, 1, 4, 0, 0, 0),LocalDateTime.of(2023, 1, 10, 0, 0, 0),"강아지","포메라니안");
+        Experience experience = new Experience("codus@naver.com",1,"20240503","20250403","강아지","포메라니안");
 
         Map<String,Object> map = new HashMap<>();
         map.put("email",email);

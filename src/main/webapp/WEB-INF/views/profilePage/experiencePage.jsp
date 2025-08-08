@@ -33,7 +33,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
           <div class="sidebar-top">
             <div class="profile">
               <img
-                src="../../../image/default1.svg"
+                src="../../../image/profile_1.svg"
                 alt="프로필"
                 class="profile-img"
               />
@@ -49,7 +49,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <div class="info-middle">
                         <img
                         class="grade-badge"
-                        src="../../../image/grade_Silver.png"
+                        src="../../../image/grade/grade_Silver.svg"
                         alt="grade-badge"
                         />
                     </div>
