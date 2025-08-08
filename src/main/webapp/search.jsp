@@ -245,6 +245,7 @@
       display: flex;
       justify-content: start;
       margin: 10px;
+      font-size: large;
       font-weight: bold;
   }
   .opening-card-careway {

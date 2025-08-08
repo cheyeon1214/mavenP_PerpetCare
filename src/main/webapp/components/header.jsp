@@ -44,7 +44,7 @@
 <body>
 <header id="header">
 	<div class="header-left">
-		<a href='home.html'> 
+		<a href=${pageContext.request.contextPath}/home.html>
             <!-- 홈 경로 설정 해야함 -->
 			<img alt="" src="${pageContext.request.contextPath}/image/logo.png" id="logo" />
 		</a>

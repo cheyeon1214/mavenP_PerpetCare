@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping("/opening")
 public class OpeningController {
 
     @Autowired
@@ -35,7 +36,7 @@ public class OpeningController {
     @Autowired
     private PetService petService;
 
-    @GetMapping("/openingDetail")
+    @GetMapping("/detail")
     public String getOpening(int no, Model model){
         try{
             Opening opening = openingService.getOpening(no);
@@ -56,7 +57,7 @@ public class OpeningController {
 
     }
 
-    @GetMapping("/openingCreate")
+    @GetMapping("/create")
     public String getCreateOpening(Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -72,11 +73,11 @@ public class OpeningController {
             model.addAttribute("status", 500);
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "redirect:/Error.jsp";
+            return "Error";
         }
     }
 
-    @PostMapping("/openingCreate")
+    @PostMapping("/create")
     public String doCreateOpening(Opening opening, String petIds, Model model){
         try{
             opening.setCreatedAt(LocalDateTime.now());
@@ -90,12 +91,12 @@ public class OpeningController {
                 openingService.addPostPet(openingNo, pNo);
             }
 
-            return "redirect:/opening/view?no=" + openingNo;
+            return "redirect:/opening/detail?no=" + openingNo;
         } catch (Exception e) {
             model.addAttribute("status", 500);
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "redirect:/Error.jsp";
+            return "Error";
         }
 
 
