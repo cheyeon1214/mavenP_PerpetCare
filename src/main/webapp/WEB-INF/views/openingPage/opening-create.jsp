@@ -401,7 +401,7 @@ $(document).ready(function() {
                     <div class="profile-card" id="pet-profile" data-pet-no="${pet.no}">
                         <div class="card-section">
                             <div class="card-left">
-                                <img src="../../../image/petImage2.png" alt="petImg" class="petImg">
+                                <img src="data:image/jpeg;base64,${pet.base64Image}" alt="petImg" class="petImg">
                             </div>
                             <div class="card-right">
                                 <div class="card-right-name">

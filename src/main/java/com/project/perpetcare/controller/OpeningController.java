@@ -1,6 +1,7 @@
 package com.project.perpetcare.controller;
 
 import com.project.perpetcare.domain.Opening;
+import com.project.perpetcare.domain.Pet;
 import com.project.perpetcare.domain.User;
 import com.project.perpetcare.domain.enums.Grade;
 import com.project.perpetcare.service.OpeningService;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +39,8 @@ public class OpeningController {
     public String getOpening(int no, Model model){
         try{
             Opening opening = openingService.getOpening(no);
+            List<Pet> pets = opening.getPets();
+            petService.encodePetImages(pets);
             model.addAttribute("opening", opening);
             User user = profileService.getUserInfo(opening.getuEmail());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -60,7 +64,9 @@ public class OpeningController {
         }
         try {
             model.addAttribute("user", user);
-            model.addAttribute("pets", petService.getPets(user.getEmail()));
+            List<Pet> pets = petService.getPets(user.getEmail());
+            petService.encodePetImages(pets);
+            model.addAttribute("pets", pets);
             return "openingPage/opening-create";
         } catch (Exception e) {
             model.addAttribute("status", 500);
