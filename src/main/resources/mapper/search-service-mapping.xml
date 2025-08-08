@@ -38,8 +38,11 @@
 			<if test="closeFilter == true">
 				AND o.o_close != 1
 			</if>
-			<if test="sdate != null and edate != null">
-				AND o.o_sdate &gt;= #{sdate} AND o.o_sdate &lt;= #{edate}
+			<if test="sdate != null">
+				AND o.o_sdate &gt;= #{sdate}
+			</if>
+			<if test="edate != null">
+				AND o.o_edate &lt;= #{edate}
 			</if>
 			<if test="careWay != null">
 				AND o.o_careway = #{careWay}

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>공고 보기</title>
@@ -38,7 +39,7 @@
     /* 내용 스크롤 영역 */
     #scroll-body {
         position:relative;
-        top: 300px; 
+        top: 300px;
         left: 0;
         right: 0;
         bottom: 0;
@@ -49,7 +50,6 @@
     #body-form{
         border-radius: 80px 80px 0 0;
         box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 20px 20px rgba(0,0,0,0.5);
-        height: 2200px;
     }
     .body-center{
         margin: auto;
@@ -217,7 +217,7 @@
                 <div class="profile-card">
                     <div class="card-section">
                         <div class="card-left">
-                            <img src="../../../image/default1.svg" alt="profileImg">
+                            <img src="../../../image/profile_1.svg" alt="profileImg">
                         </div>
                         <div class="card-right">
                             <div class="card-right-name">
@@ -228,10 +228,17 @@
                             </div>
 
                             <div class="card-right-text">
-                                <div class="card-text">ahdalahdahd@naver.com</div>
-                                <div class="card-text">여성</div>
-                                <div class="card-text">20대</div>
-                                <div class="card-text">silver</div>
+                                <div class="card-text">${opening.uEmail}</div>
+                                <c:choose>
+                                    <c:when test="${user.gender == 'f'}">
+                                        <div class="card-text">여성</div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="card-text">남성</div>
+                                    </c:otherwise>
+                                </c:choose>
+                                <div class="card-text">${user.ageGroup}</div>
+                                <div class="card-text">${user.grade}</div>
                             </div>
                             
                         </div>
@@ -243,10 +250,11 @@
                 </div>
 
                 <div class="pet-slider">
+                    <c:forEach var="pet" items="${opening.pets}">
                     <div class="profile-card" id="pet-profile">
                         <div class="card-section">
                             <div class="card-left">
-                                <img src="../../../image/petImage2.png" alt="petImg" class="petImg">
+                                <img src="data:image/jpeg;base64,${pet.base64Image}" alt="petImg" class="petImg">
                             </div>
                             <div class="card-right">
                                 <div class="card-right-name">
@@ -258,41 +266,26 @@
                                 </div>
 
                                 <div class="card-right-text">
-                                    <div class="pet-text">로미</div>
-                                    <div class="pet-text">고양이</div>
-                                    <div class="pet-text">코숏</div>
-                                    <div class="pet-text">암컷</div>
-                                    <div class="pet-text">1세</div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="profile-card" id="pet-profile">
-                        <div class="card-section">
-                            <div class="card-left">
-                                <img src="../../../image/petImage3.png" alt="petImg" class="petImg">
-                            </div>
-                            <div class="card-right">
-                                <div class="card-right-name">
-                                    <div class="pet-name">이름</div>
-                                    <div class="pet-name">종</div>
-                                    <div class="pet-name">품종</div>
-                                    <div class="pet-name">성별</div>
-                                    <div class="pet-name">나이</div>
+                                    <div class="pet-text">${pet.name}</div>
+                                    <div class="pet-text">${pet.species}</div>
+                                    <div class="pet-text">${pet.breed}</div>
+                                    <c:choose>
+                                        <c:when test="${pet.gender == 'f'}">
+                                            <div class="pet-text">암컷</div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="pet-text">수컷</div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div class="pet-text">
+                                        ${pet.getAge()}
+                                    </div>
                                 </div>
 
-                                <div class="card-right-text">
-                                    <div class="pet-text">로디</div>
-                                    <div class="pet-text">고양이</div>
-                                    <div class="pet-text">코숏</div>
-                                    <div class="pet-text">암컷</div>
-                                    <div class="pet-text">2세</div>
-                                </div>
-                                
                             </div>
                         </div>
                     </div>
+                    </c:forEach>
 
                 </div>
 
@@ -304,15 +297,15 @@
                 <div class="method-section">
                     <div class="method-line">
                         <div class="method-text">돌봄방법</div>
-                        <input type="button" class="location-btn" value="여기로 와주세요" id="method">
+                        <input type="button" class="location-btn" value="${opening.careWay}" id="method">
                     </div>
                     <div class="method-line">
                         <div class="method-text">돌봄위치</div>
-                        <input type="button" class="location-btn" value="서울시 혜화동" id="location">
+                        <input type="button" class="location-btn" value="${opening.location}" id="location">
                     </div>
                     <div class="method-line">
                         <div class="method-text">돌봄기간</div>
-                        <input type="button" class="location-btn period" value="날짜를 선택해주세요" data-toggle="modal" data-target="#myModal">
+                        <input type="button" class="location-btn period" value="${sDateStr} ~ ${eDateStr}" data-toggle="modal" data-target="#myModal">
                     </div>
                     
                 </div>
@@ -323,8 +316,12 @@
                 </div>
 
                 <div class="pay-section">
-                    <div class="pay-dropdown">일급</div>
-                    <div class="pay-amount">20,000 원</div>
+                    <div class="pay-dropdown">${opening.per}</div>
+                    <div class="pay-amount">
+                        <jsp:include page="../../components/price.jsp">
+                            <jsp:param name="price" value="${opening.price}"/>
+                        </jsp:include> 원
+                    </div>
                 </div>
 
                 <div class="sub-title-section">
@@ -332,7 +329,7 @@
                     <span class="sub-title">우대사항</span>
                 </div>
                 <div class="textarea" id="prefer">
-                    실버 이상이상이면 좋을 것 같습니다. 흡연은 안 하셨으면 좋겠고,  동물을 키워보신 분이시면 좋겠습니다.   
+                    ${opening.prefer}
                 </div>
                 
                 <div class="sub-title-section">
@@ -340,14 +337,19 @@
                     <span class="sub-title">추가 안내 사항</span>
                 </div>
                 <div class="textarea" id="detail">
-                    밥은 안주셔도 됩니다. 자동 급식기가 있습니다. 물도 급수기가 있기 때문에 안갈아주셔도 되고요, 똥간 청소만 부탁드립니다. 
+                    ${opening.detail}
                 </div>
 
                 <div id="button-wrapper"></div>
-                    <input type="button" class="submit-button" value="지원하기">
+                <form action="/apply" method="get">
+                    <input type="hidden" name="no" value="${opening.no}">
+                    <input type="submit" class="submit-button" value="지원하기">
+                </form>
                 </div>
+            <%@ include file="/components/footer.html" %>
             </div>
+
         </div>
-    </div>
+
 </body>
 </html>

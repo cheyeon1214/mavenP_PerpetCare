@@ -14,7 +14,7 @@ public class ApplyUserDTO {
     // User에서 필요한 정보만
     private String uEmail;
     private String uGrade;
-    private byte[] uImage; // 프로필 이미지
+    private int uImage; // 프로필 이미지
 
     public int getaNo() {
         return aNo;
@@ -72,11 +72,11 @@ public class ApplyUserDTO {
         this.uGrade = uGrade;
     }
 
-    public byte[] getuImage() {
+    public int getuImage() {
         return uImage;
     }
 
-    public void setuImage(byte[] uImage) {
+    public void setuImage(int uImage) {
         this.uImage = uImage;
     }
 
@@ -90,7 +90,7 @@ public class ApplyUserDTO {
                 ", aCreatedAt=" + aCreatedAt +
                 ", uEmail='" + uEmail + '\'' +
                 ", uGrade='" + uGrade + '\'' +
-                ", uImage=" + Arrays.toString(uImage) +
+                ", uImage=" + uImage +
                 '}';
     }
 }

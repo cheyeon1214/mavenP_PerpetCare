@@ -1,6 +1,5 @@
 package com.project.perpetcare.service;
 
-import com.project.perpetcare.dao.AuthDAO;
 import com.project.perpetcare.dao.ProfileDAO;
 import com.project.perpetcare.domain.Experience;
 import com.project.perpetcare.domain.Rate;
@@ -8,7 +7,6 @@ import com.project.perpetcare.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service

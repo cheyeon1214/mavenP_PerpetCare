@@ -3,25 +3,84 @@
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ns.sql.RateMapper">
+	<!-- <resultMap id="rateRM" type="rate">
+		<id property="no" column="r_no" />
+		<result property="fromEmail" column="from_email" />
+		<result property="toEmail" column="to_email" />
+		<result property="oNo" column="o_no" />
+		<result property="textOfRate" column="r_text" />
+		<result property="createdAt" column="r_createdAt" />
+	</resultMap>
 
+	<resultMap id="userRM" type="user">
+		<id property="email" column="u_email"/>
+		<result property="name" column="u_name"/>
+		<result property="bdate" column="u_bdate"/>
+		<result property="gender" column="u_gender"/>
+		<result property="pwd" column="u_pwd"/>
+		<result property="phone" column="u_phone"/>
+		<result property="grade" column="u_grade"/>
+		<result property="image" column="u_image"/>
+		<collection property="rates" ofType="rate">
+			<id property="no" column="r_no" />
+			<result property="toEmail" column="to_email" />
+			<result property="textOfRate" column="r_text" />
+		</collection>
+	</resultMap> -->
+
+	<sql id="rate-num">
+		SELECT COUNT(r_no)
+		FROM Rate
+		WHERE to_email = #{email}
+	</sql>
+
+	<sql id="nratio">
+		SELECT COUNT(CASE WHEN r_text LIKE concat('N','%') THEN 1 END) * 1.0 / COUNT(r_no)
+		FROM Rate
+		WHERE to_email = #{email}
+	</sql>
+
+	<insert id="addUserRate" parameterType="rate">
+		INSERT INTO rate (from_email, to_email, o_no, r_text, r_createdAt)
+		VALUES (#{fromEmail}, #{toEmail}, #{oNo}, #{textOfRate}, sysdate())
+	</insert>
+
+	<select id="getRateNum" parameterType="string" resultType="int">
+		SELECT COUNT(r_no)
+		FROM Rate
+		WHERE to_email =  #{VALUE}
+	</select>
+
+	<select id="getNRatioOfRate" parameterType="string" resultType="double">
+		SELECT COUNT(CASE WHEN r_text LIKE concat('N','%') THEN 1 END) * 1.0 / COUNT(r_no)
+		FROM Rate
+		WHERE to_email = #{VALUE}
+	</select>
+
+	<update id="updateUserGrade" parameterType="user">
+		UPDATE User
+		SET u_grade = CASE
+						WHEN ((<include refid="nratio" />) &gt;= 0.3) THEN 'Iron'
+						WHEN (((<include refid="rate-num" />) &lt; 20) AND ((<include refid="nratio" />) &gt;= 0.2)) THEN 'Bronze'
+						WHEN (((<include refid="rate-num" />) &gt;= 40) AND ((<include refid="nratio" />) &lt; 0.2)) THEN 'Platinum'
+						WHEN ((((<include refid="rate-num" />) &gt;= 20) AND ((<include refid="rate-num" />) &lt; 40) AND ((<include refid="nratio" />) &lt; 0.2))
+							OR (((<include refid="rate-num" />) &gt;= 40) AND ((<include refid="nratio" />) &gt;= 0.2))) THEN 'Gold'
+						ELSE 'Silver' END
+		WHERE u_email = #{email};
+	</update>
+
+	<select id="getUserGrade" parameterType="string" resultType="string">
+		SELECT u_grade
+		FROM User
+		WHERE u_email = #{VALUE}
+	</select>
+
+	<select id="getUserTopRate" parameterType="string" resultType="map">
+		SELECT r_text, COUNT(r_text) AS count
+		FROM Rate
+		WHERE to_email = #{VALUE}
+		GROUP BY r_text
+		ORDER BY count DESC, r_text DESC LIMIT 3;
+	</select>
 
 </mapper>
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 

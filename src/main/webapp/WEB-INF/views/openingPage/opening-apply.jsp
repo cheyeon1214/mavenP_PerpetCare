@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>공고 지원</title>
@@ -110,7 +111,6 @@ body{
 .profile-card{
     display: flex;
     background-color: white;
-    border-radius: 5px;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.16);
@@ -193,11 +193,14 @@ textarea::placeholder {
     <%@ include file="/components/header.jsp" %>
     <div class="header-top"></div>
     <div class="body-section">
+        <form action ="apply" method="post">
+            <input type="hidden" name="uEmail" value="${user.email}">
+            <input type="hidden" name="oNo" value="${opening.no}">
         <div class="title">신청할 공고</div>
         <div class="container-box">
             <div class="pet-section">
                 <div class="pet-img">
-                    <img src="../../../image/petImage2.png" alt="petImg" id="pet-img">
+                    <img src="data:image/jpeg;base64,${firstPet.base64Image}" alt="petImg" id="pet-img">
                 </div>
                 <div class="card-pet-left">
                     <div class="pet-name">이름</div>
@@ -207,37 +210,49 @@ textarea::placeholder {
                     <div class="pet-name">나이</div>
                 </div>
                 <div class="card-pet-right">
-                    <div class="pet-text">로미</div>
-                    <div class="pet-text">고양이</div>
-                    <div class="pet-text">코숏</div>
-                    <div class="pet-text">암컷</div>
-                    <div class="pet-text">1세</div>
+                    <div class="pet-text">${firstPet.name}</div>
+                    <div class="pet-text">${firstPet.species}</div>
+                    <div class="pet-text">${firstPet.breed}</div>
+                    <c:choose>
+                        <c:when test="${firstPet.gender == 'f'}">
+                            <div class="pet-text">암컷</div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="pet-text">수컷</div>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="pet-text">${firstPet.age}</div>
                 </div>            
             </div>
             <hr id="line">
             <div class="opening-section">
                 <div class="method">
                     <div class="sub-title">돌봄 방법</div>
-                    <div class="sub-text">여기로 와주세요</div>
+                    <div class="sub-text">${opening.careWay}</div>
                 </div>
                 <div class="period">
                     <div class="sub-title">돌봄 기간</div>
-                    <div class="sub-text">codus001214@naver.com</div>
+                    <div class="sub-text">
+                        ${sDateStr} ~ ${eDateStr}
+                    </div>
                 </div>
                 <div class="price">
                     <div class="sub-title">가격</div>
-                    <div class="sub-text">20,000원 / 시급</div>
+                    <div class="sub-text">
+                         <jsp:include page="../../components/price.jsp">
+                            <jsp:param name="price" value="${opening.price}"/>
+                        </jsp:include>
+                        원 / ${opening.per}</div>
                 </div>
             </div>
             <div class="opening-section">
                 <div class="method">
                     <div class="sub-title">돌봄 주소</div>
-                    <div class="sub-text">경기 부천시 범박동</div>
+                    <div class="sub-text">${opening.location}</div>
                 </div>
                 <div class="prefer">
                     <div class="sub-title">우대사항</div>
-                    <div class="sub-text">실버 이상이상이면 좋을 것 같습니다. 흡연은 안 하셨으면 좋겠고,  
-                        동물을 키워보신 분이시면 좋겠습니다.   
+                    <div class="sub-text">${opening.prefer}
                     </div>
                 </div>
             </div>
@@ -247,7 +262,7 @@ textarea::placeholder {
         <div class="profile-card my-profile">
             <div class="card-section">
                 <div class="card-left">
-                    <img src="../../../image/default1.svg" alt="profileImg">
+                    <img src="../../../image/profile_${user.image}.svg" alt="profileImg">
                 </div>
                 <div class="card-right">
                     <div class="card-pet-left">
@@ -258,10 +273,17 @@ textarea::placeholder {
                     </div>
 
                 <div class="card-pet-right">
-                    <div class="pet-text">ahdalahdahd@naver.com</div>
-                    <div class="pet-text">여성</div>
-                    <div class="pet-text">20대</div>
-                    <div class="pet-text">silver</div>
+                    <div class="pet-text">${user.email}</div>
+                    <c:choose>
+                        <c:when test="${user.gender == 'f'}">
+                            <div class="pet-text">여성</div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="pet-text">남성</div>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="pet-text">${user.ageGroup}</div>
+                    <div class="pet-text">${user.grade}</div>
                 </div>
                                 
             </div>
@@ -271,8 +293,9 @@ textarea::placeholder {
         <div class="title">신청 한 마디</div>
         <div class="title-sub">(30자 이내)</div>
     </div>
-    <textarea class="text-box" id="one-text" placeholder="나를 어필할 수 있는 간단한 소개를 적어주세요."></textarea>
-    
+
+        <textarea class="text-box" id="one-text" name="text" placeholder="나를 어필할 수 있는 간단한 소개를 적어주세요."></textarea>
+
     <div class="title">돌봄 이력</div>
     <div class="container-box">
         <div class="pet-care">
@@ -298,7 +321,7 @@ textarea::placeholder {
             </div>
         </div>
     </div>
-    <div class="title">돌봄 이력</div>
+    <div class="title">PerpetCare 시터 이력</div>
     <div class="container-box">
         <div class="pet-care">
             <div class="care-date">2012.04.05</div>
@@ -324,9 +347,10 @@ textarea::placeholder {
         </div>
     </div>
     <div id="button-wrapper"></div>
-        <input type="button" class="submit-button" value="내 프로필로 지원하기">
+        <input type="submit" class="submit-button" value="내 프로필로 지원하기">
+    </form>
     </div>
-</div>
+
 
 </body>
 </html>

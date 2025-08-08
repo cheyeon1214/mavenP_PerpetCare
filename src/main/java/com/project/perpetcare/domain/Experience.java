@@ -6,13 +6,13 @@ public class Experience {
     private int no; //e_no
     private String uEmail; //u_email User의 외래키
     private int category; //e_category
-    private LocalDateTime sDate; //e_sdate
-    private LocalDateTime eDate; //e_edate
+    private String sDate; //e_sdate
+    private String eDate; //e_edate
     private String species; //e_species
     private String breed; //e_breed
 
     public Experience(){}
-    public Experience(String uEmail, int category, LocalDateTime sDate, LocalDateTime eDate, String species, String breed) {
+    public Experience(String uEmail, int category, String sDate, String eDate, String species, String breed) {
         this.uEmail = uEmail;
         this.category = category;
         this.sDate = sDate;
@@ -20,7 +20,7 @@ public class Experience {
         this.species = species;
         this.breed = breed;
     }
-    public Experience(int no,String uEmail, int category, LocalDateTime sDate, LocalDateTime eDate, String species, String breed) {
+    public Experience(int no,String uEmail, int category, String sDate, String eDate, String species, String breed) {
         this.no = no;
         this.uEmail = uEmail;
         this.category = category;
@@ -47,19 +47,19 @@ public class Experience {
         this.category = category;
     }
 
-    public LocalDateTime getsDate() {
+    public String getsDate() {
         return sDate;
     }
 
-    public void setsDate(LocalDateTime sDate) {
+    public void setsDate(String sDate) {
         this.sDate = sDate;
     }
 
-    public LocalDateTime geteDate() {
+    public String geteDate() {
         return eDate;
     }
 
-    public void seteDate(LocalDateTime eDate) {
+    public void seteDate(String  eDate) {
         this.eDate = eDate;
     }
 

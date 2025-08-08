@@ -39,6 +39,36 @@
 		WHERE a_no = #{no}
 	</update>
 
+	<update id="rejectOthers">
+		UPDATE Apply
+		SET a_status = 'reject'
+		WHERE o_no = #{oNo}
+		AND a_no != #{aNo}
+	</update>
+
+	<select id="selectGenderStats" parameterType="int" resultType="map">
+		SELECT
+		SUM(CASE WHEN u.u_gender='f' THEN 1 ELSE 0 END) AS f,
+		SUM(CASE WHEN u.u_gender='m' THEN 1 ELSE 0 END) AS m,
+		SUM(CASE WHEN u.u_gender='n' OR u.u_gender IS NULL THEN 1 ELSE 0 END) AS n
+		FROM apply a
+		JOIN user u ON a.u_email = u.u_email
+		WHERE a.o_no = #{value}
+	</select>
+
+	<select id="selectAgeGroupStats" parameterType="int" resultType="map">
+		SELECT
+		SUM(CASE WHEN u.u_bdate IS NOT NULL AND YEAR(u.u_bdate) > 0
+		AND FLOOR((YEAR(CURDATE()) - YEAR(u.u_bdate)) / 10) * 10 = 20 THEN 1 ELSE 0 END) AS `20대`,
+		SUM(CASE WHEN u.u_bdate IS NOT NULL AND YEAR(u.u_bdate) > 0
+		AND FLOOR((YEAR(CURDATE()) - YEAR(u.u_bdate)) / 10) * 10 = 30 THEN 1 ELSE 0 END) AS `30대`,
+		SUM(CASE WHEN u.u_bdate IS NOT NULL AND YEAR(u.u_bdate) > 0
+		AND FLOOR((YEAR(CURDATE()) - YEAR(u.u_bdate)) / 10) * 10 = 40 THEN 1 ELSE 0 END) AS `40대`,
+		SUM(CASE WHEN u.u_bdate IS NULL OR YEAR(u.u_bdate) = 0 THEN 1 ELSE 0 END) AS `미상`
+		FROM apply a
+		JOIN user u ON a.u_email = u.u_email
+		WHERE a.o_no = #{value}
+	</select>
 </mapper>
 
  

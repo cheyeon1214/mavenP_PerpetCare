@@ -6,6 +6,7 @@ import com.project.perpetcare.domain.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -25,5 +26,15 @@ public class PetService {
     }
     public List<Pet> getPets(String uEmail)throws Exception{
         return petDAO.getPets(uEmail);
+    }
+    public void encodePetImages(List<Pet> pets) {
+        if (pets != null) {
+            for (Pet pet : pets) {
+                if (pet.getImage() != null && pet.getImage().length > 0) {
+                    String base64 = Base64.getEncoder().encodeToString(pet.getImage());
+                    pet.setBase64Image(base64);
+                }
+            }
+        }
     }
 }
