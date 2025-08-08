@@ -349,5 +349,6 @@
                 </div>
             </div>
         </div>
+    <%@ include file="/components/footer.html" %>
 </body>
 </html>

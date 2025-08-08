@@ -234,7 +234,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             </main>
         </div>
       </div>
-      <%@ include file="/components/footer.html" %>
+
     </div>
   </body>
     <!-- 차트 스크립트 -->
