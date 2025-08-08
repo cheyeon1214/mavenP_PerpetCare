@@ -61,6 +61,19 @@ body {
   font-size: 14px;
 }
 
+.pwd-match{
+  margin-bottom:18px;
+}
+
+.register-pwd-ok{
+  margin-bottom: 5px !important;
+}
+
+.pwd-match-message{
+  font-size: 12px;
+  text-align: center;
+}
+
 .email-verify,
 .code-verify {
   display: flex;
