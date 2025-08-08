@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import java.io.Reader;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
+import static javax.swing.text.html.HTML.Attribute.N;
 
 public class AuthTest {
 //    @Test
@@ -54,5 +58,23 @@ public class AuthTest {
         User result=session.selectOne("ns.sql.AuthMapper.getUserByEmail", email);
         System.out.println(result);
         session.close();
+    }
+
+    @Test
+    public void sendEmail() throws Exception{
+        Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+        SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+        SqlSession session = factory.openSession();
+
+        Map<String,Object> map = new HashMap<>();
+        String email = "dalbogi5@gmail.com";
+        String code ="223333";
+
+        map.put("email",email);
+        map.put("code",code);
+
+        int result=session.insert("ns.sql.AuthMapper.insertCode",map);
+        System.out.println(result);
+        session.commit();
     }
 }

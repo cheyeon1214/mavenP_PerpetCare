@@ -16,8 +16,8 @@
 	</resultMap>
 
 	<insert id="register" parameterType="user">
-		INSERT INTO User (u_email, u_name, u_bdate, u_gender, u_pwd, u_phone, u_grade)
-		VALUES (#{email}, #{name}, #{bdate},#{gender}, #{pwd}, #{phone}, #{grade})
+		INSERT INTO User (u_email,u_name,u_bdate,u_gender,u_pwd,u_phone,u_grade)
+		VALUES (#{email},#{name},#{bdate},#{gender},#{pwd},#{phone},#{grade})
 	</insert>
 
 	<insert id="insertGoogleUser" parameterType="user">
@@ -26,8 +26,8 @@
 	</insert>
 
 <!--  메일, 인증번호 table넣기	-->
-	<insert id="insertVerificationCode" parameterType="map">
-		INSERT INTO verification (email,code)
+	<insert id="insertCode" parameterType="map">
+		INSERT INTO verification(email,code)
 		VALUES (#{email},#{code})
 	</insert>
 

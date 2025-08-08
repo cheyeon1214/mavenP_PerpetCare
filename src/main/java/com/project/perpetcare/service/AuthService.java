@@ -2,6 +2,7 @@ package com.project.perpetcare.service;
 
 import com.project.perpetcare.dao.AuthDAO;
 import com.project.perpetcare.domain.User;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -13,11 +14,15 @@ import org.springframework.web.client.RestTemplate;
 
 import org.springframework.http.HttpHeaders;
 
+import java.sql.Date;
 import java.util.Map;
 import java.util.Random;
 
 @Service
 public class AuthService {
+
+    @Autowired
+    SqlSession sqlSession;
 
     @Autowired
     private AuthDAO authDAO;
@@ -26,13 +31,42 @@ public class AuthService {
     private JavaMailSender mailSender;
 
     public void register(User user) throws Exception {
+        String bdate = user.getBdate();
+        String genderCode = user.getGender();
+
+        String bdateYear= null;
+        if(genderCode.equals("1") || genderCode.equals("2")){
+            bdateYear = "19";
+        }else if(genderCode.equals("3") || genderCode.equals("4")){
+            bdateYear = "20";
+        }
+
+        String fullbdate = bdateYear+bdate;
+        System.out.println("fullbdate>>"+fullbdate);
+        String formattedDate = fullbdate.substring(0, 4) + "-" +
+                fullbdate.substring(4, 6) + "-" +
+                fullbdate.substring(6, 8);
+        System.out.println("formattedDate>>"+formattedDate);
+        Date sqlDate = Date.valueOf(formattedDate);
+        System.out.println("sqlDate >>"+sqlDate);
+        user.setBdate(sqlDate.toString());
+
+        String gender=null;
+        if(genderCode.equals("1") || genderCode.equals("3")){
+            gender = "M";
+        }else if(genderCode.equals("2") || genderCode.equals("4")){
+            gender = "F";
+        }
+        System.out.println("gender>>"+gender);
+        user.setGender(gender);
+
         authDAO.register(user);
     }
 
     //인증코드 전송 + 디비 저장
     public void sendVerificationCode(String email) throws Exception {
         String code=generateCode();
-        authDAO.insertVerificationCode(email,code);
+        authDAO.insertCode(email,code);
         sendEmail(email,code);
     }
 
