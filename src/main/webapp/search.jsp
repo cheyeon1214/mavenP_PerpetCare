@@ -245,7 +245,6 @@
       display: flex;
       justify-content: start;
       margin: 10px;
-      font-size: large;
       font-weight: bold;
   }
   .opening-card-careway {
@@ -340,10 +339,12 @@
             }
         })
 
-        // 필터 적용
+        // 필터 적용 1
+
+        // 필터 적용 2
         $('#filterBtn').click(function() {
             // 선택된 지역
-            let selectedLocation = null;
+            let selectedLocation = "1111016900";
             // 선택된 마감 제외 여부
             let selectedClose = false;
             if($('[type=checkbox]').is(':checked')) selectedClose = true;
@@ -371,20 +372,90 @@
                     sdate: selectedSdate,
                     edate: selectedEdate,
                     location: selectedLocation,
-                    careWay: careWay || null,
-                    species: species || null,
+                    careWay: careWay,
+                    species: species,
                     orderBy: selectedOrder
                 }),
                 // 응답
                 success: function(data){
-                    console.log("결과 : ", data);
-                    // console.log("결과 : ", JSON.stringify(data));
+                    console.log(data);
+                    var html = "";
+                    data.forEach(function(item){
+                        html += "<div class='opening-card'> <div class='opening-card-image'> <img src='"
+                            +item.pets[0].image
+                            +"'> </div> <div class='opening-card-date'> <span>"
+                            +item.sDate.split('T')[0]
+                            +"</span> &nbsp;~&nbsp; <span>"
+                            +item.eDate.split('T')[0]
+                            +"</span> </div> <div class='opening-card-careway'> <p>"
+                            +item.careWay
+                            +"</p> </div> <div class='opening-card-priceper'> <span class='opening-card-price'>"
+                            +item.price
+                            +"</span>원&nbsp;/&nbsp; <span class='opening-card-per'>"
+                            +item.per
+                            +"</span> </div> </div>";
+                    })
+                    $('#list-card-section').html(html);
                 },
                 error: function(xhr, status, error){
                     console.log("에러 발생 : ", xhr.responseText);
                 }
             }); // ajax
-        })
+        }); // 필터 적용 버튼 클릭
+
+        // 필터 적용 3
+        $('#orderWay').change(function(){
+            let selectedLocation = "1111016900";
+            let selectedClose = false;
+            if($('[type=checkbox]').is(':checked')) selectedClose = true;
+            let selectedSdate = $('#filterSdate').val() || null;
+            let selectedEdate = $('#filterEdate').val() || null;
+            let selectedCareWay = $('input[name="careWayBtn"].selected').val();
+            let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
+            let selectedSpecies = $('input[name="speciesBtn"].selected').val();
+            let species = selectedSpecies ? selectedSpecies.substring(1) : null;
+            let selectedOrder = $('#orderWay').val();
+
+            $.ajax({
+                // 요청
+                url: "/api/search/filter",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    closeFilter: selectedClose,
+                    sdate: selectedSdate,
+                    edate: selectedEdate,
+                    location: selectedLocation,
+                    careWay: careWay,
+                    species: species,
+                    orderBy: selectedOrder
+                }),
+                // 응답
+                success: function(data){
+                    console.log(data);
+                    var html = "";
+                    data.forEach(function(item){
+                        html += "<div class='opening-card'> <div class='opening-card-image'> <img src='"
+                            +item.pets[0].image
+                            +"'> </div> <div class='opening-card-date'> <span>"
+                            +item.sDate.split('T')[0]
+                            +"</span> &nbsp;~&nbsp; <span>"
+                            +item.eDate.split('T')[0]
+                            +"</span> </div> <div class='opening-card-careway'> <p>"
+                            +item.careWay
+                            +"</p> </div> <div class='opening-card-priceper'> <span class='opening-card-price'>"
+                            +item.price
+                            +"</span>원&nbsp;/&nbsp; <span class='opening-card-per'>"
+                            +item.per
+                            +"</span> </div> </div>";
+                    })
+                    $('#list-card-section').html(html);
+                },
+                error: function(xhr, status, error){
+                    console.log("에러 발생 : ", xhr.responseText);
+                }
+            }); // ajax
+        }); // 정렬 적용 변경
     });
 </script>
 <body>
@@ -490,26 +561,24 @@
                 </form>
             </div>
             <div id="list-card-section">
-                <c:forEach var="opening" items="${openings}">
-                    <div class="opening-card">
-                        <div class="opening-card-image">
-                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
-                        </div>
-                        <div class="opening-card-date">
-                            <span>${opening.sDate}</span>
-                            &nbsp;~&nbsp;
-                            <span>${opening.eDate}</span>
-                        </div>
-                        <div class="opening-card-careway">
-                            <p>${opening.careWay}</p>
-                        </div>
-                        <div class="opening-card-priceper">
-                            <span class="opening-card-price">${opening.price}</span>
-                            원&nbsp;/&nbsp;
-                            <span class="opening-card-per">${opening.per}</span>
-                        </div>
+<%--            <div class="opening-card">
+                    <div class="opening-card-image">
+                        <img src="${pageContext.request.contextPath}/image/petImage3.png">
                     </div>
-                </c:forEach>
+                    <div class="opening-card-date">
+                        <span>${opening.sDate}</span>
+                        &nbsp;~&nbsp;
+                        <span>${opening.eDate}</span>
+                    </div>
+                    <div class="opening-card-careway">
+                        <p>${opening.careWay}</p>
+                    </div>
+                    <div class="opening-card-priceper">
+                        <span class="opening-card-price">${opening.price}</span>
+                        원&nbsp;/&nbsp;
+                        <span class="opening-card-per">${opening.per}</span>
+                    </div>
+                </div> --%>
             </div>
         </div>
     </div>
