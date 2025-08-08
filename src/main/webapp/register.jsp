@@ -40,10 +40,10 @@
             />
             <input
               type="text"
-              name="bdate"
+              name="rrn"
               placeholder="생년월일(주민등록번호 앞 7자리)"
               maxlength="8"
-              class="register-bdate"
+              class="register-rrn"
             />
             <div class="email-verify">
               <input
@@ -90,7 +90,7 @@
   </body>
   <script>
     document
-      .querySelector(".register-bdate")
+      .querySelector(".register-rrn")
       .addEventListener("input", function () {
         let val = this.value.replace(/[^0-9]/g, "");
 
@@ -99,5 +99,30 @@
 
         this.value = val;
       });
+
+    $('.email-verify-btn').on('click', function () {
+      const email = $('#email-input').val();
+
+      $.post('/sendCode', {email},function(result){
+        if(result === 'ok'){
+            alert("이메일 전송 완료 ");
+        }else{
+            alert("이메일 전송 실패!!");
+        }
+      });
+    });
+
+    $('.code-verify-btn').on('click',function(){
+      let email = $('#email-input').val();
+      let code = $('#email-code-input').val();
+
+      $.post('/verifyCode',{email,code},function(result){
+        if(result === "ok" ){
+            alert("인증 완료!");
+        }else{
+            alert("인증 실패!");
+        }
+      });
+    });
   </script>
 </html>
