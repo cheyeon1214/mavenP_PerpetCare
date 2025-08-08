@@ -99,8 +99,11 @@ public class OpeningController {
             model.addAttribute("message", e.getMessage());
             return "Error";
         }
+    }
 
-
+    @GetMapping("/mine")
+    public String getMyOpening(Model model, HttpSession session){
+        return "profilePage/myOpening";
     }
 
 
