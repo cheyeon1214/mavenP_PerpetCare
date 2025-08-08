@@ -80,7 +80,11 @@ public class ProfileTest {
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
         SqlSession session = factory.openSession();
 
-        Experience e = new Experience();
+        Experience e = new Experience("test1@naver.com",1,"2012-03-01","2024-01-02","강아지","포메라니안");
+        int result=session.insert(NS+"addExperience",e);
+        session.commit();
+        session.close();
+        System.out.println(result);
     }
 
     @Test
@@ -136,4 +140,5 @@ public class ProfileTest {
         session.commit();
         session.close();
     }
+
 }

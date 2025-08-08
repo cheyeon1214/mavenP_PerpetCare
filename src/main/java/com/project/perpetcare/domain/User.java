@@ -147,6 +147,14 @@ public class User {
         return (age / 10) * 10 + "대";
     }
 
+    public String getImagePath() {
+        if (image >= 1 && image <= 6) {
+            return "/image/profile_" + image + ".svg";
+        }
+        return "/image/profile_1.svg"; // 기본값
+    }
+
+
     @Override
     public String toString() {
         return "User{" +

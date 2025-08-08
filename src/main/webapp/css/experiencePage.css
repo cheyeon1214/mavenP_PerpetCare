@@ -102,7 +102,7 @@
 }
 
 .nav a {
-  text-decoration: none;
+  text-decoration: none !important;
   color: #ffffff;
   padding: 5px;
   border-radius: 6px;
@@ -110,9 +110,18 @@
 }
 
 .nav a.active {
+  text-decoration: none;
   background-color: white;
   color: #64dafe;
   font-weight: bold;
+}
+
+.nav a:hover {
+  color: #ffffff;
+}
+
+.nav a.active:hover{
+  color: #64dafe;
 }
 
 .logout {

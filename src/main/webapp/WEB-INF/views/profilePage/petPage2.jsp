@@ -123,6 +123,7 @@
             flex-direction: column;
             gap: 14px;
             text-align: right;
+            text-decoration: none !important;
         }
 
         .nav a {
@@ -464,7 +465,7 @@
                     <button class="edit-btn">수정</button>
                 </div>
                 <div class="nav">
-                    <a href="#" class="active">반려동물</a>
+                    <a href="/petPage" class="active">반려동물</a>
                     <a href="/experiencePage" >경험</a>
                     <a href="#">올린 공고</a>
                     <a href="#">신청한 공고</a>
