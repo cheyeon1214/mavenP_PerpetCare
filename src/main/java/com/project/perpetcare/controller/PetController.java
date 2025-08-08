@@ -38,7 +38,7 @@ public class PetController {
             petService.encodePetImages(pets);
 
             msg = "getPets 호출";
-            path= "profilePage/petPage2";
+            path= "profilePage/petPage";
         }catch(Exception e){
             msg="getPets 실패";
             System.out.println(e);
