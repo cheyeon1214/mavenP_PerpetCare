@@ -295,7 +295,7 @@
 
 <c:forEach var="pet" items="${petList}">
     <%--조회 모드--%>
-    <div class="pet-container" data-pet-no="${pet.no}">
+    <div class="pet-container" data-pet-no="${pet.no}" data-uEmail="${sessionScope.uEmail}">
         <div class="pet-view-mode" id="viewContainer">
             <div class="pet-image">
                 <img src="data:image/jpeg;base64,${pet.base64Image}" alt="펫 이미지">
@@ -311,8 +311,8 @@
                 </div>
 
                 <div class="pet-actions">
-                    <button class="btn btn-delete" data-uEmail="${pet.uEmail}" data-pet-no="${pet.no}">삭제</button>
-                    <button class="btn btn-edit" data-uEmail="${pet.uEmail}" data-pet-no="${pet.no}">수정</button>
+                    <button class="btn btn-delete" data-uEmail="${sessionScope.uEmail}" data-pet-no="${pet.no}">삭제</button>
+                    <button class="btn btn-edit" data-uEmail="${sessionScope.uEmail}" data-pet-no="${pet.no}">수정</button>
                 </div>
             </div>
         </div>
@@ -322,7 +322,7 @@
             <form id="editFormContainer" class="pet-edit-container" method="post" action="/updatePet"
                   enctype="multipart/form-data">
                 <input type="hidden" name="no" value="${pet.no}">
-                <input type="hidden" name="uEmail" value="codus@naver.com">
+                <input type="hidden" name="uEmail" value="${sessionScope.uEmail}">
 
                 <div class="pet-image">
                     <label>
@@ -387,7 +387,7 @@
         <div class="form-fields">
             <div class="form-group">
                 <%-- session 넣으면 수정해야함!!!!!!!!!!!!!--%>
-                <input type="hidden" name="uEmail" value="codus@naver.com">
+                <input type="hidden" name="uEmail" value="${sessionScope.uEmail}">
                 <label>이름</label>
                 <input type="text" name="name" placeholder="이름을 입력해주세요">
             </div>
