@@ -30,13 +30,8 @@ public class PetController {
         List<Pet> pets = null;
         try {
             pets = petService.getPets(uEmail);
+            petService.encodePetImages(pets);
 
-            for (Pet pet : pets) {
-                if (pet.getImage() != null && pet.getImage().length > 0) {
-                    String base64 = Base64.getEncoder().encodeToString(pet.getImage());
-                    pet.setBase64Image(base64);
-                }
-            }
             msg = "getPets 호출";
             path= "profilePage/petPage";
         }catch(Exception e){
