@@ -20,7 +20,6 @@ public class AuthDAO {
 
     public void register(User user) throws Exception {
         sqlSession.insert("ns.sql.AuthMapper.register", user);
-        sqlSession.commit();
     }
 
     public void insertCode(String email,String code) throws Exception {
@@ -28,7 +27,6 @@ public class AuthDAO {
         map.put("email",email);
         map.put("code",code);
         sqlSession.insert("ns.sql.AuthMapper.insertCode", map);
-        sqlSession.commit();
     }
 
     public int verifyCode(String email,String code) throws Exception {
@@ -44,7 +42,6 @@ public class AuthDAO {
 
     public void insertGoogleUser(User user) throws Exception {
         sqlSession.insert(NS+"insertGoogleUser", user);
-        sqlSession.commit();
     }
 
     public User getUserByEmail(String email) throws Exception {

@@ -69,17 +69,21 @@
               placeholder="비밀번호"
               class="register-pwd"
             />
-            <input
-              type="password"
-              name="confirm-pwd"
-              placeholder="비밀번호 확인"
-              class="register-pwd-ok"
-            />
+            <div class="pwd-match">
+              <input
+                type="password"
+                name="confirm-pwd"
+                placeholder="비밀번호 확인"
+                class="register-pwd-ok"
+              />
+              <div class="pwd-match-message"></div>
+            </div>
             <input
               type="text"
               name="phone"
-              placeholder="전화번호"
+              placeholder="전화번호(숫자만 적어주세요)"
               class="register-phone"
+              maxlength="11"
             />
             <button class="register-btn" type="submit">회원가입</button>
           </form>
@@ -102,6 +106,7 @@
 
     $('.email-verify-btn').on('click', function () {
       const email = $('#email-input').val();
+      const button = $(this);
 
       $.post('/sendCode', {email},function(result){
         if(result === 'ok'){
@@ -109,18 +114,49 @@
         }else{
             alert("이메일 전송 실패!!");
         }
+
+        button.css("background-color", "#FD9596");
+        button.css("color", "white");
       });
     });
 
     $('.code-verify-btn').on('click',function(){
       let email = $('#email-input').val();
       let code = $('#email-code-input').val();
+      const button = $(this);
 
       $.post('/verifyCode',{email,code},function(result){
         if(result === "ok" ){
             alert("인증 완료!");
         }else{
             alert("인증 실패!");
+        }
+        button.css("background-color", "#FD9596");
+        button.css("color", "white");
+
+      });
+    });
+    $(function () {
+      $('.register-pwd, .register-pwd-ok').on('input', function () {
+        const pwd = $('.register-pwd').val();
+        const confirmPwd = $('.register-pwd-ok').val();
+        const messageEl = $('.pwd-match-message');
+
+        if (!confirmPwd) {
+          messageEl.text('').hide();
+          return;
+        }
+
+        if (pwd === confirmPwd) {
+          messageEl
+                  .text('비밀번호 일치!')
+                  .css('color', 'green')
+                  .show();
+        } else {
+          messageEl
+                  .text('비밀번호 불일치!')
+                  .css('color', 'red')
+                  .show();
         }
       });
     });

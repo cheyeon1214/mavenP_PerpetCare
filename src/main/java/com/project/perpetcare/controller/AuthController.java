@@ -2,6 +2,7 @@ package com.project.perpetcare.controller;
 
 import com.project.perpetcare.dao.AuthDAO;
 import com.project.perpetcare.domain.User;
+import com.project.perpetcare.domain.enums.Grade;
 import com.project.perpetcare.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,16 +62,14 @@ public class AuthController {
             pvo.setGender(gender);
             System.out.println("pvo>>"+pvo);
 
-            authService.register(pvo);
-            return "redirect:home.html";
 
-//            if(authService.getUserByEmail(pvo.getEmail())!=null){
-//                //이미 등록된 사용자
-//                return "redirect:/login.jsp";
-//            }else {
-//                authService.register(pvo);
-//                return "redirect:home.html";
-//            }
+            if(authService.getUserByEmail(pvo.getEmail())!=null){
+                //이미 등록된 사용자
+                return "redirect:/login.jsp";
+            }else {
+                authService.register(pvo);
+                return "redirect:home.html";
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/error.jsp";
