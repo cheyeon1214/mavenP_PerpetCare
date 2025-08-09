@@ -120,8 +120,11 @@ public class OpeningController {
             Map<Integer, Pet> firstPets = new HashMap<>();
             Map<Integer, ApplyUserDTO> acceptedByOpening = new HashMap<>(); // 공고별 채택 지원자
 
+            DateTimeFormatter F = DateTimeFormatter.ofPattern("yyyy.MM.dd");
             for (Opening op : openings) {
                 List<Pet> pets = op.getPets();
+                op.setsDateStr(op.getsDate() != null ? op.getsDate().toLocalDate().format(F) : "");
+                op.seteDateStr(op.geteDate() != null ? op.geteDate().toLocalDate().format(F) : "");
                 if (pets != null && !pets.isEmpty()) {
                     petService.encodePetImages(pets);
                     firstPets.put(op.getNo(), pets.get(0));
@@ -158,5 +161,19 @@ public class OpeningController {
             return "Error";
         }
     }
+
+    @PostMapping("/update")
+    public String updateOpening(Opening opening, Model model) {
+        try{
+            System.out.println(opening);
+            openingService.updateOpening(opening);  // careWay, location, prefer 등 업데이트
+
+            return "redirect:/opening/mine";
+        }catch (Exception e){
+            return "Error";
+        }
+
+    }
+
 
 }

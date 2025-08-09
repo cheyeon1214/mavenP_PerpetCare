@@ -328,8 +328,48 @@
             justify-content: center;
         }
 
+        .edit-mode { display: none; }
+        /* is-editing 상태일 때만 편집 모드 보이기 */
+        .opening-section-wrapper.is-editing .view-mode { display: none; }
+        .opening-section-wrapper.is-editing .edit-mode{
+            display: initial;
+            border-radius: 15px;
+            border: 1.5px solid #FD9596;
+            padding: 4px 9px;
+        }
+
+        .opening-section-wrapper.is-editing .edit-price { width:10ch; }   /* 가격 */
+        .opening-section-wrapper.is-editing .edit-per   { width:6ch;  }   /* 단위(시급/건당 등) */
+        .opening-section-wrapper.is-editing .edit-care  { width:15ch; }   /* 돌봄방법 */
+        .opening-section-wrapper.is-editing .edit-location  { width:15ch; }   /* 주소 */
+        .opening-section-wrapper.is-editing .edit-prefer  {
+            width:56ch; height: 12ch;
+        }   /* 우대사항(짧게) */
+        .opening-section-wrapper.is-editing .edit-detail{
+            width: 60ch;
+            min-height: 8em;
+            border-radius: 15px;
+            border: 1.5px solid #FD9596;
+            padding: 6px 9px;
+            resize: vertical;
+        }
+
 
     </style>
+    <script>
+        function toggleEdit(btn){
+
+            const wrapper = btn.closest('form');             // 폼을 잡아옴
+            const editing = wrapper.classList.toggle('is-editing');
+            btn.value = editing ? '완료' : '수정';
+
+            // 편집모드 종료(=완료)면 폼 전송
+            if (!editing) {
+                wrapper.submit();
+            }
+        }
+
+    </script>
 </head>
 <body>
 <div class="page-container">
@@ -394,7 +434,13 @@
                 </div>
 
                 <c:forEach var="op" items="${ongoing}">
-
+                <form class="opening-section-wrapper" action="/opening/update" method="post">
+                <input type="hidden" name="no" value="${op.no}">
+                <input type="hidden" name="uEmail" value="${op.uEmail}">
+                <input type="hidden" name="createdAt" value="${op.createdAt}">
+                <input type="hidden" name="close" value="${op.close}">
+                <input type="hidden" name="isMatch" value="${op.isMatch}">
+                <input type="hidden" name="detail" value="${op.detail}">
                 <div class="opening-section">
                     <div class="opening-section-line">
                         <div class="opening-pet-img">
@@ -402,37 +448,57 @@
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">돌봄 기간</div>
-                            <div class="card-text">2025-08-08 ~ 2025-08-09</div>
+                            <span>
+                                ${op.sDateStr}
+                                ~
+                                ${op.eDateStr}
+                            </span>
+                            <input type="hidden" name="sDate" value="${op.sDate}">
+                            <input type="hidden" name="eDate" value="${op.eDate}">
+<%--                            <div class="card-text">2025-08-08 ~ 2025-08-09</div>--%>
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
-                            <div class="card-text">${op.price} / ${op.per}</div>
+                            <span class="view-mode">${op.price}</span>
+                            <input class="edit-mode edit-price" type="text" name="price" value="${op.price}">
+                            /
+                            <span class="view-mode">${op.per}</span>
+                            <input class="edit-mode edit-per" type="text" name="per" value="${op.per}">
+<%--                            <div class="card-text">${op.price} / ${op.per}</div>--%>
                         </div>
                     </div>
 
                     <div class="opening-section-line">
                         <div class="card-text-section-left">
                             <div class="card-section-method">
-                                <div class="card-text-title">돌봄 방법</div>
-                                <div class="card-text">${op.careWay}</div>
+                                  <div class="card-text-title">돌봄 방법</div>
+                                  <div class="card-text">
+                                    <span class="view-mode">${op.careWay}</span>
+                                    <input class="edit-mode edit-care" type="text" name="careWay" value="${op.careWay}">
+                                  </div>
                             </div>
                             <div class="card-section-method">
                                 <div class="card-text-title">돌봄 주소</div>
-                                <div class="card-text">${op.location}</div>
+                                <div class="card-text">
+                                    <span class="view-mode">${op.location}</span>
+                                    <input class="edit-mode edit-location" type="text" name="location" value="${op.location}">
+                                </div>
                             </div>
                         </div>
                         <div class="card-text-section-prefer">
                             <div class="card-text-title">우대사항</div>
                             <div class="card-text">
-                                ${op.prefer}
+                                <span class="view-mode">${op.prefer}</span>
+                                <textarea class="edit-mode edit-prefer" name="prefer">${op.prefer}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="two-btn">
                     <input type="button" class="blue-btn" value="삭제">
-                    <input type="button" class="white-btn" value="수정">
+                    <input type="button" class="white-btn" value="수정" onclick="toggleEdit(this)">
                 </div>
+                </form>
                 </c:forEach>
 
                 <div class="sub-title-section">
@@ -464,7 +530,9 @@
                         <div class="card-text-section-left">
                             <div class="card-section-method">
                                 <div class="card-text-title">돌봄 방법</div>
-                                <div class="card-text">${op.careWay}</div>
+                                <div class="card-text">
+                                    ${op.careWay}
+                                </div>
                             </div>
                             <div class="card-section-method">
                                 <div class="card-text-title">돌봄 주소</div>

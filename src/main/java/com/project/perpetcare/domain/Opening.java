@@ -17,6 +17,10 @@ public class Opening {
     private String detail; //o_detail
     private boolean close; //o_close
     private boolean isMatch;
+    // 날짜 문자열 필드 (화면 표시용)
+    private String sDateStr;
+    private String eDateStr;
+
     private ArrayList<Pet> pets;
     private ArrayList<Apply> applies;
 
@@ -160,6 +164,22 @@ public class Opening {
 
     public void setApplies(ArrayList<Apply> applies) {
         this.applies = applies;
+    }
+
+    public String getsDateStr() {
+        return sDateStr;
+    }
+
+    public void setsDateStr(String sDateStr) {
+        this.sDateStr = sDateStr;
+    }
+
+    public String geteDateStr() {
+        return eDateStr;
+    }
+
+    public void seteDateStr(String eDateStr) {
+        this.eDateStr = eDateStr;
     }
 
     @Override
