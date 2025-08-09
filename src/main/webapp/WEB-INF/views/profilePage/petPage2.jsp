@@ -123,6 +123,7 @@
             flex-direction: column;
             gap: 14px;
             text-align: right;
+            text-decoration: none !important;
         }
 
         .nav a {
@@ -148,8 +149,14 @@
 
         .container{
             padding: 40px;
-            display: flex;
+            display:flex;
             justify-content: center;
+            margin-left:400px;
+        }
+        .pet-main{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .pet-container {
@@ -162,6 +169,8 @@
 
         .pet-view-mode {
             display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .pet-edit-container {
@@ -192,9 +201,7 @@
             color: white;
             padding: 4px 12px;
             border-radius: 10px;
-            width: 50px;
             text-align: center;
-            /*font-weight: bold;*/
         }
 
         .pet-info-box {
@@ -202,7 +209,7 @@
             /*opacity: 0.5;*/
             border-radius: 20px;
             padding: 20px;
-            height: 150px;
+            height: auto;
             width: 480px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             position: relative;
@@ -212,8 +219,8 @@
             /*background-color: #FD9596;*/
             /*opacity: 0.5;*/
             border-radius: 20px;
-            height: 150px;
-            width: 480px;
+            height: auto;
+            width: 510px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
@@ -326,8 +333,6 @@
         .pet-add-container {
             width: 700px;
             margin-top: 50px;
-            display: flex;
-            flex-direction: column;
         }
 
         /*#preview {*/
@@ -336,8 +341,8 @@
         /*}*/
 
         .image-box {
-            width: 240px;
-            height: 240px;
+            width: 40%;
+            height: 40%;
             background-color: #dcdcdc;
             display: flex;
             align-items: center;
@@ -358,7 +363,6 @@
             background-color: #f9f9f9;
             border-radius: 20px;
             padding: 20px;
-            height: 200px;
             width: 480px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             display: flex;
@@ -367,7 +371,7 @@
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin: 6px;
         }
 
         .form-group label {
@@ -416,13 +420,9 @@
 
         #addFormContainer {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
         }
 
-        .header-top {
-            margin-top: 100px;
-            background-color: white;
-        }
     </style>
 </head>
 <body>
@@ -465,7 +465,7 @@
                     <button class="edit-btn">수정</button>
                 </div>
                 <div class="nav">
-                    <a href="#" class="active">반려동물</a>
+                    <a href="/petPage" class="active">반려동물</a>
                     <a href="/experiencePage" >경험</a>
                     <a href="#">올린 공고</a>
                     <a href="#">신청한 공고</a>
@@ -567,8 +567,9 @@
                 <div class="pet-add-container" style="display: none">
                     <form id="addFormContainer" action="/registerPet" method="post" enctype="multipart/form-data">
                         <div class="image-box">
-                            <img id="preview" src="../../../image/default.png" alt="미리보기 이미지"></div>
-                        <input type="file" id="petImage" name="imageFile" accept="image/*" style="display:none;">
+                            <img id="preview" src="../../../image/default.png" alt="미리보기 이미지">
+                            </div>
+                            <input type="file" id="petImage" name="imageFile" accept="image/*" style="display:none;">
                         <div class="form-fields">
                             <div class="form-group">
                                 <%-- session 넣으면 수정해야함!!!!!!!!!!!!!--%>

@@ -57,4 +57,8 @@ public class ProfileDAO {
         sqlSession.delete(NS+"deleteUserExperience", map);
         sqlSession.commit();
     }
+
+    public void addExperience(Experience experience) throws Exception {
+        sqlSession.insert(NS+"addExperience", experience);
+    }
 }

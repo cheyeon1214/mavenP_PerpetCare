@@ -33,12 +33,12 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
           <div class="sidebar-top">
             <div class="profile">
               <img
-                src="../../../image/profile_1.svg"
+                src="../../..${user.imagePath}"
                 alt="프로필"
                 class="profile-img"
               />
               <div class="info">
-                    <div class="name">taeran</div>
+                    <div class="name">${user.name}</div>
               </div>
               <div class="info">
                     <div class="info-left">
@@ -49,29 +49,36 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <div class="info-middle">
                         <img
                         class="grade-badge"
-                        src="../../../image/grade/grade_Silver.svg"
+                        src="../../../image/grade/grade_${user.grade}.svg"
                         alt="grade-badge"
                         />
                     </div>
                     <div class="info-right">
-                        <div class="grade">Silver</div>
-                        <div class="gender">여성</div>
-                        <div class="age">20대</div>
+                        <div class="grade">${user.grade}</div>
+                        <div class="gender">${user.gender}</div>
+                        <div class="age">${user.ageGroup}</div>
                     </div>
               </div>
             </div>
-            <div class="edit-btn-wrapper1">
-            <button class="edit-btn">수정</button>
-            </div>
+              <c:if test="${not empty user}">
+                <div class="edit-btn-wrapper1">
+                <button class="edit-btn">수정</button>
+                </div>
+              </c:if>
+
             <div class="nav">
-              <a href="#">반려동물</a>
-              <a href="#" class="active">경험</a>
+              <a href="/petPage">반려동물</a>
+              <a href="/experiencePage" class="active">경험</a>
+              <c:if test="${not empty user}">
               <a href="#">올린 공고</a>
               <a href="#">신청한 공고</a>
               <a href="#">최근 본 공고</a>
+              </c:if>
             </div>
           </div>
-          <div class="logout"><a href="#">로그아웃</a></div>
+        <c:if test="${not empty user}">
+          <div class="logout"><a href="/logout">로그아웃</a></div>
+        </c:if>
         </aside>
 
         <!-- Main Content -->

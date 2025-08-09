@@ -42,4 +42,8 @@ public class ProfileService {
     public void deleteUserExperience(String email,int no) throws Exception{
         profileDAO.deleteUserExperience(email,no);
     }
+
+    public void addExperience(Experience experience) throws Exception {
+        profileDAO.addExperience(experience);
+    }
 }
