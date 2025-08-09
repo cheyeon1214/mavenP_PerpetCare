@@ -10,6 +10,7 @@ import java.util.List;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,7 @@ public class PetController {
             petService.encodePetImages(pets);
 
             msg = "getPets 호출";
-            path= "profilePage/petPage2";
+            path= "profilePage/petPage";
         }catch(Exception e){
             msg="getPets 실패";
             System.out.println(e);
@@ -113,5 +114,23 @@ public class PetController {
             System.out.println(e);
         }
         return new ModelAndView(path);
+    }
+
+    //태란이 펫페이지로 이동
+    @GetMapping("/petPage2")
+    public String getPets2(Model model, HttpSession session){
+
+        List<Pet> pets = null;
+        try {
+            User user = (User) session.getAttribute("user");
+            String uEmail = user.getEmail();
+            session.setAttribute("uEmail", uEmail);
+            pets = petService.getPets(uEmail);
+            petService.encodePetImages(pets);
+
+        }catch(Exception e){
+            return "Error";
+        }
+        return "profilePage/petPage2";
     }
 }
