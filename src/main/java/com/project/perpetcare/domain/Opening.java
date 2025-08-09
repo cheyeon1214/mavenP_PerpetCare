@@ -16,11 +16,12 @@ public class Opening {
     private String prefer; //o_prefer
     private String detail; //o_detail
     private boolean close; //o_close
+    private boolean isMatch;
     private ArrayList<Pet> pets;
     private ArrayList<Apply> applies;
 
     public Opening(){}
-    public Opening(int no, String uEmail, LocalDateTime createdAt, String careWay, LocalDateTime sDate, LocalDateTime eDate, String price, String per,  String location, String prefer, String detail, boolean close, ArrayList<Pet> pets) {
+    public Opening(int no, String uEmail, LocalDateTime createdAt, String careWay, LocalDateTime sDate, LocalDateTime eDate, String price, String per,  String location, String prefer, String detail, boolean close, boolean isMatch, ArrayList<Pet> pets) {
         this.no = no;
         this.uEmail = uEmail;
         this.createdAt = createdAt;
@@ -34,6 +35,7 @@ public class Opening {
         this.detail = detail;
         this.close = close;
         this.pets = pets;
+        this.isMatch = isMatch;
     }
 
     public int getNo() {
@@ -54,6 +56,18 @@ public class Opening {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void setNo(Integer no) {
+        this.no = no;
+    }
+
+    public boolean getIsMatch() {
+        return isMatch;
+    }
+
+    public void setIsMatch(boolean isMatch) {
+        this.isMatch = isMatch;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -163,6 +177,7 @@ public class Opening {
                 ", prefer='" + prefer + '\'' +
                 ", detail='" + detail + '\'' +
                 ", close=" + close +
+                ", isMatch=" + isMatch +
                 ", pets=" + pets +
                 ", applies=" + applies +
                 '}';

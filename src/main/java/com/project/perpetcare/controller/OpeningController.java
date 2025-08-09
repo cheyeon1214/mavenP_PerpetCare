@@ -3,7 +3,10 @@ package com.project.perpetcare.controller;
 import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.domain.Pet;
 import com.project.perpetcare.domain.User;
+import com.project.perpetcare.domain.enums.ApplyStatus;
 import com.project.perpetcare.domain.enums.Grade;
+import com.project.perpetcare.dto.ApplyUserDTO;
+import com.project.perpetcare.service.ApplyService;
 import com.project.perpetcare.service.OpeningService;
 import com.project.perpetcare.service.PetService;
 import com.project.perpetcare.service.ProfileService;
@@ -18,9 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -32,6 +33,9 @@ public class OpeningController {
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private ApplyService applyService;
 
     @Autowired
     private PetService petService;
@@ -103,8 +107,56 @@ public class OpeningController {
 
     @GetMapping("/mine")
     public String getMyOpening(Model model, HttpSession session){
-        return "profilePage/myOpening";
-    }
+        User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
 
+        try {
+            List<Opening> openings = openingService.getUserOpening(user.getEmail());
+
+            List<Opening> ongoing = new ArrayList<>();
+            List<Opening> closed  = new ArrayList<>();
+            List<Opening> matched = new ArrayList<>();
+
+            Map<Integer, Pet> firstPets = new HashMap<>();
+            Map<Integer, ApplyUserDTO> acceptedByOpening = new HashMap<>(); // 공고별 채택 지원자
+
+            for (Opening op : openings) {
+                List<Pet> pets = op.getPets();
+                if (pets != null && !pets.isEmpty()) {
+                    petService.encodePetImages(pets);
+                    firstPets.put(op.getNo(), pets.get(0));
+                }
+
+                if (op.getIsMatch()) {
+                    matched.add(op);
+
+                    List<ApplyUserDTO> applicants = applyService.getApplicants(op.getNo());
+                    if (applicants != null) {
+                        ApplyUserDTO accepted = applicants.stream()
+                                .filter(a -> ApplyStatus.accept.name().equals(a.getaStatus()))
+                                .findFirst().orElse(null);
+                        if (accepted != null) acceptedByOpening.put(op.getNo(), accepted);
+                    }
+                } else if (op.isClose()) {
+                    closed.add(op);
+                } else {
+                    ongoing.add(op);
+                }
+            }
+
+            model.addAttribute("user", user);
+            model.addAttribute("ongoing", ongoing);
+            model.addAttribute("closed",  closed);
+            model.addAttribute("matched", matched);
+            model.addAttribute("firstPets", firstPets);
+            model.addAttribute("acceptedByOpening", acceptedByOpening);
+
+            return "profilePage/myOpening";
+        } catch (Exception e) {
+            model.addAttribute("error", "Internal Server Error");
+            model.addAttribute("message", e.getMessage());
+            return "Error";
+        }
+    }
 
 }

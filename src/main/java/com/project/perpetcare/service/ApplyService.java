@@ -44,6 +44,8 @@ public class ApplyService {
         // 3. 공고 닫기
         openingDAO.closeOpening(oNo);
 
+        openingDAO.matchOpening(oNo);
+
 //        // 4. 이메일 전송 (수락자에게)
 //        ApplyUserDTO accepted = applyDAO.getApplyUserById(aNo); // 수락자 정보 가져오기
 //        emailService.sendAcceptanceEmail(accepted.getuEmail()); // 이메일 전송

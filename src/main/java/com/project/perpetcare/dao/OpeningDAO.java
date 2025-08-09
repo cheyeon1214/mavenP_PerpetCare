@@ -45,4 +45,8 @@ public class OpeningDAO {
     public void closeOpening(int oNo) {
         sqlSession.update(NS+"closeOpening", oNo);
     }
+
+    public void matchOpening(int oNo) {
+        sqlSession.update(NS+"matchOpening", oNo);
+    }
 }

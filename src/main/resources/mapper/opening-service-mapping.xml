@@ -16,6 +16,7 @@
 		<result property="prefer" column="o_prefer"/>
 		<result property="detail" column="o_detail"/>
 		<result property="close" column="o_close"/>
+		<result column="isMatch" property="isMatch"/>
 		<!-- PostPet 리스트 매핑 -->
 		<collection property="pets" ofType="Pet">
 			<id property="no" column="p_no"/>
@@ -70,8 +71,12 @@
 		WHERE Opening.o_no = #{VALUE}
 	</select>
 
-	<update id="closeOpening">
+	<update id="closeOpening" parameterType="int">
 		UPDATE Opening SET o_close = 1 WHERE o_no = #{oNo}
+	</update>
+
+	<update id="matchOpening" parameterType="int">
+		UPDATE Opening SET isMatch = 1 WHERE o_no = #{oNo}
 	</update>
 
 </mapper>

@@ -26,7 +26,7 @@ public class ApplyTest {
         ArrayList<Pet> pets = new ArrayList<>();
 
         pets.add(new Pet(1, "codus@naver.com", "romi", "고양이", "코숏", LocalDate.now(), "f", null));
-        Opening opening = new Opening(0, "codus@naver.com", LocalDateTime.now(), "와주세요", LocalDateTime.now(),  LocalDateTime.of(2025, 8, 10, 2, 10, 00), "12000", "시급", "서초구 방배동", "동물을 좋아하는 사람", "저희는 홈캠이 있습니다.", false, pets);
+        Opening opening = new Opening(0, "codus@naver.com", LocalDateTime.now(), "와주세요", LocalDateTime.now(),  LocalDateTime.of(2025, 8, 10, 2, 10, 00), "12000", "시급", "서초구 방배동", "동물을 좋아하는 사람", "저희는 홈캠이 있습니다.", false, false, pets);
 
         Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
@@ -60,7 +60,7 @@ public class ApplyTest {
     @Test
     public void updateOpening() throws Exception{
 
-        Opening opening = new Opening(2, "codus@naver.com", LocalDateTime.now(), "맡아주세요", LocalDateTime.now(),  LocalDateTime.of(2025, 8, 11, 2, 30, 00), "12000", "시급", "서초구 방배3동", "동물을 좋아하는 사람", "저희는 홈캠이 있습니다.", false, null);
+        Opening opening = new Opening(2, "codus@naver.com", LocalDateTime.now(), "맡아주세요", LocalDateTime.now(),  LocalDateTime.of(2025, 8, 11, 2, 30, 00), "12000", "시급", "서초구 방배3동", "동물을 좋아하는 사람", "저희는 홈캠이 있습니다.", false, false,null);
         Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
         SqlSession session = factory.openSession();
