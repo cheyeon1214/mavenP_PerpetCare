@@ -268,6 +268,7 @@
         padding: 5px 10px;
         margin: 5px;
         font-weight: bold;
+        text-align: center;
         color: white;
         background-color: #FD9596;
         border-radius: 20px;
@@ -280,6 +281,7 @@
         padding: 5px 10px;
         margin: 5px;
         font-weight: bold;
+        text-align: center;
         color: white;
         background-color: #64DAFE;
         border-radius: 20px;
@@ -288,6 +290,9 @@
         display: flex;
         justify-content: start;
         margin: 10px;
+    }
+    .opening-card-date > span {
+        font-size: 14px;
         font-weight: bold;
     }
     .opening-card-careway {
