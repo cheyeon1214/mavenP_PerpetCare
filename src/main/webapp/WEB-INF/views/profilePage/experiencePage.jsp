@@ -6,7 +6,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="../../../css/global.css" />
     <link rel="stylesheet" href="../../../css/experiencePage.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>

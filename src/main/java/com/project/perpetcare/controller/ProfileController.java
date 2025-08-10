@@ -1,10 +1,7 @@
 package com.project.perpetcare.controller;
 
-import com.project.perpetcare.dao.ProfileDAO;
 import com.project.perpetcare.domain.Experience;
-import com.project.perpetcare.domain.Rate;
 import com.project.perpetcare.domain.User;
-import com.project.perpetcare.service.AuthService;
 import com.project.perpetcare.service.ProfileService;
 import com.project.perpetcare.service.RateService;
 import jakarta.servlet.http.HttpSession;
