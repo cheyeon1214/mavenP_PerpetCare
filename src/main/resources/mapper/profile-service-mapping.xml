@@ -45,10 +45,12 @@
 		where u_email=#{VALUE}
 	</select>
 
-	<select id="getUserExperience" parameterType="string" resultMap="experienceResultMap">
+	<select id="getUserExperience" parameterType="map" resultMap="experienceResultMap">
 		SELECT e_no,u_email,e_category,e_sdate,e_edate,e_species,e_breed
 		FROM experience
-		WHERE u_email = #{value}
+		WHERE u_email = #{email}
+		AND e_category = #{category}
+		ORDER BY e_sdate ASC
 	</select>
 
 	<select id="getUserRate" parameterType="string" resultMap="rateResultMap">

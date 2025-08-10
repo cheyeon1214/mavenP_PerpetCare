@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProfileDAO {
@@ -21,8 +22,11 @@ public class ProfileDAO {
         return sqlSession.selectOne(NS+"getUserInfo", email);
     }
 
-    public List<Experience> getUserExperience(String email) throws Exception {
-        return sqlSession.selectList(NS+"getUserExperience", email);
+    public List<Experience> getUserExperience(String email,int category) throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        map.put("email",email);
+        map.put("category",category);
+        return sqlSession.selectList(NS+"getUserExperience", map);
     }
 
     public List<Rate> getUserRate(String email) throws Exception {
@@ -31,7 +35,6 @@ public class ProfileDAO {
 
     public void updateUserInfo(User user) throws Exception {
         sqlSession.update(NS+"updateUserInfo", user);
-        sqlSession.commit();
     }
 
     public void updateUserImg(String email,String image) throws Exception {
@@ -39,7 +42,6 @@ public class ProfileDAO {
         map.put("email",email);
         map.put("image",image);
         sqlSession.update(NS+"updateUserImg", map);
-        sqlSession.commit();
     }
 
     public void updateUserExperience(String email,Experience experience) throws Exception {
@@ -47,7 +49,6 @@ public class ProfileDAO {
         map.put("email",email);
         map.put("experience",experience);
         sqlSession.update(NS+"updateUserExperience", map);
-        sqlSession.commit();
     }
 
     public void deleteUserExperience(String email,int no) throws Exception {
@@ -55,7 +56,6 @@ public class ProfileDAO {
         map.put("email",email);
         map.put("no",no);
         sqlSession.delete(NS+"deleteUserExperience", map);
-        sqlSession.commit();
     }
 
     public void addExperience(Experience experience) throws Exception {

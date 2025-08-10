@@ -6,7 +6,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="../../../css/global.css" />
     <link rel="stylesheet" href="../../../css/experiencePage.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
@@ -85,30 +85,47 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
          <div class="container">
             <main class="experience-main">
             <section class="history">
+            <div class="owner">
                 <h3>돌봄 이력</h3>
                 <br>
                 <div class="card">
                     <div class="entry">
                         <!-- View 모드 -->
                         <div class="view-mode">
-                            <div class="pet-care">
-                                <div class="care-date">2012.04.05</div>
-                                <div class="care-line">~</div>
-                                <div class="care-date">2023.05.11</div>
-                                <div class="care-speices">강아지</div>
-                                <div class="care-breed">
+                          <c:choose>
+                            <c:when test="${not empty ownerList}">
+                              <c:forEach var="exp" items="${ownerList}">
+                                <div class="pet-care" data-id="${exp.no}"
+                                 data-sdate="${exp.sDate}"
+                                 data-edate="${exp.eDate}"
+                                 data-species="${exp.species}"
+                                 data-breed="${exp.breed}">
+                                  <div class="care-date">${exp.sDate}</div>
+                                  <div class="care-line">~</div>
+                                  <div class="care-date">${exp.eDate}</div>
+
+                                  <div class="care-speices">${exp.species}</div>
+
+                                  <div class="care-breed">
                                     <div class="care-breed-box">
-                                        허스키
+                                      ${exp.breed}
                                     </div>
+                                  </div>
                                 </div>
-                            </div>
+                              </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                              <div class="empty">등록된 반려 경험이 없습니다.</div>
+                            </c:otherwise>
+                          </c:choose>
                         </div>
                         <!-- 수정모드 -->
-                        <form class="edit-mode" style="display: none;">
-                            <input type="date" class="input-sdate" value="sdate" />
-                            ~
-                            <input type="date" class="input-edate" value="edate" />
-                            <select class="input-care-spe">
+                        <form class="edit-mode" id="care-edit-form">
+                            <input type="hidden" name="no" />
+                            <input type="date" class="input-sdate" name="sDate" />
+                            <span style="margin:0 5px;">~</span>
+                            <input type="date" class="input-edate" name="eDate" />
+                            <select class="input-care-spe" name="species">
                                 <option>개</option>
                                 <option>고양이</option>
                                 <option>새</option>
@@ -117,13 +134,14 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                                 <option>햄스터</option>
                                 <option>기타</option>
                             </select>
-                            <input type="text" class="input-tag" value="허스키" />
+                            <input type="text" class="input-tag" name="breed"/>
                         </form>
                     </div>
                 </div>
                 <!-- 수정 버튼 -->
                 <div class="edit-btn-wrapper2">
-                <button id="toggle-edit-btn" class="edit-btn">수정</button>
+                    <button id="edit-save-btn"   class="btn hidden">수정</button>
+                    <button id="delete-cancel-btn" class="btn hidden">삭제</button>
                 </div>
                 <!-- 추가 버튼 -->
                 <div id="add-btn-wrapper" class="hidden">
@@ -165,7 +183,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                                 <input type="date" class="form-control" id="sdate" />
                                 </div>
                                 <div class="col-sm-2">
-                                <span class="mx-2">~</span>
+                                <span class="px-5 mx-auto">~</span>
                                 </div>
                                 <div class="col-sm-4">
                                 <input type="date" class="form-control" id="edate" />
@@ -181,35 +199,36 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     </form>
                 </div>
                 </div>
+                </div>
+                <div class="sitter">
                 <h3>
                 PerpetCare 시터 이력
                 </h3>
                 <br>
                 <div class="card">
-                <div class="entry">
-                    <div class="pet-care">
-                        <div class="care-date">2012.04.05</div>
-                        <div class="care-line">~</div>
-                        <div class="care-date">2023.05.11</div>
-                        <div class="care-speices">강아지</div>
-                        <div class="care-breed">
-                            <div class="care-breed-box">
-                                허스키
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="entry">
-                    <div class="pet-care">
-                        <div class="care-date">2012.04.05</div>
-                        <div class="care-line">~</div>
-                        <div class="care-date">2023.05.11</div>
-                        <div class="care-speices">강아지</div>
-                        <div class="care-breed">
-                            <div class="care-breed-box">
-                                허스키
-                            </div>
-                        </div>
+                    <div class="entry">
+                        <c:choose>
+                            <c:when test="${not empty sitterList}">
+                            <c:forEach var="exp" items="${sitterList}">
+                                <div class="pet-care">
+                                      <div class="care-date">${exp.sDate}</div>
+                                      <div class="care-line">~</div>
+                                      <div class="care-date">${exp.eDate}</div>
+
+                                      <div class="care-speices">${exp.species}</div>
+
+                                      <div class="care-breed">
+                                        <div class="care-breed-box">
+                                          ${exp.breed}
+                                        </div>
+                                      </div>
+                                </div>
+                            </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                              <div class="empty">등록된 반려 경험이 없습니다.</div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
                 </div>
@@ -222,9 +241,21 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <h4>대표 키워드 TOP3</h4>
                     <br>
                     <ul>
-                    <li>답장이 빠르고 매너가 좋아요.</li>
-                    <li>아이를 잘 케어해줘요.</li>
-                    <li>시간 약속을 잘 지켜요.</li>
+                      <c:choose>
+                        <c:when test="${not empty rateList}">
+                          <c:forEach var="row" items="${rateList}">
+                            <c:forEach var="entry" items="${row}">
+                              <li>
+                                ${entry.key}
+                                <span class="count">(${entry.value})</span>
+                              </li>
+                            </c:forEach>
+                          </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                          <li>아직 평가가 없습니다.</li>
+                        </c:otherwise>
+                      </c:choose>
                     </ul>
                 </div>
                 <div class="chart">
@@ -274,37 +305,219 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         });
     });
 
-    // 수정 
+    // 수정 + 삭제
     $(document).ready(function () {
-    let isEditing = false;
+        let isEditing = false;
+        let state = 'idle';       // idle | selected | editing
+        let selectedId = null;    // 현재 선택된 경험 PK
+        const view = $('.view-mode');
+        const form = $('#care-edit-form');
+        const editBtn = $('#edit-save-btn');
+        const delBtn  = $('#delete-cancel-btn');
 
-    $('#toggle-edit-btn').click(function () {
-        isEditing = !isEditing;
+        // 초기 UI
+        form.addClass('hidden');
+        editBtn.addClass('hidden');
+        delBtn.addClass('hidden');
 
-        // 텍스트 변경
-        $(this).text(isEditing ? '완료' : '수정');
+        function toIdle() {
+            state = 'idle';
+            selectedId = null;
+            $('.pet-care').removeClass('selected');
 
-        if(isEditing){
-            $(this).css('background-color','#64DAFE');
-            $(this).css('color','white');
-        }else{
-            $(this).css('background-color','white');
-            $(this).css('color','#64DAFE');
+            // 폼 완전 숨김
+            form.addClass('hidden').hide();
+            if (form[0]) form[0].reset();
+
+            // 목록 다시 보이기
+            view.removeClass('hidden').show();
+
+            // 버튼 숨김 및 라벨 초기화
+            editBtn.addClass('hidden').text('수정').css({ backgroundColor:'', color:'' });
+            delBtn.addClass('hidden').text('삭제').css({ backgroundColor:'', color:'' });
         }
 
-        // 모드 전환
-        $('.view-mode').toggle(!isEditing); 
-        $('.edit-mode').toggle(isEditing);
-
-        // 추가 버튼 보이기
-        if(isEditing){
-             $('#add-btn-wrapper').removeClass('hidden').addClass('flex-center');
-        }else{
-             $('#add-btn-wrapper').removeClass('flex-center').addClass('hidden');
+        function toSelected(id) {
+            state = 'selected';
+            selectedId = id;
+            form.addClass('hidden');
+            view.show();
+            // 수정/삭제 버튼 노출
+            editBtn.removeClass('hidden').text('수정')
+                .css({ backgroundColor:'white', color:'#64DAFE' });
+            delBtn.removeClass('hidden').text('삭제')
+                .css({ backgroundColor:'#64DAFE', color:'white' });
         }
-       
+
+        function toEditing() {
+            state = 'editing';
+            editBtn.text('완료').css({ backgroundColor:'#64DAFE', color:'white' });
+            delBtn.text('취소').css({ backgroundColor:'white', color:'#64DAFE' });
+
+            // 목록 숨기고 폼 보이기
+            view.hide().addClass('hidden');
+            form.removeClass('hidden').show();
+        }
+
+        // 선택된 아이템 → 폼 채우기
+        function fillFormFromItem(item) {
+            form.find('input[name=no]').val(item.data('id')); // PK
+            form.find('input[name=sDate]').val(item.data('sdate'));
+            form.find('input[name=eDate]').val(item.data('edate'));
+            form.find('select[name=species]').val(item.data('species'));
+            form.find('input[name=breed]').val(item.data('breed'));
+        }
+
+        // 폼 값 → 리스트 아이템 DOM/데이터 갱신 (리로드 없이 반영)
+        function updateItemFromForm(item) {
+            const s = form.find('input[name=sDate]').val();
+            const e = form.find('input[name=eDate]').val();
+            const sp = form.find('select[name=species]').val();
+            const br = form.find('input[name=breed]').val();
+
+            // 표시 텍스트 갱신
+            item.find('.care-date').eq(0).text(s);
+            item.find('.care-date').eq(1).text(e);
+            item.find('.care-speices').text(sp);
+            item.find('.care-breed-box').text(br);
+
+            // data-* 갱신
+            item.data('sdate', s);
+            item.data('edate', e);
+            item.data('species', sp);
+            item.data('breed', br);
+        }
+
+        // ===== 1) pet-care 클릭 → 선택 상태 =====
+        $(document).on('click', '.pet-care', function () {
+            if (state === 'editing') return; // 편집 중엔 선택 금지
+            $('.pet-care').removeClass('selected');
+            $(this).addClass('selected');
+            toSelected($(this).data('id'));
+        });
+
+        // ===== 2) 수정/완료 버튼 =====
+        editBtn.on('click', function () {
+            if (state === 'selected') {
+                // 수정 시작: 폼 채우고 편집 상태 진입
+                const item = $('.pet-care.selected');
+                if (!item.length) return alert('수정할 항목을 선택하세요.');
+                fillFormFromItem(item);
+                toEditing();
+                return;
+            }
+
+            if (state === 'editing') {
+                // 완료(저장)
+                $.ajax({
+                    type: 'POST',
+                    url: '/experience/update', // 컨트롤러 매핑
+                    data: form.serialize(),
+                    success: function () {
+                        const item = $('.pet-care.selected');
+                        if (item.length) updateItemFromForm(item); // DOM 반영
+                        toIdle(); // 초기화 (선택도 해제)
+                    },
+                    error: function () {
+                        alert('저장 중 오류가 발생했습니다.');
+                        console.log('submit', form.serialize());
+                    }
+                });
+            }
+        });
+
+        // ===== 3) 삭제/취소 버튼 =====
+        delBtn.on('click', function () {
+            if (state === 'selected') {
+                // 삭제 동작
+                const item = $('.pet-care.selected');
+                if (!item.length) return alert('삭제할 항목을 선택하세요.');
+                if (!confirm('정말 삭제하시겠어요?')) return;
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/experience/delete',
+                    data: { no: item.data('id') },
+                    success: function () {
+                        item.remove();
+                        toIdle();
+                    },
+                    error: function () {
+                        alert('삭제 중 오류가 발생했습니다.');
+                    }
+                });
+                return;
+            }
+
+            if (state === 'editing') {
+                // 취소: 수정 취소하고 처음 상태로
+                toIdle();
+            }
+        });
+
+        // ===== (옵션) 바깥 클릭 시 전체 해제 =====
+        $(document).on('click', function (e) {
+            if ($(e.target).closest('.pet-care, .edit-btn-wrapper2, #care-edit-form').length) return;
+            toIdle();
+        });
     });
+
+    // 추
+    $(document).ready(function () {
+        let isEditing = false;
+
+        const addBtnWrapper = $('#add-btn-wrapper');
+        const careFormWrapper = $('#careFormWrapper');
+
+        // 1) 수정 버튼 클릭 → 추가 버튼 토글
+        $('#edit-save-btn').on('click', function () {
+            isEditing = !isEditing;
+
+            if (isEditing) {
+                addBtnWrapper.removeClass('hidden').addClass('flex-center');
+            } else {
+                addBtnWrapper.removeClass('flex-center').addClass('hidden');
+                careFormWrapper.hide(); // 폼 닫기
+            }
+        });
+
+        // 2) 추가 버튼 클릭 → 폼 보이기
+        $(document).on('click', '.add-btn', function () {
+            careFormWrapper.slideDown(); // 부드럽게 열림
+        });
+
+        // 3) 종료일 없음 버튼 클릭 시 종료일 필드 비우기 + 비활성화
+        $('#no-end-btn').on('click', function () {
+            $('#edate').val('').prop('disabled', true);
+        });
+
+        // 4) 폼 제출 → 서버로 추가 요청
+        $('#add-form form').on('submit', function (e) {
+            e.preventDefault();
+
+            const data = {
+                species: $('#type').val(),
+                breed: $('#breed').val(),
+                sDate: $('#sdate').val(),
+                eDate: $('#edate').prop('disabled') ? null : $('#edate').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/experience/add',
+                data: data,
+                success: function (res) {
+                    alert(res.message || '추가 완료');
+                    // 목록 새로고침 or DOM에 새 항목 append
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert((xhr.responseJSON && xhr.responseJSON.message) || '추가 중 오류 발생');
+                }
+            });
+        });
     });
+
     $(document).ready(function () {
     $('.add-btn').click(function () {
         $('#careFormWrapper').slideDown('fast', function () {

@@ -81,10 +81,23 @@
   margin-top: 10px;
 }
 
-.edit-btn {
+
+#edit-save-btn, .edit-btn{
   background-color: white;
   margin-bottom: 10px;
   color: #64dafe;
+  padding: 5px 30px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+#delete-cancel-btn{
+  background-color: #64dafe;
+  margin-bottom: 10px;
+  color: #ffffff;
   padding: 5px 30px;
   border-radius: 10px;
   border: none;
@@ -140,6 +153,17 @@
   margin-left: 70px;
 }
 
+.history{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 50px;
+}
+
+.hidden{
+  display: none !important;
+}
+
 .experience-main h3 {
   font-weight: bold;
 }
@@ -148,6 +172,7 @@
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
+  gap: 10px;
 }
 
 .card {
@@ -162,9 +187,9 @@
 /* 하나의 이력 row */
 .entry {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 600;
@@ -174,11 +199,18 @@
 
 /* 전체 이력 정보 묶음 */
 .pet-care {
+  padding: 10px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   gap: 40px;
+}
+
+.pet-care.selected {
+  border-color:#64DAFE;
+  background:rgba(100,218,254,.5);
+  border-radius: 10px;
 }
 
 /* 날짜 */
@@ -226,9 +258,12 @@
 .edit-mode input,
 .edit-mode select {
   padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  height: 35px;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(253,149,150);
+  border-radius: 20px;
   font-size: 14px;
+  margin:0 5px;
 }
 
 #add-btn-wrapper.hidden {
@@ -251,7 +286,7 @@
     padding:20px;
     border: none;
     border-radius: 20px;
-    box-shadow: 0 0px 1px 5px rgba(100, 218, 254, 0.15);
+    box-shadow: 0 0 1px 5px rgba(100, 218, 254, 0.15);
 }
 
 #form-btn-wrap{
