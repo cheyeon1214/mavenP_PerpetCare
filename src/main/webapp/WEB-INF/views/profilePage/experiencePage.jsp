@@ -244,7 +244,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                             <c:forEach var="entry" items="${row}">
                               <li>
                                 ${entry.key}
-<%--                                <span class="count">(${entry.value})</span>--%>
+                                <span class="count">(${entry.value})</span>
                               </li>
                             </c:forEach>
                           </c:forEach>
@@ -309,18 +309,23 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         let selectedId = null;    // 현재 선택된 경험 PK
         const $form = $('#care-edit-form');
 
-    $('#btn-edit').click(function () {
+    $('#edit-save-btn').click(function () {
         isEditing = !isEditing;
 
         // 텍스트 변경
         $(this).text(isEditing ? '완료' : '수정');
+        $('#delete-cancel-btn').text(isEditing ? '취소' : '삭제');
 
         if(isEditing){
             $(this).css('background-color','#64DAFE');
             $(this).css('color','white');
+            $('#delete-cancel-btn').css('background-color','white');
+            $('#delete-cancel-btn').css('color','#64DAFE');
         }else{
             $(this).css('background-color','white');
             $(this).css('color','#64DAFE');
+            $('#delete-cancel-btn').css('background-color','#64DAFE');
+            $('#delete-cancel-btn').css('color','white');
         }
 
         // 모드 전환
