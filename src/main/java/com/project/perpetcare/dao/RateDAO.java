@@ -46,7 +46,7 @@ public class RateDAO {
         List<Map<String, Integer>> result = new ArrayList<>();
         for(Map<String, Object> data : dataMap) {
             Map<String, Integer> temp = new HashMap<>();
-            temp.put((String) data.get("r_text"), (Integer) data.get("count"));
+            temp.put((String) data.get("r_text"), ((Number) data.get("count")).intValue());
             result.add(temp);
         }
         return result;

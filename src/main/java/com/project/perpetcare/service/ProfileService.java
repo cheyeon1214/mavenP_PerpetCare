@@ -19,9 +19,14 @@ public class ProfileService {
         return profileDAO.getUserInfo(email);
     }
 
-    public List<Experience> getUserExperience(String email) throws Exception{
-        return profileDAO.getUserExperience(email);
+    public List<Experience> getSitterExperience(String email) throws Exception{
+        return profileDAO.getUserExperience(email,0);
     }
+
+    public List<Experience> getOwnerExperience(String email) throws Exception{
+        return profileDAO.getUserExperience(email,1);
+    }
+
 
     public List<Rate> getUserRate(String email) throws Exception{
         return profileDAO.getUserRate(email);

@@ -31,6 +31,8 @@ public class Experience {
     }
 
     public int getNo(){return no;}
+    public void setNo(int no) { this.no = no; }
+
     public String getuEmail() {
         return uEmail;
     }
