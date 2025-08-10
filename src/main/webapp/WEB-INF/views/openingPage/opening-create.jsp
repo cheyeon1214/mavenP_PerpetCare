@@ -34,6 +34,64 @@
     });
 
     $(document).ready(function(){
+        // 지역 검색 비동기
+        $('#location-input').on("keyup", function(){
+            let word = $(this).val().trim();
+
+            if(word.length > 0) {
+                $.ajax({
+                    // 요청
+                    url: "/api/search/location",
+                    type: "GET",
+                    data: {word: word}, // 서버에 ?word=검색어 로 전달
+                    // 응답
+                    success: function(data){
+                        var html = "";
+                        data.forEach(function(item){
+                            html += "<p class='location-list' id='"
+                                +item.lcode
+                                +"'>"
+                                +item.address
+                                +"</p>";
+                        })
+                        $('#modal-body-second').html(html);
+                    },
+                    error: function(xhr, status, error){
+                        console.log("에러 발생 : ", xhr.responseText);
+                    }
+                })
+            }
+        });
+
+        // 지역 선택
+        $(document).on('click', '.location-list', function() {
+            $('.location-list').removeClass('selected');
+            $(this).addClass('selected');
+            let address = $(this).text();
+            let lcode = $(this).attr('id');
+            $('#selectedAddr').val(address); // hidden input에 값을 저장해 둠
+            $('#selectedCode').val(lcode); // hidden input에 값을 저장해 둠
+            console.log("주소 : "+address+", 코드 : "+lcode);
+        });
+
+        // 필터 적용 1
+        $(document).on('click', 'button[name=locationBtn]', function() {
+            let address = $('#selectedAddr').val();
+            let lcode = $('#selectedCode').val();
+            if(!lcode) {
+                alert("지역을 하나 선택해주세요.");
+                return false;
+            } else {
+                $("input[name='location']").val(lcode); // 주소 코드를 저장함
+                $(".location-btn").html(address);
+                $('#locModal').modal('hide');
+            }
+
+        }); // modal btn click
+
+    }); // ready
+
+    $(document).ready(function(){
     $("#saveDateTime").on("click", function(){
         const start = $("#startDateTime").val(); 
         const end = $("#endDateTime").val();
@@ -256,7 +314,7 @@ $(document).ready(function() {
         margin-left: 10px;
         margin-right: 10px;
     }
-    .location-btn{
+    .location-btn, .date-btn{
         cursor: pointer;
         background-color: white;
         border: none;
@@ -269,10 +327,13 @@ $(document).ready(function() {
     }
     .location-btn:hover{
         background-color: rgba(253, 149, 150, 0.3);
-        transition: background-color 0.3s ease; 
-
+        transition: background-color 0.3s ease;
     }
-    #location{
+    .date-btn:hover{
+        background-color: rgba(253, 149, 150, 0.3);
+        transition: background-color 0.3s ease;
+    }
+    .location-btn{
         background: url('../../../image/location_icon.png') no-repeat 8px center;
     }
     .pay-dropdown {
@@ -341,7 +402,38 @@ $(document).ready(function() {
         margin-top: 150px; 
     }
 
-
+    /* 지역 검색 모달창 */
+    #modal-body-first, .modal-footer {
+        display: flex;
+        justify-content: center;
+    }
+    #location-input {
+        width: 80%;
+        padding: 0 10px;
+        margin-bottom: 10px;
+    }
+    #modal-body-second {
+        width: 90%;
+        height: 400px;
+        overflow-y: auto;
+        padding-left: 50px;
+    }
+    .location-list {
+        padding: 0 0 5px 0;
+        border-bottom: 1px solid #cccccc;
+    }
+    .location-list.selected {
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .modal-footer > button {
+        width: 80%;
+        background-color: #64DAFE;
+        color: white;
+        border: #64DAFE;
+        border-radius: 10px;
+        padding: 10px 0;
+    }
     
 </style>
 <body>
@@ -446,10 +538,12 @@ $(document).ready(function() {
                         <input type="button" class="method-btn" value="여기로 와주세요">
                         <input type="button" class="method-btn" value="잠시 맡아주세요">
                     </div>
-                    <input type="hidden" name="location" value="서울시 혜화동">
+                    <input type="hidden" name="location" value="주소">
                     <div class="method-line">
                         <div class="method-text">돌봄위치</div>
-                        <input type="button" class="location-btn" value="위치를 선택해주세요" id="location">
+                        <button class="location-btn" type="button" data-toggle="modal" data-target="#locModal">위치를 선택해주세요</button>
+                        <input type="hidden" id="selectedCode" name="selectedCode" />
+                        <input type="hidden" id="selectedAddr" name="selectedAddr" />
                     </div>
                     <input type="hidden" name="location">
                     <div class="method-line">
@@ -457,7 +551,7 @@ $(document).ready(function() {
                         <input type="hidden" name="sDate" id="sDateHidden">
                         <input type="hidden" name="eDate" id="eDateHidden">
                         <div class="method-text">돌봄기간</div>
-                        <input type="button" class="location-btn period" value="날짜를 선택해주세요" data-toggle="modal" data-target="#myModal">
+                        <input type="button" class="date-btn period" value="날짜를 선택해주세요" data-toggle="modal" data-target="#myModal">
                     </div>
                     
                 </div>
@@ -505,33 +599,54 @@ $(document).ready(function() {
     <!-- The Modal -->
     <div class="modal fade" id="myModal">
         <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        
-        <div class="modal-header">
-            <h5 class="modal-title" id="dateTimeModalLabel">날짜와 시간 선택</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+            <div class="modal-content">
 
-        <div class="modal-body">
-            <div class="form-group">
-            <label>시작 날짜·시간</label>
-            <input type="datetime-local" id="startDateTime" class="form-control">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dateTimeModalLabel">날짜와 시간 선택</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                    <label>시작 날짜·시간</label>
+                    <input type="datetime-local" id="startDateTime" class="form-control">
+                    </div>
+                    <div class="form-group">
+                    <label>종료 날짜·시간</label>
+                    <input type="datetime-local" id="endDateTime" class="form-control">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" id="saveDateTime" class="btn btn-primary">저장</button>
+                </div>
+
             </div>
-            <div class="form-group">
-            <label>종료 날짜·시간</label>
-            <input type="datetime-local" id="endDateTime" class="form-control">
-            </div>
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-            <button type="button" id="saveDateTime" class="btn btn-primary">저장</button>
-        </div>
-
         </div>
     </div>
+    <div class="modal" id="locModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">지역 선택</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-body-first">
+                        <input type="text" id="location-input" placeholder="찾으시는 지역을 입력하세요" autocomplete="off">
+                    </div>
+                    <div id="modal-body-second">
+                        <p class="location-list" style="display: none">서울시, 종로구</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="locationBtn">검색</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
