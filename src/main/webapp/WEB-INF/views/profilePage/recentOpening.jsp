@@ -144,6 +144,87 @@
             font-size: 10px;
             text-decoration: none;
         }
+
+        /*    main */
+        #list-card-section {
+            display:flex;
+            justify-content: start;
+            flex-wrap: wrap;
+            margin-left: 200px;
+        }
+        .opening-card {
+            background-color: white;
+            width: 250px;
+            height: 350px;
+            margin: 20px;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 2px 2px 5px rgba(59, 59, 59, 0.5);
+        }
+        .opening-card-image {
+            display:flex;
+            justify-content: center;
+            position:relative;
+        }
+        .opening-card-image > img {
+            /*width: 90%;*/
+            margin-top: 10px;
+            border-radius: 20px;
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+        .opening-card-image > img:hover {
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        .opening-card-species {
+            position:absolute;
+            width: 74px;
+            top: 160px;
+            left: 30px;
+            padding: 5px 10px;
+            margin: 5px;
+            font-weight: bold;
+            color: white;
+            background-color: #FD9596;
+            border-radius: 20px;
+        }
+        .opening-card-loc {
+            position:absolute;
+            width: 74px;
+            top: 160px;
+            left: 110px;
+            padding: 5px 10px;
+            margin: 5px;
+            font-weight: bold;
+            color: white;
+            background-color: #64DAFE;
+            border-radius: 20px;
+        }
+        .opening-card-date {
+            display: flex;
+            justify-content: start;
+            margin: 10px;
+        }
+        .opening-card-date > span {
+            font-size: small;
+            font-weight: bold;
+        }
+        .opening-card-careway {
+            display: flex;
+            justify-content: start;
+            margin: 10px;
+        }
+        .opening-card-priceper {
+            display: flex;
+            justify-content: end;
+            margin: 10px;
+            font-size: large;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -200,7 +281,108 @@
         <div class="container">
             <main class="pet-main">
 
-
+                <div id="list-card-section">
+                    <div class="opening-card">
+                        <div class="opening-card-image">
+                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
+                            <span class="opening-card-species" style="display:none">#고양이</span>
+                            <span class="opening-card-loc" style="display:none">#혜화동</span>
+                        </div>
+                        <div class="opening-card-date">
+                            <span>2025-08-15</span>
+                            &nbsp;~&nbsp;
+                            <span>2025-08-17</span>
+                        </div>
+                        <div class="opening-card-careway">
+                            <p>여기로 와주세요</p>
+                        </div>
+                        <div class="opening-card-priceper">
+                            <span class="opening-card-price">20000</span>
+                            원&nbsp;/&nbsp;
+                            <span class="opening-card-per">건당</span>
+                        </div>
+                    </div>
+                    <div class="opening-card">
+                        <div class="opening-card-image">
+                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
+                            <span class="opening-card-species" style="display:none">#고양이</span>
+                            <span class="opening-card-loc" style="display:none">#혜화동</span>
+                        </div>
+                        <div class="opening-card-date">
+                            <span>2025-08-15</span>
+                            &nbsp;~&nbsp;
+                            <span>2025-08-17</span>
+                        </div>
+                        <div class="opening-card-careway">
+                            <p>여기로 와주세요</p>
+                        </div>
+                        <div class="opening-card-priceper">
+                            <span class="opening-card-price">20000</span>
+                            원&nbsp;/&nbsp;
+                            <span class="opening-card-per">건당</span>
+                        </div>
+                    </div>
+                    <div class="opening-card">
+                        <div class="opening-card-image">
+                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
+                            <span class="opening-card-species" style="display:none">#고양이</span>
+                            <span class="opening-card-loc" style="display:none">#혜화동</span>
+                        </div>
+                        <div class="opening-card-date">
+                            <span>2025-08-15</span>
+                            &nbsp;~&nbsp;
+                            <span>2025-08-17</span>
+                        </div>
+                        <div class="opening-card-careway">
+                            <p>여기로 와주세요</p>
+                        </div>
+                        <div class="opening-card-priceper">
+                            <span class="opening-card-price">20000</span>
+                            원&nbsp;/&nbsp;
+                            <span class="opening-card-per">건당</span>
+                        </div>
+                    </div>
+                    <div class="opening-card">
+                        <div class="opening-card-image">
+                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
+                            <span class="opening-card-species" style="display:none">#고양이</span>
+                            <span class="opening-card-loc" style="display:none">#혜화동</span>
+                        </div>
+                        <div class="opening-card-date">
+                            <span>2025-08-15</span>
+                            &nbsp;~&nbsp;
+                            <span>2025-08-17</span>
+                        </div>
+                        <div class="opening-card-careway">
+                            <p>여기로 와주세요</p>
+                        </div>
+                        <div class="opening-card-priceper">
+                            <span class="opening-card-price">20000</span>
+                            원&nbsp;/&nbsp;
+                            <span class="opening-card-per">건당</span>
+                        </div>
+                    </div>
+                    <div class="opening-card">
+                        <div class="opening-card-image">
+                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
+                            <span class="opening-card-species" style="display:none">#고양이</span>
+                            <span class="opening-card-loc" style="display:none">#혜화동</span>
+                        </div>
+                        <div class="opening-card-date">
+                            <span>2025-08-15</span>
+                            &nbsp;~&nbsp;
+                            <span>2025-08-17</span>
+                        </div>
+                        <div class="opening-card-careway">
+                            <p>여기로 와주세요</p>
+                        </div>
+                        <div class="opening-card-priceper">
+                            <span class="opening-card-price">20000</span>
+                            원&nbsp;/&nbsp;
+                            <span class="opening-card-per">건당</span>
+                        </div>
+                    </div>
+                </div>
 
             </main>
         </div>
