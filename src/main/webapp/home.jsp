@@ -24,6 +24,7 @@
     <title>Title</title>
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <section class="home-content">
     <div class="sky">
         <img id="logo" src="image/logo.png" alt="Logo" />
@@ -224,5 +225,11 @@
         },
         { once: true }
     );
+
+    $(document).ready(function() {
+        $(document).on('click', '.search-bar', function(){
+            location.href='/search';
+        }); // click
+    }); // ready
 </script>
 </html>

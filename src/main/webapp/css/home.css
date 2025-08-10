@@ -53,6 +53,9 @@ body {
   width: 800px;
   z-index: 10;
 }
+.search-bar:hover {
+  cursor: pointer;
+}
 
 .search-bg {
   width: 100%;
