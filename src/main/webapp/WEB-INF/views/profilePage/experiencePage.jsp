@@ -91,24 +91,40 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <div class="entry">
                         <!-- View 모드 -->
                         <div class="view-mode">
-                            <div class="pet-care">
-                                <div class="care-date">2012.04.05</div>
-                                <div class="care-line">~</div>
-                                <div class="care-date">2023.05.11</div>
-                                <div class="care-speices">강아지</div>
-                                <div class="care-breed">
+                          <c:choose>
+                            <c:when test="${not empty ownerList}">
+                              <c:forEach var="exp" items="${ownerList}">
+                                <div class="pet-care" data-id="${exp.no}"
+                                 data-sdate="${exp.sDate}"
+                                 data-edate="${exp.eDate}"
+                                 data-species="${exp.species}"
+                                 data-breed="${exp.breed}">
+                                  <div class="care-date">${exp.sDate}</div>
+                                  <div class="care-line">~</div>
+                                  <div class="care-date">${exp.eDate}</div>
+
+                                  <div class="care-speices">${exp.species}</div>
+
+                                  <div class="care-breed">
                                     <div class="care-breed-box">
-                                        허스키
+                                      ${exp.breed}
                                     </div>
+                                  </div>
                                 </div>
-                            </div>
+                              </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                              <div class="empty">등록된 반려 경험이 없습니다.</div>
+                            </c:otherwise>
+                          </c:choose>
                         </div>
                         <!-- 수정모드 -->
-                        <form class="edit-mode" style="display: none;">
-                            <input type="date" class="input-sdate" value="sdate" />
-                            ~
-                            <input type="date" class="input-edate" value="edate" />
-                            <select class="input-care-spe">
+                        <form class="edit-mode" id="care-edit-form">
+                            <input type="hidden" name="id" />
+                            <input type="date" class="input-sdate" name="sDate" />
+                            <span style="margin:0 5px;">~</span>
+                            <input type="date" class="input-edate" name="eDate" />
+                            <select class="input-care-spe" name="species">
                                 <option>개</option>
                                 <option>고양이</option>
                                 <option>새</option>
@@ -117,13 +133,14 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                                 <option>햄스터</option>
                                 <option>기타</option>
                             </select>
-                            <input type="text" class="input-tag" value="허스키" />
+                            <input type="text" class="input-tag" name="breed"/>
                         </form>
                     </div>
                 </div>
                 <!-- 수정 버튼 -->
                 <div class="edit-btn-wrapper2">
-                <button id="toggle-edit-btn" class="edit-btn">수정</button>
+                    <button id="edit-save-btn"   class="btn hidden">수정</button>
+                    <button id="delete-cancel-btn" class="btn hidden">삭제</button>
                 </div>
                 <!-- 추가 버튼 -->
                 <div id="add-btn-wrapper" class="hidden">
@@ -165,7 +182,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                                 <input type="date" class="form-control" id="sdate" />
                                 </div>
                                 <div class="col-sm-2">
-                                <span class="mx-2">~</span>
+                                <span class="px-5 mx-auto">~</span>
                                 </div>
                                 <div class="col-sm-4">
                                 <input type="date" class="form-control" id="edate" />
@@ -186,32 +203,30 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 </h3>
                 <br>
                 <div class="card">
-                <div class="entry">
-                    <div class="pet-care">
-                        <div class="care-date">2012.04.05</div>
-                        <div class="care-line">~</div>
-                        <div class="care-date">2023.05.11</div>
-                        <div class="care-speices">강아지</div>
-                        <div class="care-breed">
-                            <div class="care-breed-box">
-                                허스키
-                            </div>
-                        </div>
+                    <div class="entry">
+                        <c:choose>
+                            <c:when test="${not empty sitterList}">
+                            <c:forEach var="exp" items="${sitterList}">
+                                <div class="pet-care">
+                                      <div class="care-date">${exp.sDate}</div>
+                                      <div class="care-line">~</div>
+                                      <div class="care-date">${exp.eDate}</div>
+
+                                      <div class="care-speices">${exp.species}</div>
+
+                                      <div class="care-breed">
+                                        <div class="care-breed-box">
+                                          ${exp.breed}
+                                        </div>
+                                      </div>
+                                </div>
+                            </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                              <div class="empty">등록된 반려 경험이 없습니다.</div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
-                </div>
-                <div class="entry">
-                    <div class="pet-care">
-                        <div class="care-date">2012.04.05</div>
-                        <div class="care-line">~</div>
-                        <div class="care-date">2023.05.11</div>
-                        <div class="care-speices">강아지</div>
-                        <div class="care-breed">
-                            <div class="care-breed-box">
-                                허스키
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 </div>
             </section>
 
@@ -222,9 +237,22 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <h4>대표 키워드 TOP3</h4>
                     <br>
                     <ul>
-                    <li>답장이 빠르고 매너가 좋아요.</li>
-                    <li>아이를 잘 케어해줘요.</li>
-                    <li>시간 약속을 잘 지켜요.</li>
+                      <c:choose>
+                        <c:when test="${not empty rateList}">
+                          <c:forEach var="row" items="${rateList}">
+                            <!-- row는 Map. entry는 Map.Entry -->
+                            <c:forEach var="entry" items="${row}">
+                              <li>
+                                ${entry.key}
+<%--                                <span class="count">(${entry.value})</span>--%>
+                              </li>
+                            </c:forEach>
+                          </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                          <li>아직 평가가 없습니다.</li>
+                        </c:otherwise>
+                      </c:choose>
                     </ul>
                 </div>
                 <div class="chart">
@@ -276,9 +304,12 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
     // 수정 
     $(document).ready(function () {
-    let isEditing = false;
+        let isEditing = false;
+        let state = 'idle';       // idle | selected | editing
+        let selectedId = null;    // 현재 선택된 경험 PK
+        const $form = $('#care-edit-form');
 
-    $('#toggle-edit-btn').click(function () {
+    $('#btn-edit').click(function () {
         isEditing = !isEditing;
 
         // 텍스트 변경
@@ -293,16 +324,35 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         }
 
         // 모드 전환
-        $('.view-mode').toggle(!isEditing); 
+        $('.view-mode').toggle(!isEditing);
         $('.edit-mode').toggle(isEditing);
 
         // 추가 버튼 보이기
         if(isEditing){
              $('#add-btn-wrapper').removeClass('hidden').addClass('flex-center');
+             $('#toggle-cancel-btn').removeClass('cancel-btn').addClass('display');
         }else{
-             $('#add-btn-wrapper').removeClass('flex-center').addClass('hidden');
+            const $form = $('.edit-mode');
+            $.ajax({
+                type: "POST",
+                url: "experience/update",
+                data: $form.serialize(),
+                success: function (data) {
+                    location.reload();
+                },error: function (data) {
+                    alert("저장중 오류가 발생!!");
+                    isEditing = true;
+                    $('#toggle-edit-btn').text('완료')
+                        .css({ backgroundColor:'#64DAFE', color:'white' });
+                    $('.view-mode').toggle(!isEditing);
+                    $('.edit-mode').toggle(isEditing);
+                }
+
+            });
+            $('#add-btn-wrapper').removeClass('flex-center').addClass('hidden');
+            $('#toggle-cancel-btn').removeClass('display').addClass('cancel-btn');
         }
-       
+
     });
     });
     $(document).ready(function () {
