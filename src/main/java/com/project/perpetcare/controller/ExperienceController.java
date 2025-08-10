@@ -70,6 +70,8 @@ public class ExperienceController {
             return ResponseEntity.status(401).body(Map.of("ok", false));
         }
         try {
+            experience.setuEmail(user.getEmail());
+            experience.setCategory(0);
             profileService.addExperience(experience);
             return ResponseEntity.ok(Map.of("ok", true));
         } catch (Exception e) {
