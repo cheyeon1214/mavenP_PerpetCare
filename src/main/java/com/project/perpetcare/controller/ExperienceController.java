@@ -6,15 +6,15 @@ import com.project.perpetcare.service.ProfileService;
 import com.project.perpetcare.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/experience")
 public class ExperienceController {
     @Autowired
@@ -25,20 +25,57 @@ public class ExperienceController {
 
 
     @PostMapping("/update")
-    public String update(HttpSession session, Model model, Experience experience) {
+    public ResponseEntity<?> update(HttpSession session, Experience experience) {
         User user = (User) session.getAttribute("user");
-        if(user == null) {
-            return "redirect:/login";
-        }
-        try{
-            List<Experience> lists= profileService.getSitterExperience(user.getEmail());
+        if (user == null) return ResponseEntity.status(401).body(Map.of("ok", false));
 
-            return null;
-        }catch(Exception e){
-            model.addAttribute("status", 500);
-            model.addAttribute("error", "Internal Server Error");
-            model.addAttribute("message", e.getMessage());
-            return "Error";
+        if (experience.getNo() == 0) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("ok", false));
+        }
+
+        try {
+            profileService.updateUserExperience(user.getEmail(), experience);
+            return ResponseEntity.ok().body(Map.of("ok", true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("ok", false));
         }
     }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> delete(HttpSession session,int no) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).body(Map.of("ok", false));
+        }
+
+        if (no <= 0) {
+            return ResponseEntity.badRequest().body(Map.of("ok", false, "message", "삭제 대상이 없습니다."));
+        }
+
+        try {
+            profileService.deleteUserExperience(user.getEmail(), no);
+            return ResponseEntity.ok(Map.of("ok", true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("ok", false));
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Map<String, Object>> addExperience(HttpSession session, Experience experience) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).body(Map.of("ok", false));
+        }
+        try {
+            profileService.addExperience(experience);
+            return ResponseEntity.ok(Map.of("ok", true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("ok", false));
+        }
+    }
+
 }
