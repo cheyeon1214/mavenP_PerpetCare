@@ -22,6 +22,14 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
     <style>
+        .page-container {
+            font-family: "Pretendard", sans-serif;
+            background-color: #ffffff;
+            min-height: 100vh;
+        }
+        .main-container{
+            margin-top: 100px;
+        }
         .profile-wrap {
             max-width: 640px;
             margin: 40px auto 80px;
@@ -31,15 +39,27 @@
             align-items: center;
         }
 
+        .back-btn {
+            position: absolute;
+            top: 130px;    /* 위쪽 여백 */
+            left: 50px;   /* 왼쪽 여백 */
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
         .profile-title {
+            text-align: center;
             font-size: 28px;
             font-weight: 700;
-            margin-bottom: 24px;
+            margin:24px 0;
         }
 
         .profile-avatar {
-            width: 140px; height: 140px;
-            border-radius: 24px;
+            width: 140px;
+            height: 140px;
+            border-radius: 20px;
             overflow: hidden;
             background: #f4f2ff;
             display: grid; place-items: center;
@@ -48,14 +68,16 @@
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
         .profile-change-btn {
-            border: 1px solid #cfe9ff;
-            background: #eaf6ff;
-            color: #31a8ff;
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 14px;
-            line-height: 1;
-            margin-bottom: 28px;
+            background-color: white;
+            margin:10px 0 40px 0;
+            color: #64dafe;
+            padding: 5px 30px;
+            border-radius: 10px;
+            border: none;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
         }
 
         .profile-form {
@@ -96,13 +118,16 @@
         }
 
         .profile-cta {
-            border: 1px solid #e9f4ff;
-            background: #f6fbff;
-            color: #3aa8ff;
-            padding: 8px 14px;
-            border-radius: 999px;
-            font-size: 13px;
-            line-height: 1;
+            background-color: white;
+            margin:5px 0 5px;
+            color: #64dafe;
+            padding: 5px 30px;
+            border-radius: 10px;
+            border: none;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
         }
 
         /* 간격 정리 */
@@ -120,11 +145,11 @@
         <%@ include file="/components/header.jsp" %>
         <div class="main-container">
             <div class="profile-wrap">
+                <button class="back-btn" onclick="history.back()">←</button>
                 <div class="profile-title">프로필</div>
-
                 <!-- 아바타 -->
                 <div class="profile-avatar">
-                    <img src="${pageContext.request.contextPath}/image/default1.svg" alt="프로필 이미지" />
+                    <img src="${pageContext.request.contextPath}/image/profile_1.svg" alt="프로필 이미지" />
                 </div>
                 <button type="button" class="profile-change-btn" id="profileImageChangeBtn">변경</button>
 
@@ -163,4 +188,7 @@
         <%@ include file="/components/footer.jsp" %>
     </div>
 </body>
+<script>
+
+</script>
 </html>
