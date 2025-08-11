@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>공고 보기</title>
+    <link rel="stylesheet" href="../../../css/global.css">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
@@ -21,6 +22,7 @@
 <style>
     body {
         margin: 0;
+        font-family: "Pretendard", sans-serif;
     }
 
     #title {

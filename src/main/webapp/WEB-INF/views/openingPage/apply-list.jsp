@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>공고 지원</title>
+    <link rel="stylesheet" href="../../../css/global.css">
+
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
@@ -69,7 +71,7 @@
 </head>
 <style>
 body{
-    box-sizing: border-box;
+    font-family: "Pretendard", sans-serif;
 }
 .body-section{
     width: 1000px;

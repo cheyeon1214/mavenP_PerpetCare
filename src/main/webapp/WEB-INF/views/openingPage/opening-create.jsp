@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>공고 작성하기</title>
+    <link rel="stylesheet" href="../../../css/global.css">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
@@ -192,6 +193,7 @@ $(document).ready(function() {
 <style>
     body {
         margin: 0;
+        font-family: "Pretendard", sans-serif;
     }
 
     #title {
@@ -221,7 +223,6 @@ $(document).ready(function() {
     #body-form{
         border-radius: 80px 80px 0 0;
         box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 20px 20px rgba(0,0,0,0.5);
-        height: 2200px;
     }
     .body-center{
         margin: auto;
@@ -606,6 +607,7 @@ $(document).ready(function() {
                     <input type="submit" class="submit-button" value="작성하기">
                 </div>
             </form>
+            <%@ include file="/components/footer.html" %>
         </div>
     </div>
     <!-- The Modal -->

@@ -146,6 +146,16 @@ public class User {
         int age = LocalDate.now().getYear() - birthDate.getYear();
         return (age / 10) * 10 + "대";
     }
+    public String getGenderStr() {
+        if (gender == null || gender.isEmpty()) {
+            return "모름";
+        }
+        else if(gender.equals("f")){
+            return "여성";
+        }else{
+            return "남성";
+        }
+    }
 
     public String getImagePath() {
         if (image >= 1 && image <= 6) {

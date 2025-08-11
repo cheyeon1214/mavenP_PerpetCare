@@ -1,14 +1,12 @@
 package com.project.perpetcare.controller;
 
-import com.project.perpetcare.domain.Apply;
-import com.project.perpetcare.domain.Opening;
-import com.project.perpetcare.domain.Pet;
-import com.project.perpetcare.domain.User;
+import com.project.perpetcare.domain.*;
 import com.project.perpetcare.domain.enums.ApplyStatus;
 import com.project.perpetcare.dto.ApplyUserDTO;
 import com.project.perpetcare.service.ApplyService;
 import com.project.perpetcare.service.OpeningService;
 import com.project.perpetcare.service.PetService;
+import com.project.perpetcare.service.ProfileService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +28,12 @@ public class ApplyController {
 
     @Autowired
     private OpeningService openingService;
+
     @Autowired
     private PetService petService;
+
+    @Autowired
+    private ProfileService profileService;
 
     @GetMapping("/apply")
     public String getApply(int no, Model model, HttpSession session) throws Exception {
@@ -49,6 +51,10 @@ public class ApplyController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             model.addAttribute("sDateStr", opening.getsDate().format(formatter));
             model.addAttribute("eDateStr", opening.geteDate().format(formatter));
+            List<Experience> sitterList = profileService.getSitterExperience(user.getEmail());
+            List<Experience> ownerList = profileService.getOwnerExperience(user.getEmail());
+            session.setAttribute("sitterList", sitterList);
+            session.setAttribute("ownerList", ownerList);
             return "openingPage/opening-apply";
         } catch (Exception e) {
             model.addAttribute("status", 500);

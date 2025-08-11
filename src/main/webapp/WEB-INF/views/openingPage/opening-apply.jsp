@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>공고 지원</title>
+    <link rel="stylesheet" href="../../../css/global.css">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
@@ -25,15 +26,16 @@ body{
 .body-section{
     width: 1000px;
     margin: auto;
+    font-family: "Pretendard", sans-serif;
 }
 .header-top{
     height: 100px;
     background-color: white;
 }
-.title{
+.title, h3{
     margin-top: 70px;
     font-size: 38px;
-    font-weight: bold;
+    font-weight: 500;
     margin-bottom: 15px;
 }
 .container-box{
@@ -151,29 +153,6 @@ textarea::placeholder {
     font-size: 22px;
 }
 
-.pet-care{
-    display: flex;
-    font-size: 20px;
-    text-align: center;
-    align-items: center;
-    margin-top: 25px;
-}
-.care-date{
-    width: 30%;
-}
-.care-speices{
-    width: 18%;
-}
-.care-breed{
-    width: 20%;
-}
-.care-breed-box {
-    display: inline-block; 
-    padding: 5px 10px;      
-    background-color: #FD9596;
-    border-radius: 10px;
-    color: white;
-}
 .submit-button{
     display: block; 
     margin: auto;
@@ -187,6 +166,93 @@ textarea::placeholder {
     border-radius: 15px;
     margin-bottom: 200px;
 }
+
+
+.history{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.experience-main h3 {
+    font-weight: bold;
+}
+
+
+.card {
+    margin: auto;
+    width: 1040px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-radius: 20px !important;
+    padding: 20px 0 20px 0;
+    background-color: white;
+}
+
+/* 하나의 이력 row */
+.entry {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+}
+
+/* 전체 이력 정보 묶음 */
+.pet-care {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 40px;
+    cursor: pointer;
+}
+
+.pet-care.selected {
+    border-color:#64DAFE;
+    background:rgba(100,218,254,.5);
+    border-radius: 10px;
+}
+
+/* 날짜 */
+.care-date {
+    width: 140px;
+    text-align: center;
+}
+
+/* ~ 표시 */
+.care-line {
+    width: 30px;
+    text-align: center;
+}
+
+/* 종 (강아지, 고양이 등) */
+.care-speices {
+    width: 80px;
+    text-align: center;
+}
+
+/* 품종 */
+.care-breed {
+    width: 100px;
+    text-align: center;
+}
+
+.care-breed-box {
+    display: inline-block;
+    background-color: #FD9596;
+    color: white;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+
 </style>
 
 <body>
@@ -296,60 +362,89 @@ textarea::placeholder {
 
         <textarea class="text-box" id="one-text" name="text" placeholder="나를 어필할 수 있는 간단한 소개를 적어주세요."></textarea>
 
-    <div class="title">돌봄 이력</div>
-    <div class="container-box">
-        <div class="pet-care">
-            <div class="care-date">2012.04.05</div>
-            <div class="care-line">~</div>
-            <div class="care-date">2023.05.11</div>
-            <div class="care-speices">강아지</div>
-            <div class="care-breed">
-                <div class="care-breed-box">
-                    허스키
-                </div>
+
+
+    <section class="history">
+        <div class="owner">
+            <h3>돌봄 이력</h3>
+            <br>
+            <div class="card">
+                <div class="entry">
+                    <div class="view-mode">
+                      <c:choose>
+                        <c:when test="${not empty ownerList}">
+                          <c:forEach var="exp" items="${ownerList}">
+                            <div class="pet-care" data-id="${exp.no}"
+                             data-sdate="${exp.sDate}"
+                             data-edate="${exp.eDate}"
+                             data-species="${exp.species}"
+                             data-breed="${exp.breed}">
+                              <div class="care-date">${exp.sDate}</div>
+                              <div class="care-line">~</div>
+                              <div class="care-date">
+                                  <c:choose>
+                                    <c:when test="${empty exp.eDate}">현재</c:when>
+                                    <c:otherwise>${exp.eDate}</c:otherwise>
+                                  </c:choose>
+                              </div>
+                              <div class="care-speices">${exp.species}</div>
+
+                              <div class="care-breed">
+                                <div class="care-breed-box">
+                                  ${exp.breed}
+                                </div>
+                              </div>
+                            </div>
+                          </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                          <div class="empty">등록된 반려 경험이 없습니다.</div>
+                        </c:otherwise>
+                      </c:choose>
+                    </div>
+                    </div>
             </div>
         </div>
-        <div class="pet-care">
-            <div class="care-date">2012.04.05</div>
-            <div class="care-line">~</div>
-            <div class="care-date">2023.05.11</div>
-            <div class="care-speices">강아지</div>
-            <div class="care-breed">
-                <div class="care-breed-box">
-                    허스키
-                </div>
+
+        <div class="sitter">
+        <h3>
+        PerpetCare 시터 이력
+        </h3>
+        <br>
+        <div class="card">
+            <div class="entry">
+                <c:choose>
+                    <c:when test="${not empty sitterList}">
+                    <c:forEach var="exp" items="${sitterList}">
+                        <div class="pet-care">
+                              <div class="care-date">${exp.sDate}</div>
+                              <div class="care-line">~</div>
+                              <div class="care-date">${exp.eDate}</div>
+
+                              <div class="care-speices">${exp.species}</div>
+
+                              <div class="care-breed">
+                                <div class="care-breed-box">
+                                  ${exp.breed}
+                                </div>
+                              </div>
+                        </div>
+                    </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                      <div class="empty">등록된 반려 경험이 없습니다.</div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
-    </div>
-    <div class="title">PerpetCare 시터 이력</div>
-    <div class="container-box">
-        <div class="pet-care">
-            <div class="care-date">2012.04.05</div>
-            <div class="care-line">~</div>
-            <div class="care-date">2023.05.11</div>
-            <div class="care-speices">강아지</div>
-            <div class="care-breed">
-                <div class="care-breed-box">
-                    허스키
-                </div>
-            </div>
         </div>
-        <div class="pet-care">
-            <div class="care-date">2012.04.05</div>
-            <div class="care-line">~</div>
-            <div class="care-date">2023.05.11</div>
-            <div class="care-speices">강아지</div>
-            <div class="care-breed">
-                <div class="care-breed-box">
-                    허스키
-                </div>
-            </div>
-        </div>
-    </div>
+    </section>
+
     <div id="button-wrapper"></div>
         <input type="submit" class="submit-button" value="내 프로필로 지원하기">
     </form>
     </div>
+    <%@ include file="/components/footer.html" %>
 
 
 </body>

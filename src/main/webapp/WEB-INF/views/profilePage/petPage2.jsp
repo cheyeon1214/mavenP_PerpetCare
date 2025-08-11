@@ -457,7 +457,7 @@
                         </div>
                         <div class="info-right">
                             <div class="grade">${user.grade}</div>
-                            <div class="gender">${user.gender}</div>
+                            <div class="gender">${user.genderStr}</div>
                             <div class="age">${user.ageGroup}</div>
                         </div>
                     </div>
