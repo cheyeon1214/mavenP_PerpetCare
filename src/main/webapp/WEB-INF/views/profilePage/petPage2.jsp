@@ -431,55 +431,62 @@
     <div class="petPage-container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-top">
-                <div class="profile">
-                    <img
-                            src="../../..${user.imagePath}"
-                            alt="프로필"
-                            class="profile-img"
-                    />
-                    <div class="info">
-                        <div class="name">${user.name}</div>
+          <div class="sidebar-top">
+            <div class="profile">
+              <img
+                src="../../..${user.imagePath}"
+                alt="프로필"
+                class="profile-img"
+              />
+              <div class="info">
+                    <div class="name">${user.name}</div>
+              </div>
+              <div class="info">
+                    <div class="info-left">
+                        <div class="grede-text">등급</div>
+                        <div class="gender-text">성별</div>
+                        <div class="age-text">연령대</div>
                     </div>
-                    <div class="info">
-                        <div class="info-left">
-                            <div class="grede-text">등급</div>
-                            <div class="gender-text">성별</div>
-                            <div class="age-text">연령대</div>
-                        </div>
-                        <div class="info-middle">
-                            <img
-                                    class="grade-badge"
-                                    id="gradeBadge"
-                                    src="../../../image/grade/grade_${user.grade}.svg"
-                                    alt="grade-badge"
-                            />
-                        </div>
-                        <div class="info-right">
-                            <div class="grade">${user.grade}</div>
-                            <div class="gender">${user.genderStr}</div>
-                            <div class="age">${user.ageGroup}</div>
-                        </div>
+                    <div class="info-middle">
+                        <img
+                        class="grade-badge"
+                        id="gradeBadge"
+                        src="../../../image/grade/grade_${user.grade}.svg"
+                        alt="grade-badge"
+                        />
                     </div>
-                </div>
-                <div class="edit-btn-wrapper1">
-                    <button class="edit-btn">수정</button>
-                </div>
-                <div class="nav">
-                    <a href="/petPage" class="active">반려동물</a>
-                    <a href="/experiencePage" >경험</a>
-                    <a href="/opening/mine">올린 공고</a>
-                    <a href="/opening/myApply">신청한 공고</a>
-                    <a href="/opening/recent">최근 본 공고</a>
-                </div>
+                    <div class="info-right">
+                        <div class="grade">${user.grade}</div>
+                        <div class="gender">${user.gender}</div>
+                        <div class="age">${user.ageGroup}</div>
+                    </div>
+              </div>
             </div>
-            <div class="logout"><a href="#">로그아웃</a></div>
+              <c:if test="${not empty user}">
+                <div class="edit-btn-wrapper1">
+                <button class="edit-btn" onclick="location.href='${pageContext.request.contextPath}/myInfo'">수정</button>
+                </div>
+              </c:if>
+
+            <div class="nav">
+              <a href="/petPage">반려동물</a>
+              <a href="/experiencePage" class="active">경험</a>
+              <c:if test="${not empty user}">
+              <a href="/opening/mine">올린 공고</a>
+              <a href="/opening/myApply">신청한 공고</a>
+              <a href="/opening/recent">최근 본 공고</a>
+              </c:if>
+            </div>
+          </div>
+        <c:if test="${not empty user}">
+          <div class="logout"><a href="/logout">로그아웃</a></div>
+        </c:if>
         </aside>
 
         <!-- Main Content -->
         <div class="container">
             <main class="pet-main">
-                <c:forEach var="pet" items="${petList}">
+                <c:forEach var="pet" items="${petlist}">
                     <%--조회 모드--%>
                     <div class="pet-container" data-pet-no="${pet.no}" data-uEmail="${sessionScope.uEmail}">
                         <div class="pet-view-mode" id="viewContainer">
@@ -502,118 +509,8 @@
                                 </div>
                             </div>
                         </div>
-
-                            <%-- 수정 모드 --%>
-                        <div class="pet-edit-mode" style="display: none;">
-                            <form id="editFormContainer" class="pet-edit-container" method="post" action="/updatePet"
-                                  enctype="multipart/form-data">
-                                <input type="hidden" name="no" value="${pet.no}">
-                                <input type="hidden" name="uEmail" value="${sessionScope.uEmail}">
-
-                                <div class="pet-image">
-                                    <label>
-                                        <img src="data:image/jpeg;base64,${pet.base64Image}" alt="펫 이미지" class="editable-image">
-                                        <input type="file" name="imageFile" accept="image/*" style="display:none;">
-                                    </label>
-                                    <input type="text" name="name" value="${pet.name}" placeholder="이름">
-                                </div>
-                                <div class="right-side">
-                                    <div class="pet-info-box">
-                                        <div class="form-group">
-                                            <label>종</label>
-                                            <select name="species">
-                                                <option value="">반려동물 종을 선택해주세요</option>
-                                                <option value="개" ${pet.species == '개' ? 'selected' : ''}>개</option>
-                                                <option value="고양이" ${pet.species == '고양이' ? 'selected' : ''}>고양이</option>
-                                                <option value="토끼" ${pet.species == '토끼' ? 'selected' : ''}>토끼</option>
-                                                <option value="물고기" ${pet.species == '물고기' ? 'selected' : ''}>물고기</option>
-                                                <option value="새" ${pet.species == '새' ? 'selected' : ''}>새</option>
-                                                <option value="햄스터" ${pet.species == '햄스터' ? 'selected' : ''}>햄스터</option>
-                                                <option value="기타" ${pet.species == '기타' ? 'selected' : ''}>기타</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>품종</label>
-                                            <input type="text" name="breed" placeholder="품종을 입력해주세요">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>성별</label>
-                                            <div class="radio-group">
-                                                <label><input type="radio" name="gender"
-                                                              value="f" ${pet.gender == 'f' ? 'checked' : ''}> 여</label>
-                                                <label><input type="radio" name="gender"
-                                                              value="m" ${pet.gender == 'm' ? 'checked' : ''}> 남</label>
-                                                <label><input type="radio" name="gender"
-                                                              value="n" ${pet.gender == 'n' ? 'checked' : ''}> 모름</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>생년월일</label>
-                                            <input type="date" name="bDate" value="${pet.bDate}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="pet-actions">
-                                <button type="submit" class="btn btn-save">저장</button>
-                            </div>
-
                         </div>
-                    </div>
-                </c:forEach>
-                <div class="add-card" id="addPetBtn">
-                    <div class="plus-icon">+</div>
-                    반려동물 추가하기
-                </div>
-                <div class="pet-add-container" style="display: none">
-                    <form id="addFormContainer" action="/registerPet" method="post" enctype="multipart/form-data">
-                        <div class="image-box">
-                            <img id="preview" src="../../../image/default.png" alt="미리보기 이미지">
-                            </div>
-                            <input type="file" id="petImage" name="imageFile" accept="image/*" style="display:none;">
-                        <div class="form-fields">
-                            <div class="form-group">
-                                <%-- session 넣으면 수정해야함!!!!!!!!!!!!!--%>
-                                <input type="hidden" name="uEmail" value="${sessionScope.uEmail}">
-                                <label>이름</label>
-                                <input type="text" name="name" placeholder="이름을 입력해주세요">
-                            </div>
-                            <div class="form-group">
-                                <label>종</label>
-                                <select name="species">
-                                    <option value="">반려동물 종을 선택해주세요</option>
-                                    <option value="개">개</option>
-                                    <option value="고양이">고양이</option>
-                                    <option value="토끼">토끼</option>
-                                    <option value="물고기">물고기</option>
-                                    <option value="새">새</option>
-                                    <option value="햄스터">햄스터</option>
-                                    <option value="기타">기타</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>품종</label>
-                                <input type="text" name="breed" placeholder="품종을 입력해주세요">
-                            </div>
-                            <div class="form-group">
-                                <label>성별</label>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="gender" value="f"> 여</label>
-                                    <label><input type="radio" name="gender" value="m"> 남</label>
-                                    <label><input type="radio" name="gender" value="n"> 모름</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>생년월일</label>
-                                <input type="date" name="bDate">
-                            </div>
-                        </div>
-                    </form>
-                    <div class="pet-add-actions">
-                        <button class="btn btn-register" type="submit">등록</button>
-                        <button class="btn btn-add-cancel">취소</button>
-                    </div>
-                </div>
+                        </c:forEach>
             </main>
         </div>
     </div>
