@@ -64,9 +64,15 @@
 		WHERE to_email = #{value}
 	</select>
 
-	<update id="updateUserInfo" parameterType="User">
+	<update id="updateUserPwd" parameterType="User">
 		UPDATE user
-		SET u_pwd=#{pwd},u_phone=#{phone}
+		SET u_pwd=#{pwd}
+		WHERE u_email=#{email}
+	</update>
+
+	<update id="updateUserPhone" parameterType="User">
+		UPDATE user
+		SET u_phone=#{phone}
 		WHERE u_email=#{email}
 	</update>
 	

@@ -33,11 +33,15 @@ public class ProfileDAO {
         return sqlSession.selectList(NS+"getUserRate", email);
     }
 
-    public void updateUserInfo(User user) throws Exception {
-        sqlSession.update(NS+"updateUserInfo", user);
+    public void updateUserPwd(User user) throws Exception {
+        sqlSession.update(NS+"updateUserPwd", user);
     }
 
-    public void updateUserImg(String email,String image) throws Exception {
+    public void updateUserPhone(User user) throws Exception {
+        sqlSession.update(NS+"updateUserPhone", user);
+    }
+
+    public void updateUserImg(String email,int image) throws Exception {
         HashMap<String,Object> map = new HashMap<>();
         map.put("email",email);
         map.put("image",image);

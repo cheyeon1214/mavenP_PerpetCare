@@ -32,11 +32,15 @@ public class ProfileService {
         return profileDAO.getUserRate(email);
     }
 
-    public void updateUserInfo(User user) throws Exception{
-        profileDAO.updateUserInfo(user);
+    public void updateUserPwd(User user) throws Exception{
+        profileDAO.updateUserPwd(user);
     }
 
-    public void updateUserImg(String email,String image) throws Exception{
+    public void updateUserPhone(User user) throws Exception {
+        profileDAO.updateUserPhone(user);
+    }
+
+    public void updateUserImg(String email,int image) throws Exception{
         profileDAO.updateUserImg(email,image);
     }
 
