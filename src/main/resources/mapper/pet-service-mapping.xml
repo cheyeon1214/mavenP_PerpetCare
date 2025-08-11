@@ -40,22 +40,3 @@
 	delete from pet where p_no=#{no}
 </delete>
 </mapper>
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
