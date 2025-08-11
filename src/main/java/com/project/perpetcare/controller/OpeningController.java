@@ -39,17 +39,22 @@ public class OpeningController {
     private PetService petService;
 
     @GetMapping("/detail")
-    public String getOpening(int no, Model model){
+    public String getOpening(int no, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
         try{
             Opening opening = openingService.getOpening(no);
             List<Pet> pets = opening.getPets();
             petService.encodePetImages(pets);
             model.addAttribute("opening", opening);
-            User user = profileService.getUserInfo(opening.getuEmail());
+            User owner = profileService.getUserInfo(opening.getuEmail());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             model.addAttribute("sDateStr", opening.getsDate().format(formatter));
             model.addAttribute("eDateStr", opening.geteDate().format(formatter));
             model.addAttribute("user", user);
+            model.addAttribute("owner", owner);
             return "openingPage/opening-view";
         }catch (Exception e){
             model.addAttribute("error", "Internal Server Error");
@@ -186,6 +191,9 @@ public class OpeningController {
         if (user == null) return "redirect:/login";
         try{
             List<ApplyUserDTO> myApplyList = applyService.getApplyList(user.getEmail());
+            for(ApplyUserDTO myApply : myApplyList){
+                System.out.println(myApply);
+            }
             List<Opening> accept = new ArrayList<>();
             List<Opening> reject  = new ArrayList<>();
             List<Opening> pending = new ArrayList<>();
@@ -195,8 +203,15 @@ public class OpeningController {
 
             for(ApplyUserDTO myApply : myApplyList){
                 Opening op = openingService.getOpening(myApply.getoNo());
-                op.setsDateStr(op.getsDate() != null ? op.getsDate().toLocalDate().format(F) : "");
-                op.seteDateStr(op.geteDate() != null ? op.geteDate().toLocalDate().format(F) : "");
+                if (op == null) {
+                    System.err.println("[myApply] Opening not found or filtered by join. oNo=" + myApply.getoNo()
+                            + ", aNo=" + myApply.getaNo() + ", status=" + myApply.getaStatus());
+                    continue; // 일단 건너뛴다
+                }
+
+                // 날짜 문자열 세팅 (null 세이프)
+                if (op.getsDate() != null) op.setsDateStr(op.getsDate().toLocalDate().format(F));
+                if (op.geteDate() != null) op.seteDateStr(op.geteDate().toLocalDate().format(F));
                 List<Pet> pets = op.getPets();
                 if (pets != null && !pets.isEmpty()) {
                     petService.encodePetImages(pets);
@@ -212,6 +227,16 @@ public class OpeningController {
                     pending.add(op);
                 }
             }
+            for(Opening my : pending){
+                System.out.println(pending);
+            }
+            for(Opening my : accept){
+                System.out.println(accept);
+            }
+            for(Opening my : reject){
+                System.out.println(reject);
+            }
+
 
             model.addAttribute("user", user);
             model.addAttribute("accept", accept);
@@ -221,8 +246,10 @@ public class OpeningController {
             model.addAttribute("userProfile", userProfile);
             return "profilePage/applyOpening";
         } catch (Exception e) {
-            model.addAttribute("error", "Internal Server Error");
-            model.addAttribute("message", e.getMessage());
+//            model.addAttribute("error", "Internal Server Error");
+//            model.addAttribute("message", e.getMessage());
+//            return "Error";
+            e.printStackTrace();
             return "Error";
         }
 

@@ -434,12 +434,12 @@
             <div class="sidebar-top">
                 <div class="profile">
                     <img
-                            src="../../../image/profile_1.svg"
+                            src="../../..${user.imagePath}"
                             alt="프로필"
                             class="profile-img"
                     />
                     <div class="info">
-                        <div class="name">taeran</div>
+                        <div class="name">${user.name}</div>
                     </div>
                     <div class="info">
                         <div class="info-left">
@@ -450,14 +450,15 @@
                         <div class="info-middle">
                             <img
                                     class="grade-badge"
-                                    src="../../../image/grade/grade_Silver.svg"
+                                    id="gradeBadge"
+                                    src="../../../image/grade/grade_${user.grade}.svg"
                                     alt="grade-badge"
                             />
                         </div>
                         <div class="info-right">
-                            <div class="grade">Silver</div>
-                            <div class="gender">여성</div>
-                            <div class="age">20대</div>
+                            <div class="grade">${user.grade}</div>
+                            <div class="gender">${user.gender}</div>
+                            <div class="age">${user.ageGroup}</div>
                         </div>
                     </div>
                 </div>
@@ -467,9 +468,9 @@
                 <div class="nav">
                     <a href="/petPage" class="active">반려동물</a>
                     <a href="/experiencePage" >경험</a>
-                    <a href="#">올린 공고</a>
-                    <a href="#">신청한 공고</a>
-                    <a href="#">최근 본 공고</a>
+                    <a href="/opening/mine">올린 공고</a>
+                    <a href="/opening/myApply">신청한 공고</a>
+                    <a href="/opening/recent">최근 본 공고</a>
                 </div>
             </div>
             <div class="logout"><a href="#">로그아웃</a></div>

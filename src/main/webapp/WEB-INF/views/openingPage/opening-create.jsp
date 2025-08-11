@@ -467,7 +467,7 @@ $(document).ready(function() {
                 <div class="profile-card">
                     <div class="card-section">
                         <div class="card-left">
-                            <img src="../../../image/profile_1.svg" alt="profileImg">
+                            <img src="../../../image/profile_${user.image}.svg" alt="profileImg">
                         </div>
                         <input type="hidden" name="uEmail" value="${user.email}">
                         <div class="card-right">

@@ -188,7 +188,7 @@
         }
         .opening-pet-img{
             margin-top: -80px;
-            width: 230px;
+            width: 300px;
         }
 
         .card-text-section{
@@ -206,7 +206,7 @@
         }
 
         .card-text-section-left{
-            width: 230px;
+            width: 290px;
             padding: 30px;
 
         }
@@ -366,7 +366,13 @@
                     </div>
                     <div class="sub-title">진행중인 공고</div>
                 </div>
-
+                <c:choose>
+                <c:when test="${empty pending}">
+                <div class="opening-section" style="margin-top: 50px; padding:24px; border-radius:20px; text-align:center;">
+                    진행중인 공고가 없습니다.
+                </div>
+                </c:when>
+                <c:otherwise>
                 <c:forEach var="op" items="${pending}">
                 <div class="opening-section">
                     <div class="opening-section-line">
@@ -416,6 +422,8 @@
                     </div>
                 </div>
                 </c:forEach>
+                </c:otherwise>
+                </c:choose>
 
                 <div class="sub-title-section">
                     <div class="sub-img">
@@ -425,7 +433,13 @@
                 </div>
 
                 <!-- 마감된 공고 -->
-
+                <c:choose>
+                <c:when test="${empty reject and empty accept}">
+                <div class="opening-section" style="margin-top: 50px; padding:24px; border-radius:20px; text-align:center;">
+                    마감된 공고가 없습니다.
+                </div>
+                </c:when>
+                <c:otherwise>
                 <c:forEach var="op" items="${accept}">
                 <div class="opening-section finish">
                     <div class="opening-section-line">
@@ -497,6 +511,7 @@
 
                 <!-- 마감된 공고 -->
 
+
                 <c:forEach var="op" items="${reject}">
                 <div class="opening-section finish">
                     <div class="opening-section-line">
@@ -542,6 +557,8 @@
                     <div class="non-match-text">매칭이 되지 않았습니다.</div>
                 </div>
                 </c:forEach>
+                </c:otherwise>
+                </c:choose>
 
             </main>
     </div>

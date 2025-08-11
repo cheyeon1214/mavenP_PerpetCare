@@ -217,7 +217,7 @@
                 <div class="profile-card">
                     <div class="card-section">
                         <div class="card-left">
-                            <img src="../../../image/profile_1.svg" alt="profileImg">
+                            <img src="../../../image/profile_${owner.image}.svg" alt="profileImg">
                         </div>
                         <div class="card-right">
                             <div class="card-right-name">
@@ -228,17 +228,17 @@
                             </div>
 
                             <div class="card-right-text">
-                                <div class="card-text">${opening.uEmail}</div>
+                                <div class="card-text">${owner.email}</div>
                                 <c:choose>
-                                    <c:when test="${user.gender == 'f'}">
+                                    <c:when test="${owner.gender == 'f'}">
                                         <div class="card-text">여성</div>
                                     </c:when>
                                     <c:otherwise>
                                         <div class="card-text">남성</div>
                                     </c:otherwise>
                                 </c:choose>
-                                <div class="card-text">${user.ageGroup}</div>
-                                <div class="card-text">${user.grade}</div>
+                                <div class="card-text">${owner.ageGroup}</div>
+                                <div class="card-text">${owner.grade}</div>
                             </div>
                             
                         </div>
@@ -340,11 +340,13 @@
                     ${opening.detail}
                 </div>
 
-                <div id="button-wrapper"></div>
-                <form action="/apply" method="get">
-                    <input type="hidden" name="no" value="${opening.no}">
-                    <input type="submit" class="submit-button" value="지원하기">
-                </form>
+               <c:if test="${user.email != opening.uEmail}">
+                    <div id="button-wrapper"></div>
+                    <form action="/apply" method="get">
+                        <input type="hidden" name="no" value="${opening.no}">
+                        <input type="submit" class="submit-button" value="지원하기">
+                    </form>
+                </c:if>
                 </div>
             <%@ include file="/components/footer.html" %>
             </div>

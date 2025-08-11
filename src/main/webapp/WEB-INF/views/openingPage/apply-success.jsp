@@ -273,9 +273,9 @@
         <p class="gif-text">지원 완료!</p>
     </div>
     <div class="action-links">
-        <a href="/home.html" class="home-link">홈으로 가기</a>
+        <a href="/home.jsp" class="home-link">홈으로 가기</a>
         <span class="divider">|</span>
-        <a href="#" class="apply-link">다른 공고 보러가기</a>
+        <a href="/search" class="apply-link">다른 공고 보러가기</a>
     </div>
 </div>
 <div class="footer-space"></div>
