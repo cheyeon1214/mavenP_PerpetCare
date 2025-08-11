@@ -29,7 +29,7 @@ public class ProfileController {
                 return "redirect:/login";
             }
             model.addAttribute("user", user);
-            return "profilePage/petPage";
+            return "profilePage/petPage2";
         } catch (Exception e) {
             e.printStackTrace();
             return "Error";
@@ -57,6 +57,15 @@ public class ProfileController {
             model.addAttribute("message", e.getMessage());
             return "Error";
         }
+    }
+
+    @GetMapping("/myInfo")
+    public String myInfo(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if(user == null) {
+            return "redirect:/login";
+        }
+        return "profilePage/myInfo";
     }
 
 

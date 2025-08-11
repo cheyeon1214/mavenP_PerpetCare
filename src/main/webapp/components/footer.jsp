@@ -1,0 +1,112 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: raniii
+  Date: 25. 8. 11.
+  Time: 오후 3:30
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>footer</title>
+    <style>
+        .footer {
+            position: relative;
+            width: 100%;
+            padding-top: 100px;
+            padding-bottom: 60px;
+            color: #333;
+            font-family: "Pretendard", sans-serif;
+            overflow: hidden;
+            z-index:101;
+        }
+
+        .footer-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            z-index: 0;
+        }
+
+        .footer-text-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-around;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2%;
+            gap: 20px;
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
+        .footer-left {
+            text-align: left;
+        }
+
+        .footer-left,
+        .footer-right {
+            margin-top: 50px;
+            flex: 1;
+        }
+
+        .footer-left h4,
+        .footer-right h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .footer-left p,
+        .footer-right p,
+        .footer-left a {
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 0;
+            display: block;
+            color: #333;
+        }
+
+        .footer-bottom {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin-top: 130px;
+            font-size: 14px;
+            color: #222;
+        }
+
+    </style>
+</head>
+<body>
+    <footer class="footer">
+        <img src="${pageContext.request.contextPath}/image/footer.png" class="footer-img" />
+
+        <div class="footer-text-wrapper">
+            <div class="footer-left">
+                <h4>Contact</h4>
+                <p>Taeran Lee</p>
+                <p>Yoenjung Jang</p>
+                <p>Chaeyeon Kawk</p>
+                <p>Kahyun Park</p>
+            </div>
+
+            <div class="footer-right">
+                <h4>Service</h4>
+                <p>펫 시터 매칭 서비스</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2025 한국소프트웨어산업협회. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>
