@@ -48,7 +48,7 @@
             <c:when test="${not empty sessionScope.user}">
                 <!-- 로그인한 경우 -->
                 <div class="sign-in mypage">
-                    <a href="/mypage">
+                    <a href="/petPage">
                         <img src="image/homeImg/signincloud.png" alt="My Page" />
                         <strong>My Page</strong>
                     </a>
