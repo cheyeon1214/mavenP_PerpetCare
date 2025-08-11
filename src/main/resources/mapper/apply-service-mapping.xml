@@ -84,6 +84,15 @@
 		JOIN User u ON a.u_email = u.u_email
 		WHERE a.u_email = #{value}
 	</select>
+
+	<select id="getApplyUserById" parameterType="int" resultType="ApplyUserDTO">
+		SELECT a.a_no    AS aNo,
+		a.o_no    AS oNo,
+		a.u_email AS uEmail,
+		a.a_status AS aStatus
+		FROM apply a
+		WHERE a.a_no = #{aNo}
+	</select>
 </mapper>
 
  

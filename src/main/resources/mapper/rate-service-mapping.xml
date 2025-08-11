@@ -83,4 +83,11 @@
 		ORDER BY count DESC, r_text DESC LIMIT 3;
 	</select>
 
+	<select id="countUserRate" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM rate
+		WHERE from_email = #{fromEmail}
+		AND o_no = #{oNo}
+	</select>
+
 </mapper>

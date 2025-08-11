@@ -20,7 +20,6 @@ public class RateDAO {
 
     public void addUserRate(Rate rate) throws Exception {
         sqlSession.insert(NS+"addUserRate", rate);
-        sqlSession.commit();
     }
 
     public int getRateNum(String email) throws Exception {
@@ -33,7 +32,6 @@ public class RateDAO {
 
     public void updateUserGrade(User user) throws Exception {
         sqlSession.update(NS+"updateUserGrade", user);
-        sqlSession.commit();
     }
 
     public String getUserGrade(String email) throws Exception {
@@ -50,5 +48,12 @@ public class RateDAO {
             result.add(temp);
         }
         return result;
+    }
+
+    public int countUserRate(String fromEmail, int oNo) {
+        return sqlSession.selectOne(NS + "countUserRate", Map.of(
+                "fromEmail", fromEmail,
+                "oNo", oNo
+        ));
     }
 }
