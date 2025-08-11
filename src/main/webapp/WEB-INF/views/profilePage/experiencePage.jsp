@@ -59,7 +59,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             </div>
               <c:if test="${not empty user}">
                 <div class="edit-btn-wrapper1">
-                <button class="edit-btn">수정</button>
+                <button class="edit-btn" onclick="location.href='${pageContext.request.contextPath}/myInfo'">수정</button>
                 </div>
               </c:if>
 
@@ -67,9 +67,9 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
               <a href="/petPage">반려동물</a>
               <a href="/experiencePage" class="active">경험</a>
               <c:if test="${not empty user}">
-              <a href="#">올린 공고</a>
-              <a href="#">신청한 공고</a>
-              <a href="#">최근 본 공고</a>
+              <a href="/opening/mine">올린 공고</a>
+              <a href="/opening/myApply">신청한 공고</a>
+              <a href="/opening/recent">최근 본 공고</a>
               </c:if>
             </div>
           </div>
