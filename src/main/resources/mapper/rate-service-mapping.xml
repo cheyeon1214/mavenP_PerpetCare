@@ -75,7 +75,7 @@
 		WHERE u_email = #{VALUE}
 	</select>
 
-	<select id="getUserTopRate" parameterType="string" resultType="map">
+	<select id="getUserTopRate" parameterType="string" resultType="java.util.LinkedHashMap">
 		SELECT r_text, COUNT(r_text) AS count
 		FROM Rate
 		WHERE to_email = #{VALUE}

@@ -10,19 +10,13 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <link rel="stylesheet" href="../../../css/experiencePage.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-    />
-  <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
+    <!-- jQuery ... jQuery 가 Bootstrap 보다 앞에 와야 함 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
   </head>
@@ -242,7 +236,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             </section>
 
             <section class="review">
-                <h3>평가 <a href="#" class="more">더보기</a></h3>
+                <h3>평가</h3>
                 <div class="review-content">
                 <div class="keywords">
                     <h4>대표 키워드 TOP3</h4>
@@ -250,14 +244,13 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <ul>
                       <c:choose>
                         <c:when test="${not empty rateList}">
-                          <c:forEach var="row" items="${rateList}">
-                            <c:forEach var="entry" items="${row}">
+                          <c:forEach var="entry" items="${rateList}">
                               <li>
                                 ${entry.key}
                                 <span class="count">(${entry.value})</span>
                               </li>
-                            </c:forEach>
                           </c:forEach>
+                          <h6 style="text-align:center; color:#FD9596; margin-top:25px;">전체 평가 (${rateNum})</h6>
                         </c:when>
                         <c:otherwise>
                           <li>아직 평가가 없습니다.</li>
@@ -270,8 +263,8 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <br>
                     <canvas
                         id="ratingChart"
-                        data-percent-positive="${positivePercent}" 
-                        data-percent-negative="${negativePercent}">
+                        data-percent-positive="${positiveRatio}"
+                        data-percent-negative="${negativeRatio}">
                     </canvas>
                 </div>
                 </div>
@@ -296,8 +289,8 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             const canvas = document.getElementById('ratingChart');
             const ctx = canvas.getContext('2d');
 
-            const positive = parseFloat(canvas.dataset.percentPositive || 80); // default 80%
-            const negative = parseFloat(canvas.dataset.percentNegative || 20); // default 20%
+            const positive = parseFloat(canvas.dataset.percentPositive);
+            const negative = parseFloat(canvas.dataset.percentNegative);
 
             new Chart(ctx, {
             type: 'pie',
