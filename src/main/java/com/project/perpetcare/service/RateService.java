@@ -47,4 +47,9 @@ public class RateService {
     public List<Map<String, Integer>> getUserTopRate(String email) throws Exception {
         return rateDAO.getUserTopRate(email);
     }
+
+    public boolean hasRated(String fromEmail, int oNo) {
+        Integer count = rateDAO.countUserRate(fromEmail, oNo); // DAO 호출
+        return count != null && count > 0;
+    }
 }

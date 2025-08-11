@@ -281,11 +281,15 @@
             display: flex;
             width: 100%;
             align-items: center;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-            border-radius: 20px;
+
             margin-top: 20px;
             padding: 20px;
             justify-content: space-between;
+        }
+
+        .apply-section-wrapper{
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+            border-radius: 20px;
         }
 
         .user-img{
@@ -301,7 +305,8 @@
 
         }
 
-        .rate-btn{
+        .review-btn{
+            margin-right: 20px;
             padding: 4px 20px;
         }
 
@@ -393,6 +398,62 @@
             border-radius: 10px;
             padding: 10px 0;
         }
+        .reviewBox{
+
+        }
+        .reviews-wrapper{
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .positive-reviews{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .negative-reviews{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .p-btn, .n-btn{
+            width: 400px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);*/
+            border: none;
+            background-color: white;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .p-btn{
+            box-shadow: 0 0 7px rgba(253, 149, 150, 0.8);
+        }
+
+        .n-btn{
+            box-shadow: 0 0 7px rgba(100, 218, 254, 0.8);
+        }
+
+        .review-notice{
+            text-align: center;
+            font-size: 19px;
+            font-weight: 600;
+            margin-top: 30px;
+            padding-bottom: 30px;
+        }
+
+        /* 클릭된 상태 */
+        .p-btn.selected {
+            background-color: rgba(253, 149, 150, 0.8);
+            color: white;
+        }
+        .n-btn.selected {
+            background-color: rgba(100, 218, 254, 0.8);
+            color: white;
+        }
+
 
     </style>
     <script>
@@ -503,6 +564,79 @@
                 wrapper.submit();
             }
         }
+
+        // 리뷰 열기/닫기 + 버튼 상태 토글(평가하기↔제출하기)
+        $(document).on("click", ".review-btn", function (e) {
+            e.stopPropagation();
+            const $btn  = $(this);
+            const $wrap = $btn.closest('.apply-section-wrapper');
+            const $box  = $wrap.find('.reviewBox');
+
+            // 열고 닫기
+            $box.stop(true,true).slideToggle(250);
+
+            // 버튼 상태 토글
+            const mode = $btn.data('mode') || 'review';
+            if (mode === 'review') {
+                $btn.data('mode','submit').val('제출하기');
+            } else {
+                // 제출 시도
+                const selected = $wrap.find('.option-btn.selected');
+                if (!selected.length) {
+                    alert('평가 항목을 하나 선택해주세요.');
+                    return;
+                }
+                const text = selected.val();           // 사용자가 클릭한 문구
+                $wrap.find('.rateValue').val(text);    // hidden에 저장
+
+                const codeMap = {
+                    "답장이 빠르고 매너가 좋아요.": "P01",
+                    "아이를 잘 케어해줘요.": "P02",
+                    "시간 약속을 잘 지켜요.": "P03",
+                    "돌봄 서비스 설명이 기재된 내용과 같아요.": "P04",
+                    "특별한 케어를 해줘요.": "P05",
+                    "답장이 느리고 매너가 별로에요.": "N01",
+                    "아이 케어가 잘 이루어지지 않았어요.": "N02",
+                    "시간 약속을 잘 지키지 못해요.": "N03",
+                    "돌봄 서비스 설명이 기재된 내용과 달라요.": "N04",
+                    "아이에게 트라우마가 생겼어요.": "N05"
+                };
+                const code = codeMap[text] || 'other';
+
+                const oNo   = $btn.data('ono')   || $wrap.data('ono');
+                const email = $btn.data('email') || $wrap.data('email');
+
+                // 서버 전송 (엔드포인트/파라미터 맞게 수정)
+                $.ajax({
+                    url: '/rate/add',
+                    type: 'POST',
+                    data: { oNo: oNo, toEmail: email, code: code },
+                    success: function(){
+                        alert('평가가 등록되었습니다.');
+                        // 초기화
+                        $btn
+                            .val('평가완료')
+                            .prop('disabled', true) // 클릭 불가 처리
+                            .addClass('done'); // 스타일 클래스 추가 (선택사항)
+                        $box.slideUp(200);
+                        $wrap.find('.option-btn').removeClass('selected');
+                    },
+                    error: function(){
+                        alert('등록 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+        });
+
+        // 옵션 하나만 선택(카드별로 스코프)
+        $(document).on('click', '.option-btn', function(){
+            const $wrap = $(this).closest('.apply-section-wrapper');
+            $wrap.find('.option-btn').removeClass('selected');
+            $(this).addClass('selected');
+        });
+
+
+
     </script>
 </head>
 <body>
@@ -698,27 +832,59 @@
                     </div>
                 </div>
                 <c:set var="acc" value="${acceptedByOpening[op.no]}"/>
-                <div class="apply-profile">
-                    <div class="apply-left">
-                        <div class="user-profile">
-                            <img src="../../../image/profile_${acc.uImage}.svg" alt="user-img" class="user-img">
-                            <div class="user-info">
-                                <div class="user-text">
-                                    <span class="user-bold-text">Email</span>
-                                    <span class="user-thin-text">${acc.uEmail}</span>
-                                </div>
-                                <div class="user-text">
-                                    <span class="user-bold-text">Grade</span>
-                                    <span class="user-thin-text">
-                                        <img src="../../../image/grade/grade_${acc.uGrade}.svg" alt="user-grade" class="grade-img">
-                                        ${acc.uGrade}
-                                    </span>
+                <div class="apply-section-wrapper" data-ono="${op.no}" data-email="${acc.uEmail}">
+                    <div class="apply-profile">
+                        <div class="apply-left">
+                            <div class="user-profile">
+                                <img src="../../../image/profile_${acc.uImage}.svg" alt="user-img" class="user-img">
+                                <div class="user-info">
+                                    <div class="user-text">
+                                        <span class="user-bold-text">Email</span>
+                                        <span class="user-thin-text">${acc.uEmail}</span>
+                                    </div>
+                                    <div class="user-text">
+                                        <span class="user-bold-text">Grade</span>
+                                        <span class="user-thin-text">
+                                            <img src="../../../image/grade/grade_${acc.uGrade}.svg" alt="user-grade" class="grade-img">
+                                            ${acc.uGrade}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="rate-btn">
+                            <c:choose>
+                                <c:when test="${isRatedMap[op.no]}">
+                                    <input type="button" value="평가완료" class="blue-btn review-btn" disabled>
+                                </c:when>
+                                <c:otherwise>
+                                    <input type="button" value="평가하기" class="blue-btn review-btn">
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <div class="rate-btn">
-                        <input type="button" value="평가하기" class="blue-btn rate-btn">
+                    <div class="reviewBox" style="display:none;">
+                        <div class="reviews-wrapper">
+                            <div class="positive-reviews">
+                                <input class="option-btn p-btn" type="button" value="답장이 빠르고 매너가 좋아요.">
+                                <input class="option-btn p-btn" type="button" value="아이를 잘 케어해줘요.">
+                                <input class="option-btn p-btn" type="button" value="시간 약속을 잘 지켜요.">
+                                <input class="option-btn p-btn" type="button" value="돌봄 서비스 설명이 기재된 내용과 같아요.">
+                                <input class="option-btn p-btn" type="button" value="특별한 케어를 해줘요.">
+                            </div>
+                            <div class="negative-reviews">
+                                <input class="option-btn n-btn" type="button" value="답장이 느리고 매너가 별로에요.">
+                                <input class="option-btn n-btn" type="button" value="아이 케어가 잘 이루어지지 않았어요.">
+                                <input class="option-btn n-btn" type="button" value="시간 약속을 잘 지키지 못해요.">
+                                <input class="option-btn n-btn" type="button" value="돌봄 서비스 설명이 기재된 내용과 달라요.">
+                                <input class="option-btn n-btn" type="button" value="아이에게 트라우마가 생겼어요.">
+                            </div>
+                        </div>
+
+                        <div class="review-notice">
+                            가장 가까운 평가 하나만 선택해주세요.
+                        </div>
+                        <input type="hidden" id="rateValue">
                     </div>
                 </div>
                 </c:forEach>
@@ -760,8 +926,10 @@
                         </div>
                     </div>
                 </div>
+                <div class="apply-section-wrapper">
                 <div class="apply-profile non-matching">
                     <div class="non-match-text">매칭이 되지 않았습니다.</div>
+                </div>
                 </div>
                 </c:forEach>
                 </c:otherwise>

@@ -6,10 +6,7 @@ import com.project.perpetcare.domain.User;
 import com.project.perpetcare.domain.enums.ApplyStatus;
 import com.project.perpetcare.domain.enums.Grade;
 import com.project.perpetcare.dto.ApplyUserDTO;
-import com.project.perpetcare.service.ApplyService;
-import com.project.perpetcare.service.OpeningService;
-import com.project.perpetcare.service.PetService;
-import com.project.perpetcare.service.ProfileService;
+import com.project.perpetcare.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +34,9 @@ public class OpeningController {
 
     @Autowired
     private PetService petService;
+
+    @Autowired
+    private RateService rateService;
 
     @GetMapping("/detail")
     public String getOpening(int no, Model model, HttpSession session) {
@@ -119,6 +119,7 @@ public class OpeningController {
             List<Opening> ongoing = new ArrayList<>();
             List<Opening> closed  = new ArrayList<>();
             List<Opening> matched = new ArrayList<>();
+            Map<Integer, Boolean> isRatedMap = new HashMap<>();
 
             Map<Integer, Pet> firstPets = new HashMap<>();
             Map<Integer, ApplyUserDTO> acceptedByOpening = new HashMap<>();
@@ -142,6 +143,8 @@ public class OpeningController {
                                 .filter(a -> ApplyStatus.accept.name().equals(a.getaStatus()))
                                 .findFirst().orElse(null);
                         if (accepted != null) acceptedByOpening.put(op.getNo(), accepted);
+                        boolean rated = rateService.hasRated(user.getEmail(), op.getNo());
+                        isRatedMap.put(op.getNo(), rated);
                     }
                 } else if (op.isClose()) {
                     closed.add(op);
@@ -155,6 +158,7 @@ public class OpeningController {
             model.addAttribute("matched", matched);
             model.addAttribute("firstPets", firstPets);
             model.addAttribute("acceptedByOpening", acceptedByOpening);
+            model.addAttribute("isRatedMap", isRatedMap);
 
             return "profilePage/myOpening";
         } catch (Exception e) {
