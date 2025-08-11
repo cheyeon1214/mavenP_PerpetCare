@@ -162,8 +162,16 @@ public class OpeningController {
     @PostMapping("/update")
     public String updateOpening(Opening opening, Model model) {
         try{
-            System.out.println(opening);
+            int no = opening.getNo();
+            String lcode = openingService.getOpeningOfLcode(no).getLocation();
+
+            if(!opening.getLocation().startsWith("1") && !opening.getLocation().startsWith("2")) {
+                opening.setLocation(lcode);
+            }
+
+            System.out.println("update opening : "+opening);
             openingService.updateOpening(opening);  // careWay, location, prefer 등 업데이트
+
 
             return "redirect:/opening/mine";
         }catch (Exception e){
