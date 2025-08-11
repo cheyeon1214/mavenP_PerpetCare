@@ -19,11 +19,11 @@ public class ProfileService {
         return profileDAO.getUserInfo(email);
     }
 
-    public List<Experience> getSitterExperience(String email) throws Exception{
+    public List<Experience> getOwnerExperience(String email) throws Exception{
         return profileDAO.getUserExperience(email,0);
     }
 
-    public List<Experience> getOwnerExperience(String email) throws Exception{
+    public List<Experience> getSitterExperience(String email) throws Exception{
         return profileDAO.getUserExperience(email,1);
     }
 

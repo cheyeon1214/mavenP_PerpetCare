@@ -36,7 +36,12 @@
 
 	<insert id="addExperience" parameterType="experience">
 		INSERT INTO experience(u_email,e_category,e_sdate,e_edate,e_species,e_breed)
-		VALUES (#{uEmail},#{category},#{sDate},#{eDate},#{species},#{breed})
+		VALUES (#{uEmail},#{category},#{sDate},
+		<choose>
+			<when test="eDate != null and eDate != ''">#{eDate,jdbcType=DATE}</when>
+			<otherwise>null</otherwise>
+		</choose>
+		,#{species},#{breed})
 	</insert>
 
 	<select id="getUserInfo" parameterType="string" resultMap="userResultMap">

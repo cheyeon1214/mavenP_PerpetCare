@@ -15,6 +15,8 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
     />
+  <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -49,6 +51,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <div class="info-middle">
                         <img
                         class="grade-badge"
+                        id="gradeBadge"
                         src="../../../image/grade/grade_${user.grade}.svg"
                         alt="grade-badge"
                         />
@@ -102,8 +105,12 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                                  data-breed="${exp.breed}">
                                   <div class="care-date">${exp.sDate}</div>
                                   <div class="care-line">~</div>
-                                  <div class="care-date">${exp.eDate}</div>
-
+                                  <div class="care-date">
+                                      <c:choose>
+                                        <c:when test="${empty exp.eDate}">현재</c:when>
+                                        <c:otherwise>${exp.eDate}</c:otherwise>
+                                      </c:choose>
+                                  </div>
                                   <div class="care-speices">${exp.species}</div>
 
                                   <div class="care-breed">
@@ -148,10 +155,9 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 <button class="add-btn">+ 돌봄 이력 추가하기</button>
                 </div>
                 <!-- 폼 -->
-                <div id="careFormWrapper" class="container mp-4 mb-5" style="display: none;">
-                <div class="card shadow p-4 mb-5" id="add-form">
-                    <h4 class="text-center fw-bold mb-4" style="font-size: 1.6rem;">돌봄 이력 작성</h4>
-                    
+                <div id="careFormWrapper" class="py-4 mx-auto" style="display: none; max-width: 1050px;">
+                <div class="card shadow p-3 mb-2" id="add-form">
+                    <h4 class="text-center fw-bold mb-4 mx-auto" style="font-size: 1.6rem;">돌봄 이력 작성</h4>
                     <form>
                         <div class="form-group mb-3">
                             <label class="col-sm-2 col-form-label" for="type">종</label>
@@ -187,6 +193,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                                 </div>
                                 <div class="col-sm-4">
                                 <input type="date" class="form-control" id="edate" />
+                                <span id="edateDisplay" class="badge bg-secondary ms-2" style="display:none;">현재</span>
                                 </div>
                                 <div class="col-sm-2">
                                 <button type="button" class="btn btn-outline-danger" id="no-end-btn">종료일 없음</button>
@@ -272,11 +279,19 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             </main>
         </div>
       </div>
-
+        <jsp:include page="../../../components/gradeModal.jsp" />
     </div>
   </body>
-    <!-- 차트 스크립트 -->
+
     <script>
+
+        //모달창
+        $('#gradeBadge').on('click', function(){
+            $('#gradeModal').modal('show');
+        });
+
+
+        <!-- 차트 스크립트 -->
     $(document).ready(function () {
         const canvas = document.getElementById('ratingChart');
         const ctx = canvas.getContext('2d');
@@ -307,11 +322,11 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
     // 수정 + 삭제
     $(document).ready(function () {
-        let isEditing = false;
         let state = 'idle';       // idle | selected | editing
         let selectedId = null;    // 현재 선택된 경험 PK
         const view = $('.view-mode');
         const form = $('#care-edit-form');
+        const addBtn =$('#add-btn-wrapper');
         const editBtn = $('#edit-save-btn');
         const delBtn  = $('#delete-cancel-btn');
 
@@ -335,7 +350,8 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             // 버튼 숨김 및 라벨 초기화
             editBtn.addClass('hidden').text('수정').css({ backgroundColor:'', color:'' });
             delBtn.addClass('hidden').text('삭제').css({ backgroundColor:'', color:'' });
-        }
+            addBtn.addClass('hidden');
+        } //toIdle
 
         function toSelected(id) {
             state = 'selected';
@@ -347,7 +363,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 .css({ backgroundColor:'white', color:'#64DAFE' });
             delBtn.removeClass('hidden').text('삭제')
                 .css({ backgroundColor:'#64DAFE', color:'white' });
-        }
+        }//toSelected
 
         function toEditing() {
             state = 'editing';
@@ -357,7 +373,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             // 목록 숨기고 폼 보이기
             view.hide().addClass('hidden');
             form.removeClass('hidden').show();
-        }
+        }//toEditing
 
         // 선택된 아이템 → 폼 채우기
         function fillFormFromItem(item) {
@@ -366,7 +382,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             form.find('input[name=eDate]').val(item.data('edate'));
             form.find('select[name=species]').val(item.data('species'));
             form.find('input[name=breed]').val(item.data('breed'));
-        }
+        }//fillFormFromItem
 
         // 폼 값 → 리스트 아이템 DOM/데이터 갱신 (리로드 없이 반영)
         function updateItemFromForm(item) {
@@ -386,7 +402,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             item.data('edate', e);
             item.data('species', sp);
             item.data('breed', br);
-        }
+        }//update
 
         // ===== 1) pet-care 클릭 → 선택 상태 =====
         $(document).on('click', '.pet-care', function () {
@@ -394,7 +410,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
             $('.pet-care').removeClass('selected');
             $(this).addClass('selected');
             toSelected($(this).data('id'));
-        });
+        });//click
 
         // ===== 2) 수정/완료 버튼 =====
         editBtn.on('click', function () {
@@ -424,7 +440,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     }
                 });
             }
-        });
+        });//click
 
         // ===== 3) 삭제/취소 버튼 =====
         delBtn.on('click', function () {
@@ -453,71 +469,78 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 // 취소: 수정 취소하고 처음 상태로
                 toIdle();
             }
-        });
+        });//click
 
         // ===== (옵션) 바깥 클릭 시 전체 해제 =====
         $(document).on('click', function (e) {
             if ($(e.target).closest('.pet-care, .edit-btn-wrapper2, #care-edit-form').length) return;
             toIdle();
-        });
-    });
+        });//click
 
-    // 추
-    $(document).ready(function () {
-        let isEditing = false;
+        // 추가
+        $(document).ready(function () {
+            let isEditing = false;
+            let noEndSelected = false;
 
-        const addBtnWrapper = $('#add-btn-wrapper');
-        const careFormWrapper = $('#careFormWrapper');
+            const addBtnWrapper = $('#add-btn-wrapper');
+            const careFormWrapper = $('#careFormWrapper');
 
-        // 1) 수정 버튼 클릭 → 추가 버튼 토글
-        $('#edit-save-btn').on('click', function () {
-            isEditing = !isEditing;
+            // 1) 수정 버튼 클릭 → 추가 버튼 토글
+            $('#edit-save-btn').on('click', function () {
+                isEditing = !isEditing;
 
-            if (isEditing) {
-                addBtnWrapper.removeClass('hidden').addClass('flex-center');
-            } else {
-                addBtnWrapper.removeClass('flex-center').addClass('hidden');
-                careFormWrapper.hide(); // 폼 닫기
-            }
-        });
-
-        // 2) 추가 버튼 클릭 → 폼 보이기
-        $(document).on('click', '.add-btn', function () {
-            careFormWrapper.slideDown(); // 부드럽게 열림
-        });
-
-        // 3) 종료일 없음 버튼 클릭 시 종료일 필드 비우기 + 비활성화
-        $('#no-end-btn').on('click', function () {
-            $('#edate').val('').prop('disabled', true);
-        });
-
-        // 4) 폼 제출 → 서버로 추가 요청
-        $('#add-form form').on('submit', function (e) {
-            e.preventDefault();
-
-            const data = {
-                species: $('#type').val(),
-                breed: $('#breed').val(),
-                sDate: $('#sdate').val(),
-                eDate: $('#edate').prop('disabled') ? null : $('#edate').val()
-            };
-
-            $.ajax({
-                type: 'POST',
-                url: '/experience/add',
-                data: data,
-                success: function (res) {
-                    alert(res.message || '추가 완료');
-                    // 목록 새로고침 or DOM에 새 항목 append
-                    location.reload();
-                },
-                error: function (xhr) {
-                    alert((xhr.responseJSON && xhr.responseJSON.message) || '추가 중 오류 발생');
+                if (isEditing) {
+                    addBtnWrapper.removeClass('hidden').addClass('flex-center');
+                } else {
+                    addBtnWrapper.removeClass('flex-center').addClass('hidden');
+                    careFormWrapper.hide(); // 폼 닫기
                 }
             });
-        });
-    });
 
+            // 2) 추가 버튼 클릭 -> 폼 보이기
+            $(document).on('click', '.add-btn', function () {
+                careFormWrapper.slideDown(); // 부드럽게 열림
+            });
+
+            // 3) 종료일 없음 버튼 클릭 시 종료일 필드 비우기 + 비활성화
+            // 종료일 없음 버튼 클릭 시
+            $('#no-end-btn').on('click', function () {
+                $('#edate').val('').prop('disabled', true);
+                $('#edateDisplay').show().text('현재');
+                noEndSelected = true;
+            });
+
+            // 4) 폼 제출 -> 디비 추가
+            $('#add-form form').on('submit', function (e) {
+                e.preventDefault();
+
+                const data = {
+                    species: $('#type').val(),
+                    breed: $('#breed').val(),
+                    sDate: $('#sdate').val(),
+                    eDate: $('#edate').prop('disabled') ? null : $('#edate').val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/experience/add',
+                    data: data,
+                    success: function (res) {
+                        alert(res.message || '추가 완료');
+                        // 목록 새로고침 or DOM에 새 항목 append
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        alert((xhr.responseJSON && xhr.responseJSON.message) || '추가 중 오류 발생');
+                    }
+                });
+            });
+        });
+    });//ready
+
+
+
+//추가 시 폼 나올때 부드럽게 스크롤
     $(document).ready(function () {
     $('.add-btn').click(function () {
         $('#careFormWrapper').slideDown('fast', function () {
@@ -529,15 +552,28 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         });
     });
 
-    $(document).ready(function () {
-    $('.btn-outline-danger').click(function () {
-        const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식
-        $('#edate').val(today); // 종료일 input에 값 설정
+
+    $(function () {
+        $('#no-end-btn').on('change', function () {
+            const edate = $('#edate');
+            const disp  = $('#edateDisplay');
+
+            if (this.checked) {
+                // UI 변경: 날짜 입력 비활성화 + 현재 표시
+                edate.val('').prop('disabled', true);
+                disp.show();
+            } else {
+                // 다시 날짜 입력 가능
+                edate.prop('disabled', false);
+                disp.hide();
+            }
         });
 
-        $('form').on('submit', function (e) {
-            if ($('#type').val() !== '선택해주세요' && $('#breed').val().trim()) {
-            $('#careFormWrapper').fadeOut();
+        // 제출 시: disabled 상태면 null로 보내기
+        $('form').on('submit', function () {
+            const edate = $('#edate');
+            if (edate.is(':disabled') || !edate.val()) {
+                edate.prop('disabled', true); // disabled면 전송 안 됨 → DB에서 null로 처리
             }
         });
     });
