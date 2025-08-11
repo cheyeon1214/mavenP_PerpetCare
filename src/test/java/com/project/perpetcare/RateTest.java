@@ -49,7 +49,7 @@ public class RateTest {
 
     @Test
     public void getNRatioOfRate() throws Exception {
-        String email = "codus@naver.com";
+        String email = "test1@naver.com";
         try {
             Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
             SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
@@ -93,7 +93,7 @@ public class RateTest {
 
     @Test
     public void getUserTopRate() throws Exception {
-        String email = "codus@naver.com";
+        String email = "test1@naver.com";
         try {
             Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
             SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
