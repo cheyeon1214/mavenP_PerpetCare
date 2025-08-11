@@ -85,7 +85,7 @@ public class OpeningController {
     public String doCreateOpening(Opening opening, String petIds, Model model){
         try{
             opening.setCreatedAt(LocalDateTime.now());
-            opening.setLocation("1111016900");
+//            opening.setLocation("1111016900");
             openingService.addOpening(opening);
             int openingNo = opening.getNo(); //opening 만들자마자 PK 가져옴
             List<Integer> petIdList = Arrays.stream(petIds.split(","))
@@ -222,4 +222,8 @@ public class OpeningController {
 
     }
 
+    @GetMapping("/recent")
+    public String getRecentOpening(Model model, HttpSession session){
+        return "profilePage/recentOpening";
+    }
 }

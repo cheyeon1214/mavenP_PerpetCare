@@ -318,7 +318,7 @@
                 <div class="pay-section">
                     <div class="pay-dropdown">${opening.per}</div>
                     <div class="pay-amount">
-                        <jsp:include page="../../components/price.jsp">
+                        <jsp:include page="../../../components/price.jsp">
                             <jsp:param name="price" value="${opening.price}"/>
                         </jsp:include> 원
                     </div>
