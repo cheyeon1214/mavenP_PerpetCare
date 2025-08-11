@@ -187,6 +187,10 @@
             cursor: pointer;
         }
 
+        .opening-section.empty-section{
+            margin-bottom: 95px;
+        }
+
         .opening-section-line{
             display: flex;
             font-size: 19px;
@@ -524,7 +528,13 @@
                     </div>
                     <div class="sub-title">진행중인 공고</div>
                 </div>
-
+                <c:choose>
+                <c:when test="${empty ongoing}">
+                <div class="opening-section empty-section" style="margin-top: 50px; padding:24px; border-radius:20px; text-align:center;">
+                    진행중인 공고가 없습니다.
+                </div>
+                </c:when>
+                <c:otherwise>
                 <c:forEach var="op" items="${ongoing}">
                 <form class="opening-section-wrapper" action="/opening/update" method="post">
                 <input type="hidden" name="no" value="${op.no}">
@@ -594,6 +604,8 @@
                 </div>
                 </form>
                 </c:forEach>
+                </c:otherwise>
+                </c:choose>
 
                 <div class="sub-title-section">
                     <div class="sub-img">
@@ -603,7 +615,13 @@
                 </div>
 
                 <!-- 마감된 공고 -->
-
+                <c:choose>
+                <c:when test="${empty matched and empty closed}">
+                <div class="opening-section" style="margin-top: 50px; padding:24px; border-radius:20px; text-align:center;">
+                    마감된 공고가 없습니다.
+                </div>
+                </c:when>
+                <c:otherwise>
                 <c:forEach var="op" items="${matched}">
                 <div class="opening-section finish">
                     <div class="opening-section-line">
@@ -708,6 +726,8 @@
                     <div class="non-match-text">매칭이 되지 않았습니다.</div>
                 </div>
                 </c:forEach>
+                </c:otherwise>
+                </c:choose>
 
             </main>
         </div>

@@ -44,8 +44,12 @@ public class OpeningService {
         return openings;
     }
 
-    public Opening getOpening(int no) throws Exception{
+    public Opening getOpening(int no) throws Exception {
         Opening opening = openingDAO.getOpening(no);
+        if (opening == null) {
+            return null; // 혹은 throw new Exception("Opening not found");
+        }
+
         opening.setLocation(searchDAO.searchAddr(opening.getLocation()));
         return opening;
     }

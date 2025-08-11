@@ -29,7 +29,7 @@ public class ProfileController {
                 return "redirect:/login";
             }
             model.addAttribute("user", user);
-            return "profilePage/petPage";
+            return "profilePage/petPage2";
         } catch (Exception e) {
             e.printStackTrace();
             return "Error";
