@@ -118,7 +118,7 @@ public class OpeningController {
             List<Opening> matched = new ArrayList<>();
 
             Map<Integer, Pet> firstPets = new HashMap<>();
-            Map<Integer, ApplyUserDTO> acceptedByOpening = new HashMap<>(); // 공고별 채택 지원자
+            Map<Integer, ApplyUserDTO> acceptedByOpening = new HashMap<>();
 
             DateTimeFormatter F = DateTimeFormatter.ofPattern("yyyy.MM.dd");
             for (Opening op : openings) {
@@ -146,7 +146,6 @@ public class OpeningController {
                     ongoing.add(op);
                 }
             }
-
             model.addAttribute("user", user);
             model.addAttribute("ongoing", ongoing);
             model.addAttribute("closed",  closed);
@@ -175,5 +174,52 @@ public class OpeningController {
 
     }
 
+    @GetMapping("/myApply")
+    public String getMyApplyOpening(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+        try{
+            List<ApplyUserDTO> myApplyList = applyService.getApplyList(user.getEmail());
+            List<Opening> accept = new ArrayList<>();
+            List<Opening> reject  = new ArrayList<>();
+            List<Opening> pending = new ArrayList<>();
+            Map<Integer, Pet> firstPets = new HashMap<>();
+            Map<Integer, User> userProfile = new HashMap<>();
+            DateTimeFormatter F = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
+            for(ApplyUserDTO myApply : myApplyList){
+                Opening op = openingService.getOpening(myApply.getoNo());
+                op.setsDateStr(op.getsDate() != null ? op.getsDate().toLocalDate().format(F) : "");
+                op.seteDateStr(op.geteDate() != null ? op.geteDate().toLocalDate().format(F) : "");
+                List<Pet> pets = op.getPets();
+                if (pets != null && !pets.isEmpty()) {
+                    petService.encodePetImages(pets);
+                    firstPets.put(op.getNo(), pets.get(0));
+                }
+                if(myApply.getaStatus().equals(ApplyStatus.accept.name())){
+                    accept.add(op);
+                    User profile = profileService.getUserInfo(op.getuEmail());
+                    userProfile.put(op.getNo(),  profile);
+                }else if(myApply.getaStatus().equals(ApplyStatus.reject.name())){
+                    reject.add(op);
+                }else if(myApply.getaStatus().equals(ApplyStatus.pending.name())){
+                    pending.add(op);
+                }
+            }
+
+            model.addAttribute("user", user);
+            model.addAttribute("accept", accept);
+            model.addAttribute("reject", reject);
+            model.addAttribute("pending", pending);
+            model.addAttribute("firstPets", firstPets);
+            model.addAttribute("userProfile", userProfile);
+            return "profilePage/applyOpening";
+        } catch (Exception e) {
+            model.addAttribute("error", "Internal Server Error");
+            model.addAttribute("message", e.getMessage());
+            return "Error";
+        }
+
+    }
 
 }

@@ -6,7 +6,7 @@
     <title>myPage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="../css/global.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Bootstrap CSS -->
     <link
@@ -26,6 +26,11 @@
             font-family: "Pretendard", sans-serif;
             background-color: #ffffff;
             min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container{
+            margin-left: 400px;
         }
 
         .apply-container {
@@ -144,6 +149,161 @@
             font-size: 10px;
             text-decoration: none;
         }
+
+        .line-img{
+            fill: #FD9596;
+        }
+
+        .sub-title-section{
+            display: flex;
+            align-items: center;
+            margin-top: 95px;
+        }
+
+        .sub-title{
+            padding-left: 10px;
+            font-size: 22px;
+            font-weight: 600;
+            color: #FD9596;
+        }
+
+        .opening-section{
+            margin-top: 120px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.4);
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .opening-section-line{
+            display: flex;
+            font-size: 19px;
+        }
+
+        .pet-img{
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow:  0 4px 6px rgba(0, 0, 0, 0.25);
+        }
+        .opening-pet-img{
+            margin-top: -80px;
+            width: 230px;
+        }
+
+        .card-text-section{
+            padding: 30px;
+            width: 400px;
+        }
+
+        .pet-main{
+            margin-left: 50px;
+        }
+
+        .card-text-title{
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .card-text-section-left{
+            width: 230px;
+            padding: 30px;
+
+        }
+
+        .card-text-section-prefer{
+            padding: 30px;
+            margin-right: 100px;
+        }
+
+        .card-section-method{
+            margin-bottom: 30px;
+        }
+
+        .blue-btn{
+            color: white;
+            background-color: #64DAFE;
+            border-radius: 13px;
+            border: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+            font-size: 18px;
+            font-weight: 550;
+            padding: 4px 32px;
+        }
+
+        .sub-title-finish{
+            padding-left: 10px;
+            font-size: 22px;
+            font-weight: 600;
+            color: #64DAFE;
+        }
+
+        .finish{
+            background-color: #F6F6F6;
+        }
+
+        .apply-profile{
+            display: flex;
+            width: 100%;
+            align-items: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+            border-radius: 20px;
+            margin-top: 20px;
+            padding: 20px;
+            justify-content: space-between;
+        }
+
+        .user-img{
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+        }
+        .user-profile{
+            display: flex;
+            align-items: center;
+            gap: 30px;
+
+        }
+
+        .rate-btn{
+            padding: 4px 20px;
+        }
+
+        .user-bold-text{
+            font-size: 19px;
+            font-weight: 650;
+            margin-right: 40px;
+        }
+
+        .user-thin-text{
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .non-match-text{
+            font-weight: 600;
+            font-size: 19px;
+            color: #404040;
+        }
+
+        .non-matching{
+            justify-content: center;
+        }
+
+        /*.apply-status-section{*/
+        /*    background-color: gray;*/
+        /*    border: 1px solid gray;*/
+        /*    margin-top: -60px;*/
+        /*    height: 50px;*/
+        /*    width: 100px;*/
+        /*}*/
     </style>
 </head>
 <body>
@@ -155,12 +315,12 @@
             <div class="sidebar-top">
                 <div class="profile">
                     <img
-                            src="../../../image/profile_1.svg"
+                            src="../../..${user.imagePath}"
                             alt="프로필"
                             class="profile-img"
                     />
                     <div class="info">
-                        <div class="name">taeran</div>
+                        <div class="name">${user.name}</div>
                     </div>
                     <div class="info">
                         <div class="info-left">
@@ -171,14 +331,14 @@
                         <div class="info-middle">
                             <img
                                     class="grade-badge"
-                                    src="../../../image/grade/grade_Silver.svg"
+                                    src="../../../image/grade/grade_${user.grade}.svg"
                                     alt="grade-badge"
                             />
                         </div>
                         <div class="info-right">
-                            <div class="grade">Silver</div>
-                            <div class="gender">여성</div>
-                            <div class="age">20대</div>
+                            <div class="grade">${user.grade}</div>
+                            <div class="gender">${user.gender}</div>
+                            <div class="age">${user.ageGroup}</div>
                         </div>
                     </div>
                 </div>
@@ -188,7 +348,7 @@
                 <div class="nav">
                     <a href="#">반려동물</a>
                     <a href="/experiencePage" >경험</a>
-                    <a href="#">올린 공고</a>
+                    <a href="/opening/mine">올린 공고</a>
                     <a href="#" class="active">신청한 공고</a>
                     <a href="#">최근 본 공고</a>
                 </div>
@@ -199,11 +359,191 @@
         <!-- Main Content -->
         <div class="container">
             <main class="pet-main">
+                <!-- 진행중인 공고 -->
+                <div class="sub-title-section">
+                    <div class="sub-img">
+                        <img src="../../../image/subtitle_line_red.svg" alt="line" class="line-img">
+                    </div>
+                    <div class="sub-title">진행중인 공고</div>
+                </div>
 
+                <c:forEach var="op" items="${pending}">
+                <div class="opening-section">
+                    <div class="opening-section-line">
+                        <div class="opening-pet-img">
+                            <img src="data:image/jpeg;base64,${firstPets[op.no].base64Image}" alt="petImg" class="pet-img">
+                        </div>
 
+                        <div class="card-text-section">
+                            <div class="card-text-title">돌봄 기간</div>
+                            <span>
+                                ${op.sDateStr}
+                                ~
+                                ${op.eDateStr}
+                            </span>
+<%--                            <div class="card-text">2025-08-08 ~ 2025-08-09</div>--%>
+                        </div>
+                        <div class="card-text-section">
+                            <div class="card-text-title">가격</div>
+                            <span>${op.price}</span>
+                            /
+                            <span>${op.per}</span>
+<%--                            <div class="card-text">${op.price} / ${op.per}</div>--%>
+                        </div>
+                    </div>
+
+                    <div class="opening-section-line">
+                        <div class="card-text-section-left">
+                            <div class="card-section-method">
+                                  <div class="card-text-title">돌봄 방법</div>
+                                  <div class="card-text">
+                                    <span>${op.careWay}</span>
+                                  </div>
+                            </div>
+                            <div class="card-section-method">
+                                <div class="card-text-title">돌봄 주소</div>
+                                <div class="card-text">
+                                    <span>${op.location}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-text-section-prefer">
+                            <div class="card-text-title">우대사항</div>
+                            <div class="card-text">
+                                <span>${op.prefer}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </c:forEach>
+
+                <div class="sub-title-section">
+                    <div class="sub-img">
+                        <img src="../../../image/subtitle_line.svg" alt="line" class="line-img">
+                    </div>
+                    <div class="sub-title-finish">마감된 공고</div>
+                </div>
+
+                <!-- 마감된 공고 -->
+
+                <c:forEach var="op" items="${accept}">
+                <div class="opening-section finish">
+                    <div class="opening-section-line">
+                        <div class="opening-pet-img">
+                            <img src="data:image/jpeg;base64,${firstPets[op.no].base64Image}" alt="petImg" class="pet-img">
+                        </div>
+                        <div class="card-text-section">
+                            <div class="card-text-title">돌봄 기간</div>
+                            <div class="card-text">
+                            <span>
+                                ${op.sDateStr}
+                                ~
+                                ${op.eDateStr}
+                            </span>
+                            </div>
+                        </div>
+                        <div class="card-text-section">
+                            <div class="card-text-title">가격</div>
+                            <div class="card-text">${op.price} / ${op.per}</div>
+                        </div>
+                    </div>
+
+                    <div class="opening-section-line">
+                        <div class="card-text-section-left">
+                            <div class="card-section-method">
+                                <div class="card-text-title">돌봄 방법</div>
+                                <div class="card-text">
+                                    ${op.careWay}
+                                </div>
+                            </div>
+                            <div class="card-section-method">
+                                <div class="card-text-title">돌봄 주소</div>
+                                <div class="card-text">${op.location}</div>
+                            </div>
+                        </div>
+                        <div class="card-text-section-prefer">
+                            <div class="card-text-title">우대사항</div>
+                            <div class="card-text">
+                                ${op.prefer}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <c:set var="acc" value="${userProfile[op.no]}"/>
+                <div class="apply-profile">
+                    <div class="apply-left">
+                        <div class="user-profile">
+                            <img src="../../../image/profile_${acc.image}.svg" alt="user-img" class="user-img">
+                            <div class="user-info">
+                                <div class="user-text">
+                                    <span class="user-bold-text">Email</span>
+                                    <span class="user-thin-text">${acc.email}</span>
+                                </div>
+                                <div class="user-text">
+                                    <span class="user-bold-text">Grade</span>
+                                    <span class="user-thin-text">
+                                        <img src="../../../image/grade/grade_${acc.grade}.svg" alt="user-grade" class="grade-img">
+                                        ${acc.grade}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rate-btn">
+                        <input type="button" value="평가하기" class="blue-btn rate-btn">
+                    </div>
+                </div>
+                </c:forEach>
+
+                <!-- 마감된 공고 -->
+
+                <c:forEach var="op" items="${reject}">
+                <div class="opening-section finish">
+                    <div class="opening-section-line">
+                        <div class="opening-pet-img">
+                            <img src="data:image/jpeg;base64,${firstPets[op.no].base64Image}" alt="petImg" class="pet-img">
+                        </div>
+                        <div class="card-text-section">
+                            <div class="card-text-title">돌봄 기간</div>
+                            <div class="card-text">
+                                <span>
+                                    ${op.sDateStr}
+                                    ~
+                                    ${op.eDateStr}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-text-section">
+                            <div class="card-text-title">가격</div>
+                            <div class="card-text">${op.price} / ${op.per}</div>
+                        </div>
+                    </div>
+
+                    <div class="opening-section-line">
+                        <div class="card-text-section-left">
+                            <div class="card-section-method">
+                                <div class="card-text-title">돌봄 방법</div>
+                                <div class="card-text">${op.careWay}</div>
+                            </div>
+                            <div class="card-section-method">
+                                <div class="card-text-title">돌봄 주소</div>
+                                <div class="card-text">${op.location}</div>
+                            </div>
+                        </div>
+                        <div class="card-text-section-prefer">
+                            <div class="card-text-title">우대사항</div>
+                            <div class="card-text">
+                                ${op.prefer}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="apply-profile non-matching">
+                    <div class="non-match-text">매칭이 되지 않았습니다.</div>
+                </div>
+                </c:forEach>
 
             </main>
-        </div>
     </div>
 
 </div>

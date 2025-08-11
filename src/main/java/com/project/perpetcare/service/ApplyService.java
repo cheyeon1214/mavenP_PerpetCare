@@ -58,4 +58,8 @@ public class ApplyService {
     public Map<String, Integer> getAgeGroupStats(int oNo) {
         return applyDAO.selectAgeGroupStats(oNo);
     }
+
+    public List<ApplyUserDTO> getApplyList(String email) {
+        return applyDAO.getApplyList(email);
+    }
 }
