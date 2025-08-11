@@ -1,8 +1,11 @@
 package com.project.perpetcare.controller;
 
 import com.project.perpetcare.domain.Experience;
+import com.project.perpetcare.domain.Pet;
 import com.project.perpetcare.domain.User;
 import com.project.perpetcare.domain.enums.RateType;
+import com.project.perpetcare.service.AuthService;
+import com.project.perpetcare.service.PetService;
 import com.project.perpetcare.service.ProfileService;
 import com.project.perpetcare.service.RateService;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -20,22 +24,11 @@ public class ProfileController {
     private ProfileService profileService;
     @Autowired
     private RateService rateService;
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private PetService petService;
 
-    @GetMapping("/mypage")
-    public String mypage(HttpSession session, Model model) {
-        try{
-            User user = (User) session.getAttribute("user");
-            if(user == null) {
-                return "redirect:/login";
-            }
-            model.addAttribute("user", user);
-            return "redirect:/petPage";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error";
-        }
-
-    }
 
     @GetMapping("/experiencePage")
     public String getProfile(HttpSession session, Model model) {
