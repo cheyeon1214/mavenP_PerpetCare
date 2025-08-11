@@ -37,10 +37,23 @@ public class SearchTest {
             Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
             SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
             SqlSession session = factory.openSession();
-            List<Location> locs = session.selectList("ns.sql.SearchMapper.searchLoc", "대방동");
+            List<Location> locs = session.selectList("ns.sql.SearchMapper.searchLoc", "종로구");
             for(Location loc : locs){
                 System.out.println(loc);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void searchAddr() throws Exception {
+        try {
+            Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
+            SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
+            SqlSession session = factory.openSession();
+            String addr = session.selectOne("ns.sql.SearchMapper.searchAddr", "1111016900");
+            System.out.println(addr);
         } catch (Exception e) {
             e.printStackTrace();
         }

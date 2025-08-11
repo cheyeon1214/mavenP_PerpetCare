@@ -23,4 +23,9 @@ public class SearchService {
     public List<Opening> searchOpenings(Condition condition) throws Exception {
         return searchDAO.searchOpenings(condition);
     }
+
+    // opening 조회에서 사용
+    public String searchAddr(String lcode) throws Exception {
+        return searchDAO.searchAddr(lcode);
+    }
 }
