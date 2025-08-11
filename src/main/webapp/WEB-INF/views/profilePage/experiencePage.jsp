@@ -94,7 +94,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 <div class="card">
                     <div class="entry">
                         <!-- View 모드 -->
-                        <div class="view-mode">
+                        <div class="view-mode owner">
                           <c:choose>
                             <c:when test="${not empty ownerList}">
                               <c:forEach var="exp" items="${ownerList}">
@@ -292,251 +292,307 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
         <!-- 차트 스크립트 -->
-    $(document).ready(function () {
-        const canvas = document.getElementById('ratingChart');
-        const ctx = canvas.getContext('2d');
+        $(document).ready(function () {
+            const canvas = document.getElementById('ratingChart');
+            const ctx = canvas.getContext('2d');
 
-        const positive = parseFloat(canvas.dataset.percentPositive || 80); // default 80%
-        const negative = parseFloat(canvas.dataset.percentNegative || 20); // default 20%
+            const positive = parseFloat(canvas.dataset.percentPositive || 80); // default 80%
+            const negative = parseFloat(canvas.dataset.percentNegative || 20); // default 20%
 
-        new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['긍정적 평가', '부정적 평가'],
-            datasets: [{
-            data: [positive, negative],
-            backgroundColor: ['#FD9596', '#64DAFE'],
-            borderWidth: 1,
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-            legend: {
-                position: 'bottom',
+            new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['긍정적 평가', '부정적 평가'],
+                datasets: [{
+                data: [positive, negative],
+                backgroundColor: ['#FD9596', '#64DAFE'],
+                borderWidth: 1,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+                }
             }
-            }
-        }
+            });
         });
-    });
+
+        //owner 에 경험이 없을때//..
+        $(function () {
+            // owner 리스트가 비었는지 체크
+            const ownerEmpty = $('.view-mode .empty').length > 0;
+
+            if (ownerEmpty) {
+                // 추가 버튼 보이기
+                $('#add-btn-wrapper').removeClass('hidden').addClass('flex-center');
+                // 보기/수정/삭제 버튼은 숨김
+                $('#edit-save-btn, #delete-cancel-btn').addClass('hidden');
+                // $('#careFormWrapper').slideDown();
+            }
+
+            // 추가 버튼 클릭 시 폼 열기(네 기존 로직 강화)
+            $(document).on('click', '.add-btn', function () {
+                $('#careFormWrapper').slideDown();
+            });
+        });
+
 
     // 수정 + 삭제
-    $(document).ready(function () {
-        let state = 'idle';       // idle | selected | editing
-        let selectedId = null;    // 현재 선택된 경험 PK
-        const view = $('.view-mode');
-        const form = $('#care-edit-form');
-        const addBtn =$('#add-btn-wrapper');
-        const editBtn = $('#edit-save-btn');
-        const delBtn  = $('#delete-cancel-btn');
-
-        // 초기 UI
-        form.addClass('hidden');
-        editBtn.addClass('hidden');
-        delBtn.addClass('hidden');
-
-        function toIdle() {
-            state = 'idle';
-            selectedId = null;
-            $('.pet-care').removeClass('selected');
-
-            // 폼 완전 숨김
-            form.addClass('hidden').hide();
-            if (form[0]) form[0].reset();
-
-            // 목록 다시 보이기
-            view.removeClass('hidden').show();
-
-            // 버튼 숨김 및 라벨 초기화
-            editBtn.addClass('hidden').text('수정').css({ backgroundColor:'', color:'' });
-            delBtn.addClass('hidden').text('삭제').css({ backgroundColor:'', color:'' });
-            addBtn.addClass('hidden');
-        } //toIdle
-
-        function toSelected(id) {
-            state = 'selected';
-            selectedId = id;
-            form.addClass('hidden');
-            view.show();
-            // 수정/삭제 버튼 노출
-            editBtn.removeClass('hidden').text('수정')
-                .css({ backgroundColor:'white', color:'#64DAFE' });
-            delBtn.removeClass('hidden').text('삭제')
-                .css({ backgroundColor:'#64DAFE', color:'white' });
-        }//toSelected
-
-        function toEditing() {
-            state = 'editing';
-            editBtn.text('완료').css({ backgroundColor:'#64DAFE', color:'white' });
-            delBtn.text('취소').css({ backgroundColor:'white', color:'#64DAFE' });
-
-            // 목록 숨기고 폼 보이기
-            view.hide().addClass('hidden');
-            form.removeClass('hidden').show();
-        }//toEditing
-
-        // 선택된 아이템 → 폼 채우기
-        function fillFormFromItem(item) {
-            form.find('input[name=no]').val(item.data('id')); // PK
-            form.find('input[name=sDate]').val(item.data('sdate'));
-            form.find('input[name=eDate]').val(item.data('edate'));
-            form.find('select[name=species]').val(item.data('species'));
-            form.find('input[name=breed]').val(item.data('breed'));
-        }//fillFormFromItem
-
-        // 폼 값 → 리스트 아이템 DOM/데이터 갱신 (리로드 없이 반영)
-        function updateItemFromForm(item) {
-            const s = form.find('input[name=sDate]').val();
-            const e = form.find('input[name=eDate]').val();
-            const sp = form.find('select[name=species]').val();
-            const br = form.find('input[name=breed]').val();
-
-            // 표시 텍스트 갱신
-            item.find('.care-date').eq(0).text(s);
-            item.find('.care-date').eq(1).text(e);
-            item.find('.care-speices').text(sp);
-            item.find('.care-breed-box').text(br);
-
-            // data-* 갱신
-            item.data('sdate', s);
-            item.data('edate', e);
-            item.data('species', sp);
-            item.data('breed', br);
-        }//update
-
-        // ===== 1) pet-care 클릭 → 선택 상태 =====
-        $(document).on('click', '.pet-care', function () {
-            if (state === 'editing') return; // 편집 중엔 선택 금지
-            $('.pet-care').removeClass('selected');
-            $(this).addClass('selected');
-            toSelected($(this).data('id'));
-        });//click
-
-        // ===== 2) 수정/완료 버튼 =====
-        editBtn.on('click', function () {
-            if (state === 'selected') {
-                // 수정 시작: 폼 채우고 편집 상태 진입
-                const item = $('.pet-care.selected');
-                if (!item.length) return alert('수정할 항목을 선택하세요.');
-                fillFormFromItem(item);
-                toEditing();
-                return;
-            }
-
-            if (state === 'editing') {
-                // 완료(저장)
-                $.ajax({
-                    type: 'POST',
-                    url: '/experience/update', // 컨트롤러 매핑
-                    data: form.serialize(),
-                    success: function () {
-                        const item = $('.pet-care.selected');
-                        if (item.length) updateItemFromForm(item); // DOM 반영
-                        toIdle(); // 초기화 (선택도 해제)
-                    },
-                    error: function () {
-                        alert('저장 중 오류가 발생했습니다.');
-                        console.log('submit', form.serialize());
-                    }
-                });
-            }
-        });//click
-
-        // ===== 3) 삭제/취소 버튼 =====
-        delBtn.on('click', function () {
-            if (state === 'selected') {
-                // 삭제 동작
-                const item = $('.pet-care.selected');
-                if (!item.length) return alert('삭제할 항목을 선택하세요.');
-                if (!confirm('정말 삭제하시겠어요?')) return;
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/experience/delete',
-                    data: { no: item.data('id') },
-                    success: function () {
-                        item.remove();
-                        toIdle();
-                    },
-                    error: function () {
-                        alert('삭제 중 오류가 발생했습니다.');
-                    }
-                });
-                return;
-            }
-
-            if (state === 'editing') {
-                // 취소: 수정 취소하고 처음 상태로
-                toIdle();
-            }
-        });//click
-
-        // ===== (옵션) 바깥 클릭 시 전체 해제 =====
-        $(document).on('click', function (e) {
-            if ($(e.target).closest('.pet-care, .edit-btn-wrapper2, #care-edit-form').length) return;
-            toIdle();
-        });//click
-
-        // 추가
         $(document).ready(function () {
-            let isEditing = false;
-            let noEndSelected = false;
-
-            const addBtnWrapper = $('#add-btn-wrapper');
+            let state = 'idle';       // idle | selected | editing
+            let selectedId = null;    // 현재 선택된 경험 PK
+            const view = $('.view-mode');
+            const form = $('#care-edit-form');
+            const editBtn = $('#edit-save-btn');
+            const delBtn  = $('#delete-cancel-btn');
             const careFormWrapper = $('#careFormWrapper');
+            const addBtn =$('#add-btn-wrapper');
+            const addForm = $('#add-form form');
 
-            // 1) 수정 버튼 클릭 → 추가 버튼 토글
-            $('#edit-save-btn').on('click', function () {
-                isEditing = !isEditing;
+            // 초기 UI
+            form.addClass('hidden');
+            editBtn.addClass('hidden');
+            delBtn.addClass('hidden');
 
-                if (isEditing) {
-                    addBtnWrapper.removeClass('hidden').addClass('flex-center');
-                } else {
-                    addBtnWrapper.removeClass('flex-center').addClass('hidden');
-                    careFormWrapper.hide(); // 폼 닫기
+            // pet-care 클릭 시 sitter 내부이면 완전 무시
+            $(document).on('click', '.pet-care', function () {
+                if ($(this).closest('.sitter').length) return; // sitter는 비활성
+                if (state === 'editing') return;
+
+                $('.pet-care').removeClass('selected');
+                $(this).addClass('selected');
+                toSelected($(this).data('id'));
+            });
+
+            // 추가 폼 닫기
+            function closeAddForm() {
+                if (careFormWrapper.is(':visible')) {
+                    careFormWrapper.stop(true, true).slideUp();
+                    $('#edate').prop('disabled', false);
+                    $('#edateDisplay').hide();
+                    if (addForm[0]) addForm[0].reset();  // ★ 폼 리셋 (오타 수정)
                 }
-            });
+            }
 
-            // 2) 추가 버튼 클릭 -> 폼 보이기
-            $(document).on('click', '.add-btn', function () {
-                careFormWrapper.slideDown(); // 부드럽게 열림
-            });
-
-            // 3) 종료일 없음 버튼 클릭 시 종료일 필드 비우기 + 비활성화
-            // 종료일 없음 버튼 클릭 시
-            $('#no-end-btn').on('click', function () {
-                $('#edate').val('').prop('disabled', true);
-                $('#edateDisplay').show().text('현재');
-                noEndSelected = true;
-            });
-
-            // 4) 폼 제출 -> 디비 추가
-            $('#add-form form').on('submit', function (e) {
+            $(document).on('click', '.add-btn', function (e) {
                 e.preventDefault();
+                e.stopPropagation();                              // ★ 전파 차단
+                careFormWrapper.stop(true, true).slideDown();
+            });
 
-                const data = {
-                    species: $('#type').val(),
-                    breed: $('#breed').val(),
-                    sDate: $('#sdate').val(),
-                    eDate: $('#edate').prop('disabled') ? null : $('#edate').val()
-                };
+            $('#careFormWrapper').on('click', function (e) {
+                e.stopPropagation();                              // ★ 폼 내부 클릭도 전파 차단
+            });
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/experience/add',
-                    data: data,
-                    success: function (res) {
-                        alert(res.message || '추가 완료');
-                        // 목록 새로고침 or DOM에 새 항목 append
-                        location.reload();
-                    },
-                    error: function (xhr) {
-                        alert((xhr.responseJSON && xhr.responseJSON.message) || '추가 중 오류 발생');
+            function toIdle() {
+                state = 'idle';
+                selectedId = null;
+                $('.pet-care').removeClass('selected');
+
+                // 폼 완전 숨김
+                form.addClass('hidden').hide();
+                if (form[0]) form[0].reset();
+
+                // 목록 다시 보이기
+                view.removeClass('hidden').show();
+
+                // 버튼 숨김 및 라벨 초기화
+                editBtn.addClass('hidden').text('수정').css({ backgroundColor:'', color:'' });
+                delBtn.addClass('hidden').text('삭제').css({ backgroundColor:'', color:'' });
+                addBtn.addClass('hidden')
+            } //toIdle
+
+            function toSelected(id) {
+                state = 'selected';
+                selectedId = id;
+                form.addClass('hidden');
+                view.show();
+                // 수정/삭제 버튼 노출
+                editBtn.removeClass('hidden').text('수정')
+                    .css({ backgroundColor:'white', color:'#64DAFE' });
+                delBtn.removeClass('hidden').text('삭제')
+                    .css({ backgroundColor:'#64DAFE', color:'white' });
+            }//toSelected
+
+            function toEditing() {
+                state = 'editing';
+                editBtn.text('완료').css({ backgroundColor:'#64DAFE', color:'white' });
+                delBtn.text('취소').css({ backgroundColor:'white', color:'#64DAFE' });
+
+                // 목록 숨기고 폼 보이기
+                view.hide().addClass('hidden');
+                form.removeClass('hidden').show();
+            }//toEditing
+
+            // 선택된 아이템 → 폼 채우기
+            function fillFormFromItem(item) {
+                form.find('input[name=no]').val(item.data('id')); // PK
+                form.find('input[name=sDate]').val(item.data('sdate'));
+                form.find('input[name=eDate]').val(item.data('edate'));
+                form.find('select[name=species]').val(item.data('species'));
+                form.find('input[name=breed]').val(item.data('breed'));
+            }//fillFormFromItem
+
+            // 폼 값 → 리스트 아이템 DOM/데이터 갱신 (리로드 없이 반영)
+            function updateItemFromForm(item) {
+                const s = form.find('input[name=sDate]').val();
+                const e = form.find('input[name=eDate]').val();
+                const sp = form.find('select[name=species]').val();
+                const br = form.find('input[name=breed]').val();
+
+                // 표시 텍스트 갱신
+                item.find('.care-date').eq(0).text(s);
+                item.find('.care-date').eq(1).text(e);
+                item.find('.care-speices').text(sp);
+                item.find('.care-breed-box').text(br);
+
+                // data-* 갱신
+                item.data('sdate', s);
+                item.data('edate', e);
+                item.data('species', sp);
+                item.data('breed', br);
+            }//update
+
+            // ===== 1) pet-care 클릭 → 선택 상태 =====
+            $(document).on('click', '.owner .pet-care', function () {
+                if (state === 'editing') return; // 편집 중엔 선택 금지
+                $('.owner .pet-care').removeClass('selected');
+                $(this).addClass('selected');
+                toSelected($(this).data('id'));
+            });//click
+
+            // ===== 2) 수정/완료 버튼 =====
+            editBtn.on('click', function () {
+                if (state === 'selected') {
+                    // 수정 시작: 폼 채우고 편집 상태 진입
+                    const item = $('.pet-care.selected');
+                    if (!item.length) return alert('수정할 항목을 선택하세요.');
+                    fillFormFromItem(item);
+                    toEditing();
+                    return;
+                }
+
+                if (state === 'editing') {
+                    // 완료(저장)
+                    $.ajax({
+                        type: 'POST',
+                        url: '/experience/update', // 컨트롤러 매핑
+                        data: form.serialize(),
+                        success: function () {
+                            const item = $('.pet-care.selected');
+                            if (item.length) updateItemFromForm(item); // DOM 반영
+                            toIdle(); // 초기화 (선택도 해제)
+                        },
+                        error: function () {
+                            alert('저장 중 오류가 발생했습니다.');
+                            console.log('submit', form.serialize());
+                        }
+                    });
+                }
+            });//click
+
+            // ===== 3) 삭제/취소 버튼 =====
+            delBtn.on('click', function () {
+                if (state === 'selected') {
+                    // 삭제 동작
+                    const item = $('.pet-care.selected');
+                    if (!item.length) return alert('삭제할 항목을 선택하세요.');
+                    if (!confirm('정말 삭제하시겠어요?')) return;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/experience/delete',
+                        data: { no: item.data('id') },
+                        success: function () {
+                            item.remove();
+                            toIdle();
+                        },
+                        error: function () {
+                            alert('삭제 중 오류가 발생했습니다.');
+                        }
+                    });
+                    return;
+                }
+
+                if (state === 'editing') {
+                    // 취소: 수정 취소하고 처음 상태로
+                    toIdle();
+                }
+            });//click
+
+            // ===== (옵션) 바깥 클릭 시 전체 해제 =====
+            $(document).on('click', function (e) {
+                if ($(e.target).closest('.owner .pet-care, .edit-btn-wrapper2, #care-edit-form').length) return;
+                if ($('.view-mode .empty').length > 0) {
+                    toIdle();
+                }else{
+                    toIdle();
+                    closeAddForm();
+                }
+
+            });//click
+
+            // 추가
+            $(document).ready(function () {
+                let isEditing = false;
+                let noEndSelected = false;
+                const addBtnWrapper = $('#add-btn-wrapper');
+
+                // 1) 수정 버튼 클릭 → 추가 버튼 토글
+                $('#edit-save-btn').on('click', function () {
+                    isEditing = !isEditing;
+
+                    if (isEditing) {
+                        addBtnWrapper.removeClass('hidden').addClass('flex-center');
+                    } else {
+                        addBtnWrapper.removeClass('flex-center').addClass('hidden');
+                        careFormWrapper.hide(); // 폼 닫기
                     }
                 });
+
+                // 2) 추가 버튼 클릭 -> 폼 보이기
+                $(document).on('click', '.add-btn', function () {
+                    careFormWrapper.slideDown(); // 부드럽게 열림
+                });
+
+                // 3) 종료일 없음 버튼 클릭 시 종료일 필드 비우기 + 비활성화
+                // 종료일 없음 버튼 클릭 시
+                $('#no-end-btn').on('click', function () {
+                    $('#edate').val('').prop('disabled', true);
+                    $('#edateDisplay').show().text('현재');
+                    noEndSelected = true;
+                });
+
+                // 4) 폼 제출 -> 디비 추가
+                addForm.on('submit', function (e) {
+                    e.preventDefault();
+
+                    const data = {
+                        species: $('#type').val(),
+                        breed: $('#breed').val(),
+                        sDate: $('#sdate').val(),
+                        eDate: $('#edate').prop('disabled') ? null : $('#edate').val()
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/experience/add',
+                        data: data,
+                        success: function (res) {
+                            alert(res.message || '추가 완료');
+                            // 목록 새로고침 or DOM에 새 항목 append
+                            location.reload();
+                        },
+                        error: function (xhr) {
+                            alert((xhr.responseJSON && xhr.responseJSON.message) || '추가 중 오류 발생');
+                        }
+                    });
+                });
             });
-        });
-    });//ready
+        });//ready
 
 
 
@@ -553,6 +609,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     });
 
 
+    // 수정시 edate 종료일 없음 눌렀을때
     $(function () {
         $('#no-end-btn').on('change', function () {
             const edate = $('#edate');
@@ -573,7 +630,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         $('form').on('submit', function () {
             const edate = $('#edate');
             if (edate.is(':disabled') || !edate.val()) {
-                edate.prop('disabled', true); // disabled면 전송 안 됨 → DB에서 null로 처리
+                edate.prop('disabled', true); // disabled면 전송 안 됨 :: DB에서 null로 처리
             }
         });
     });
