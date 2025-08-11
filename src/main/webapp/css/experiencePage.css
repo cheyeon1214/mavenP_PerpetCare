@@ -73,6 +73,7 @@
 .grade-badge {
   height: 16px;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .edit-btn-wrapper1 {
@@ -208,10 +209,17 @@
   cursor: pointer;
 }
 
-.pet-care.selected {
+.owner .pet-care.selected {
   border-color:#64DAFE;
   background:rgba(100,218,254,.5);
   border-radius: 10px;
+}
+
+.sitter .pet-care { cursor: default; }
+.sitter .pet-care.selected {
+  background: transparent !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
 }
 
 /* 날짜 */

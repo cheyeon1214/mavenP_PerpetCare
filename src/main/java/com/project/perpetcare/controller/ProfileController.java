@@ -59,6 +59,15 @@ public class ProfileController {
         }
     }
 
+    @GetMapping("/myInfo")
+    public String myInfo(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if(user == null) {
+            return "redirect:/login";
+        }
+        return "profilePage/myInfo";
+    }
+
 
 
 
