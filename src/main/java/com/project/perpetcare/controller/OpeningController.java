@@ -14,9 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -224,6 +222,38 @@ public class OpeningController {
 
     @GetMapping("/recent")
     public String getRecentOpening(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+        model.addAttribute("user", user);
         return "profilePage/recentOpening";
+    }
+
+    @GetMapping("/by-ids")
+    @ResponseBody
+    public List<Opening> getOpeningsByIds(@RequestParam("ids") List<Integer> ids) throws Exception {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // 중복 제거 + 최대 6개로 제한
+        List<Integer> safeIds = ids.stream()
+                .filter(Objects::nonNull)
+                .distinct()
+                .limit(6)
+                .toList();
+
+        List<Opening> openings = new ArrayList<>();
+        for (Integer id : safeIds) {
+            Opening opening = openingService.getOpening(id);
+
+            if (opening != null) {
+                List<Pet> pets = opening.getPets();
+                if (pets != null && !pets.isEmpty()) {
+                    petService.encodePetImages(pets);
+                }
+                openings.add(opening);
+            }
+        }
+        return openings;
     }
 }

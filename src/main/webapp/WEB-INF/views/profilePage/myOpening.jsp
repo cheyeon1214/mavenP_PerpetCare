@@ -506,8 +506,8 @@
                     <a href="#">반려동물</a>
                     <a href="/experiencePage" >경험</a>
                     <a href="#" class="active">올린 공고</a>
-                    <a href="#">신청한 공고</a>
-                    <a href="#">최근 본 공고</a>
+                    <a href="/opening/myApply">신청한 공고</a>
+                    <a href="/opening/recent">최근 본 공고</a>
                 </div>
             </div>
             <div class="logout"><a href="#">로그아웃</a></div>

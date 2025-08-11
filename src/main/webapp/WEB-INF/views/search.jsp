@@ -241,6 +241,7 @@
         border: none;
         border-radius: 20px;
         box-shadow: 2px 2px 5px rgba(59, 59, 59, 0.5);
+        cursor: pointer;
     }
     .opening-card-image {
         display:flex;
@@ -309,6 +310,41 @@
     }
 </style>
 <script>
+    const RECENT_KEY = 'recentNos';
+    const RECENT_LIMIT = 6;
+
+    function getRecentNos() {
+        try {
+            const raw = localStorage.getItem(RECENT_KEY);
+            const arr = raw ? JSON.parse(raw) : [];
+            return Array.isArray(arr) ? arr : [];
+        } catch {
+            return [];
+        }
+    }
+
+    function setRecentNos(arr) {
+        localStorage.setItem(RECENT_KEY, JSON.stringify(arr));
+    }
+
+    function pushRecentNo(no) {
+        const id = String(no);
+        let list = getRecentNos();
+
+        // 중복 제거
+        list = list.filter(n => String(n) !== id);
+
+        // 맨 앞 추가
+        list.unshift(id);
+
+        // 최대 6개 유지
+        if (list.length > RECENT_LIMIT) {
+            list = list.slice(0, RECENT_LIMIT);
+        }
+
+        setRecentNos(list);
+    }
+
     $.datepicker.setDefaults({
         dateFormat: "yy-mm-dd",
         dayNamesMin: ["일","월","화","수","목","금","토"],
@@ -412,7 +448,7 @@
                         $('#location-name').text(dong);
                         var html = "";
                         data.forEach(function(item){
-                            html += "<div class='opening-card'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
+                            html += "<div class='opening-card' data-no='" + item.no + "'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
                                 +item.pets[0].base64Image
                                 + "' ><span class='opening-card-species' style='display:none'>#"
                                 + item.pets[0].species
@@ -533,7 +569,7 @@
                         console.log(data);
                         var html = "";
                         data.forEach(function(item){
-                            html += "<div class='opening-card'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
+                            html += "<div class='opening-card' data-no='" + item.no + "'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
                                 +item.pets[0].base64Image
                                 + "' ><span class='opening-card-species' style='display:none'>#"
                                 + item.pets[0].species
@@ -596,7 +632,7 @@
                         console.log(data);
                         var html = "";
                         data.forEach(function (item) {
-                            html += "<div class='opening-card'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
+                            html += "<div class='opening-card' data-no='" + item.no + "'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
                                 +item.pets[0].base64Image
                                 + "' ><span class='opening-card-species' style='display:none'>#"
                                 + item.pets[0].species
@@ -621,7 +657,16 @@
                     }
                 }); // ajax
             }
-        }); // 정렬 적용 변경
+        });// 정렬 적용 변경
+
+        $(document).on('click', '.opening-card', function () {
+            const oNo = $(this).data('no');
+            if (!oNo) return;
+
+            pushRecentNo(oNo);
+
+            window.location.href = "/opening/detail?no=" + oNo;
+        });
     });
 </script>
 <body>

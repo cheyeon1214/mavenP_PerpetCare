@@ -151,6 +151,7 @@
             justify-content: start;
             flex-wrap: wrap;
             margin-left: 200px;
+            margin-top: 30px;
         }
         .opening-card {
             background-color: white;
@@ -173,7 +174,6 @@
             border-radius: 20px;
             width: 200px;
             height: 200px;
-            border-radius: 20px;
             object-fit: cover;
         }
         .opening-card-image > img:hover {
@@ -191,6 +191,7 @@
             color: white;
             background-color: #FD9596;
             border-radius: 20px;
+            text-align: center;
         }
         .opening-card-loc {
             position:absolute;
@@ -203,6 +204,7 @@
             color: white;
             background-color: #64DAFE;
             border-radius: 20px;
+            text-align: center;
         }
         .opening-card-date {
             display: flex;
@@ -226,6 +228,112 @@
             font-weight: bold;
         }
     </style>
+    <script>
+        $(document).ready(function() {
+
+            // image mouseenter
+            $(document).on('mouseenter', '.opening-card-image > img', function () {
+                $(this).closest('.opening-card-image').find('.opening-card-species').css('display', 'inline');
+                $(this).closest('.opening-card-image').find('.opening-card-loc').css('display', 'inline');
+            });
+            // image mouseenter
+            $(document).on('mouseleave', '.opening-card-image > img', function () {
+                $(this).closest('.opening-card-image').find('.opening-card-species').css('display', 'none');
+                $(this).closest('.opening-card-image').find('.opening-card-loc').css('display', 'none');
+            });
+        });
+    </script>
+    <script>
+        $(function() {
+            const RECENT_KEY = 'recentNos';
+
+            function getRecentNos() {
+                try {
+                    const raw = localStorage.getItem(RECENT_KEY);
+                    const arr = raw ? JSON.parse(raw) : [];
+                    return Array.isArray(arr) ? arr : [];
+                } catch { return []; }
+            }
+
+            // 카드 HTML 생성
+            function renderCards(items) {
+                let html = '';
+                items.forEach(item => {
+                    const sDate = (item.sDate || '').split('T')[0];
+                    const eDate = (item.eDate || '').split('T')[0];
+                    const dong  = (item.location || '').split(',').pop().trim();
+                    const pet   = (item.pets && item.pets[0]) ? item.pets[0] : {};
+                    const img64 = pet.base64Image || '';
+                    const species = pet.species || '';
+
+                    html +=
+                        "<div class='opening-card' data-no='" + item.no + "'>" +
+                        "  <div class='opening-card-image'>" +
+                        "    <img src='data:image/jpeg;base64," + img64 + "'>" +
+                        "    <span class='opening-card-species' style='display:none'>#" + species + "</span>" +
+                        "    <span class='opening-card-loc' style='display:none'>#" + dong + "</span>" +
+                        "  </div>" +
+                        "  <div class='opening-card-date'>" +
+                        "    <span>" + sDate + "</span>&nbsp;~&nbsp;<span>" + eDate + "</span>" +
+                        "  </div>" +
+                        "  <div class='opening-card-careway'><p>" + (item.careWay || '') + "</p></div>" +
+                        "  <div class='opening-card-priceper'>" +
+                        "    <span class='opening-card-price'>" + (item.price || '') + "</span>원&nbsp;/&nbsp;" +
+                        "    <span class='opening-card-per'>" + (item.per || '') + "</span>" +
+                        "  </div>" +
+                        "</div>";
+                });
+                $('#list-card-section').html(html);
+            }
+
+            // 로드 시 recentNos 가져와 서버에 조회
+            const ids = getRecentNos();
+            if (ids.length === 0) {
+                $('#list-card-section').html("<p style='margin-left:200px;margin-top:20px;'>최근 본 공고가 없습니다.</p>");
+                return;
+            }
+
+            $.ajax({
+                url: "/opening/by-ids",
+                type: "GET",
+                traditional: true, // ids=1&ids=2&ids=3 형태 전송 허용
+                data: { ids: ids }, // List<Integer> 바인딩
+                success: function(list) {
+                    const order = new Map(ids.map((id, idx) => [String(id), idx]));
+                    list.sort((a, b) => (order.get(String(a.no)) ?? 0) - (order.get(String(b.no)) ?? 0));
+                    renderCards(list);
+                },
+                error: function(xhr) {
+                    console.log("최근 공고 불러오기 실패:", xhr.responseText);
+                    $('#list-card-section').html("<p style='margin-left:200px;margin-top:40px;'>최근 공고를 불러오지 못했습니다.</p>");
+                }
+            });
+
+            // 카드 클릭 이동 + 로컬스토리지 저장
+            $(document).on('click', '.opening-card', function () {
+                let oNo = $(this).data('no');
+                if (!oNo) return;
+                oNo = String(oNo);
+                // 기존 목록 가져오기
+                let recentNos = JSON.parse(localStorage.getItem('recentNos')) || [];
+
+                // 중복 제거 (이미 있으면 삭제)
+                recentNos = recentNos.filter(id => id !== oNo);
+
+                // 앞에 추가
+                recentNos.unshift(oNo);
+
+                // 최대 6개까지만 유지
+                if (recentNos.length > 6) {
+                    recentNos = recentNos.slice(0, 6);
+                }
+
+                localStorage.setItem('recentNos', JSON.stringify(recentNos));
+
+                window.location.href = "/opening/detail?no=" + oNo;
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="page-container">
@@ -236,12 +344,12 @@
             <div class="sidebar-top">
                 <div class="profile">
                     <img
-                            src="../../../image/profile_1.svg"
+                            src="../../..${user.imagePath}"
                             alt="프로필"
                             class="profile-img"
                     />
                     <div class="info">
-                        <div class="name">taeran</div>
+                        <div class="name">${user.name}</div>
                     </div>
                     <div class="info">
                         <div class="info-left">
@@ -252,14 +360,14 @@
                         <div class="info-middle">
                             <img
                                     class="grade-badge"
-                                    src="../../../image/grade/grade_Silver.svg"
+                                    src="../../../image/grade/grade_${user.grade}.svg"
                                     alt="grade-badge"
                             />
                         </div>
                         <div class="info-right">
-                            <div class="grade">Silver</div>
-                            <div class="gender">여성</div>
-                            <div class="age">20대</div>
+                            <div class="grade">${user.grade}</div>
+                            <div class="gender">${user.gender}</div>
+                            <div class="age">${user.ageGroup}</div>
                         </div>
                     </div>
                 </div>
@@ -269,8 +377,8 @@
                 <div class="nav">
                     <a href="#" class="active">반려동물</a>
                     <a href="/experiencePage" >경험</a>
-                    <a href="#">올린 공고</a>
-                    <a href="#">신청한 공고</a>
+                    <a href="/opening/mine">올린 공고</a>
+                    <a href="/opening/myApply">신청한 공고</a>
                     <a href="#">최근 본 공고</a>
                 </div>
             </div>
@@ -302,86 +410,7 @@
                             <span class="opening-card-per">건당</span>
                         </div>
                     </div>
-                    <div class="opening-card">
-                        <div class="opening-card-image">
-                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
-                            <span class="opening-card-species" style="display:none">#고양이</span>
-                            <span class="opening-card-loc" style="display:none">#혜화동</span>
-                        </div>
-                        <div class="opening-card-date">
-                            <span>2025-08-15</span>
-                            &nbsp;~&nbsp;
-                            <span>2025-08-17</span>
-                        </div>
-                        <div class="opening-card-careway">
-                            <p>여기로 와주세요</p>
-                        </div>
-                        <div class="opening-card-priceper">
-                            <span class="opening-card-price">20000</span>
-                            원&nbsp;/&nbsp;
-                            <span class="opening-card-per">건당</span>
-                        </div>
-                    </div>
-                    <div class="opening-card">
-                        <div class="opening-card-image">
-                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
-                            <span class="opening-card-species" style="display:none">#고양이</span>
-                            <span class="opening-card-loc" style="display:none">#혜화동</span>
-                        </div>
-                        <div class="opening-card-date">
-                            <span>2025-08-15</span>
-                            &nbsp;~&nbsp;
-                            <span>2025-08-17</span>
-                        </div>
-                        <div class="opening-card-careway">
-                            <p>여기로 와주세요</p>
-                        </div>
-                        <div class="opening-card-priceper">
-                            <span class="opening-card-price">20000</span>
-                            원&nbsp;/&nbsp;
-                            <span class="opening-card-per">건당</span>
-                        </div>
-                    </div>
-                    <div class="opening-card">
-                        <div class="opening-card-image">
-                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
-                            <span class="opening-card-species" style="display:none">#고양이</span>
-                            <span class="opening-card-loc" style="display:none">#혜화동</span>
-                        </div>
-                        <div class="opening-card-date">
-                            <span>2025-08-15</span>
-                            &nbsp;~&nbsp;
-                            <span>2025-08-17</span>
-                        </div>
-                        <div class="opening-card-careway">
-                            <p>여기로 와주세요</p>
-                        </div>
-                        <div class="opening-card-priceper">
-                            <span class="opening-card-price">20000</span>
-                            원&nbsp;/&nbsp;
-                            <span class="opening-card-per">건당</span>
-                        </div>
-                    </div>
-                    <div class="opening-card">
-                        <div class="opening-card-image">
-                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
-                            <span class="opening-card-species" style="display:none">#고양이</span>
-                            <span class="opening-card-loc" style="display:none">#혜화동</span>
-                        </div>
-                        <div class="opening-card-date">
-                            <span>2025-08-15</span>
-                            &nbsp;~&nbsp;
-                            <span>2025-08-17</span>
-                        </div>
-                        <div class="opening-card-careway">
-                            <p>여기로 와주세요</p>
-                        </div>
-                        <div class="opening-card-priceper">
-                            <span class="opening-card-price">20000</span>
-                            원&nbsp;/&nbsp;
-                            <span class="opening-card-per">건당</span>
-                        </div>
-                    </div>
+
                 </div>
 
             </main>
