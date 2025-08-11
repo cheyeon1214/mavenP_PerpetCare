@@ -177,7 +177,7 @@
                 <div class="profile-title">프로필</div>
                 <!-- 아바타 -->
                 <div class="profile-avatar">
-                    <img class="profile-img" src="${pageContext.request.contextPath}/image/profile_1.svg" alt="프로필 이미지" />
+                    <img class="profile-img" src="../../..${user.imagePath}" alt="프로필 이미지" />
                 </div>
                 <button type="button" class="profile-change-btn" id="profileImageChangeBtn">변경</button>
                 <div class="avatar-space">
