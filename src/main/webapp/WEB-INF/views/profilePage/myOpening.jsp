@@ -201,7 +201,7 @@
         }
         .opening-pet-img{
             margin-top: -80px;
-            width: 230px;
+            width: 300px;
         }
 
         .card-text-section{
@@ -219,7 +219,7 @@
         }
 
         .card-text-section-left{
-            width: 230px;
+            width: 290px;
             padding: 30px;
 
         }
@@ -353,10 +353,103 @@
             padding: 6px 9px;
             resize: vertical;
         }
+        .location-btn {
+            background-color: white;
+        }
 
+        /* 지역 검색 모달창 */
+        #modal-body-first, .modal-footer {
+            display: flex;
+            justify-content: center;
+        }
+        #location-input {
+            width: 80%;
+            padding: 0 10px;
+            margin-bottom: 10px;
+        }
+        #modal-body-second {
+            width: 90%;
+            height: 400px;
+            overflow-y: auto;
+            padding-left: 50px;
+        }
+        .location-list {
+            padding: 0 0 5px 0;
+            border-bottom: 1px solid #cccccc;
+        }
+        .location-list.selected {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #locModal .modal-footer > button {
+            width: 80%;
+            background-color: #64DAFE;
+            color: white;
+            border: #64DAFE;
+            border-radius: 10px;
+            padding: 10px 0;
+        }
 
     </style>
     <script>
+        $(document).ready(function(){
+            // 지역 검색 비동기
+            $('#location-input').on("keyup", function(){
+                let word = $(this).val().trim();
+
+                if(word.length > 0) {
+                    $.ajax({
+                        // 요청
+                        url: "/api/search/location",
+                        type: "GET",
+                        data: {word: word}, // 서버에 ?word=검색어 로 전달
+                        // 응답
+                        success: function(data){
+                            var html = "";
+                            data.forEach(function(item){
+                                html += "<p class='location-list' id='"
+                                    +item.lcode
+                                    +"'>"
+                                    +item.address
+                                    +"</p>";
+                            })
+                            $('#modal-body-second').html(html);
+                        },
+                        error: function(xhr, status, error){
+                            console.log("에러 발생 : ", xhr.responseText);
+                        }
+                    })
+                }
+            });
+
+            // 지역 선택
+            $(document).on('click', '.location-list', function() {
+                $('.location-list').removeClass('selected');
+                $(this).addClass('selected');
+                let address = $(this).text();
+                let lcode = $(this).attr('id');
+                $('#selectedAddr').val(address); // hidden input에 값을 저장해 둠
+                $('#selectedCode').val(lcode); // hidden input에 값을 저장해 둠
+                console.log("주소 : "+address+", 코드 : "+lcode);
+            });
+
+            // 필터 적용 1
+            $(document).on('click', 'button[name=locationBtn]', function() {
+                let address = $('#selectedAddr').val();
+                let lcode = $('#selectedCode').val();
+                if(!lcode) {
+                    alert("지역을 하나 선택해주세요.");
+                    return false;
+                } else {
+                    $('[name=location]').val(lcode); // db에 전달할 input value 값
+                    $(".location-btn").html(address);
+                    $('#locModal').modal('hide');
+                }
+
+            }); // modal btn click
+
+        }); // ready
+
         function toggleEdit(btn){
 
             const wrapper = btn.closest('form');             // 폼을 잡아옴
@@ -368,7 +461,6 @@
                 wrapper.submit();
             }
         }
-
     </script>
 </head>
 <body>
@@ -481,7 +573,9 @@
                                 <div class="card-text-title">돌봄 주소</div>
                                 <div class="card-text">
                                     <span class="view-mode">${op.location}</span>
-                                    <input class="edit-mode edit-location" type="text" name="location" value="${op.location}">
+                                    <button type="button" class="edit-mode edit-location location-btn" data-toggle="modal" data-target="#locModal">${op.location}</button>
+                                    <input type="hidden" id="selectedCode" name="location" value="${op.location}"/>
+                                    <input type="hidden" id="selectedAddr" name="selectedAddr" />
                                 </div>
                             </div>
                         </div>
@@ -619,6 +713,27 @@
         </div>
     </div>
 
+    <div class="modal" id="locModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">지역 선택</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-body-first">
+                        <input type="text" id="location-input" placeholder="찾으시는 지역을 입력하세요" autocomplete="off">
+                    </div>
+                    <div id="modal-body-second">
+                        <p class="location-list" style="display: none">서울시, 종로구</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="locationBtn">검색</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
