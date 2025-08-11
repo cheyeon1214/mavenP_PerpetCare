@@ -66,4 +66,8 @@ public class ApplyDAO {
     public List<ApplyUserDTO> getApplyList(String email) {
         return sqlSession.selectList(NS+"getApplyList", email);
     }
+
+    public ApplyUserDTO getApplyUserById(int aNo) {
+        return sqlSession.selectOne(NS+"getApplyUserById", aNo);
+    }
 }
