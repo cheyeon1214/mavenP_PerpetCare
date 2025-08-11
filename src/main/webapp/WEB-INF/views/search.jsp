@@ -354,7 +354,70 @@
         yearSuffix: "년"
     });
 
+
     $(document).ready(function(){
+
+        // 공고 리스트 검색 공통 ajax 기본 옵션 설정
+        $.ajaxSetup({
+            // 요청
+            url: "/api/search/filter",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: 'json',
+            // 오류 시 콘솔 출력
+            error: function(xhr, status, error){
+                console.log("에러 발생 : ", xhr.responseText);
+            }
+        }); // set up
+
+        function renderOpenings(data, closeModal=false){
+            console.log(data);
+            var html = "";
+            data.forEach(function(item){
+                html += "<div class='opening-card' data-no='" + item.no + "'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
+                    +item.pets[0].base64Image
+                    + "' ><span class='opening-card-species' style='display:none'>#"
+                    + item.pets[0].species
+                    +"</span> <span class='opening-card-loc' style='display:none'>#"
+                    +item.location
+                    +"</span></div> <div class='opening-card-date'> <span>"
+                    +item.sDate.split('T')[0]
+                    +"</span> &nbsp;~&nbsp; <span>"
+                    +item.eDate.split('T')[0]
+                    +"</span> </div> <div class='opening-card-careway'> <p>"
+                    +item.careWay
+                    +"</p> </div> <div class='opening-card-priceper'> <span class='opening-card-price'>"
+                    +item.price
+                    +"</span>원&nbsp;/&nbsp; <span class='opening-card-per'>"
+                    +item.per
+                    +"</span> </div> </div>";
+            })
+            $('#list-card-section').html(html);
+
+            // 모달창에서 호출하는 경우만
+            if(closeModal) {
+                $('#locModal').modal('hide');
+            }
+        }
+
+        // 처음 search page 들어올 때부터 condition이 default 로 호출하기
+        // 비동기 (1) 전체 조회
+        $.ajax({
+            // 요청
+            data: JSON.stringify({
+                closeFilter: null,
+                sdate: null,
+                edate: null,
+                location: null,
+                careWay: null,
+                species: null,
+                orderBy: "recent"
+            }),
+            // 응답
+            success: function(data) {
+                renderOpenings(data);
+            }
+        }); // ajax
 
         // image mouseenter
         $(document).on('mouseenter', '.opening-card-image > img', function(){
@@ -407,70 +470,30 @@
             console.log("주소 : "+address+", 코드 : "+lcode);
         });
 
-        // 필터 적용 1
+        // 필터 적용 (1) 지역 필터
         $(document).on('click', 'button[name=locationBtn]', function() {
-            let address = $('#selectedAddr').val();
             let lcode = $('#selectedCode').val();
+            let selectedOrder = $('#orderWay').val();
             if(!lcode) {
                 alert("지역을 하나 선택해주세요.");
                 return false;
             }
             else {
-                let dong = address.split(',').pop().trim();
-                let selectedLocation = $('#selectedCode').val();
-                let selectedClose = false;
-                if($('[type=checkbox]').is(':checked')) selectedClose = true;
-                let selectedSdate = $('#filterSdate').val() || null;
-                let selectedEdate = $('#filterEdate').val() || null;
-                let selectedCareWay = $('input[name="careWayBtn"].selected').val();
-                let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
-                let selectedSpecies = $('input[name="speciesBtn"].selected').val();
-                let species = selectedSpecies ? selectedSpecies.substring(1) : null;
-                let selectedOrder = $('#orderWay').val();
-
+                // 비동기 (2) 지역 조건만 주기
                 $.ajax({
                     // 요청
-                    url: "/api/search/filter",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({
-                        closeFilter: selectedClose,
-                        sdate: selectedSdate,
-                        edate: selectedEdate,
-                        location: selectedLocation,
-                        careWay: careWay,
-                        species: species,
-                        orderBy: selectedOrder
+                        closeFilter: null,
+                        sdate: null,
+                        edate: null,
+                        location: lcode,
+                        careWay: null,
+                        species: null,
+                        orderBy: selectedOrder,
                     }),
                     // 응답
-                    success: function(data){
-                        console.log(data);
-                        $('#location-name').text(dong);
-                        var html = "";
-                        data.forEach(function(item){
-                            html += "<div class='opening-card' data-no='" + item.no + "'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
-                                +item.pets[0].base64Image
-                                + "' ><span class='opening-card-species' style='display:none'>#"
-                                + item.pets[0].species
-                                +"</span> <span class='opening-card-loc' style='display:none'>#"
-                                +dong
-                                +"</span></div> <div class='opening-card-date'> <span>"
-                                +item.sDate.split('T')[0]
-                                +"</span> &nbsp;~&nbsp; <span>"
-                                +item.eDate.split('T')[0]
-                                +"</span> </div> <div class='opening-card-careway'> <p>"
-                                +item.careWay
-                                +"</p> </div> <div class='opening-card-priceper'> <span class='opening-card-price'>"
-                                +item.price
-                                +"</span>원&nbsp;/&nbsp; <span class='opening-card-per'>"
-                                +item.per
-                                +"</span> </div> </div>";
-                        })
-                        $('#list-card-section').html(html);
-                        $('#locModal').modal('hide');
-                    },
-                    error: function(xhr, status, error){
-                        console.log("에러 발생 : ", xhr.responseText);
+                    success: function(data) {
+                        renderOpenings(data, true);
                     }
                 }); // ajax
             }
@@ -526,137 +549,78 @@
             }
         })
 
-        // 필터 적용 2
+        // 필터 적용 (2) 필터 박스
         $('#filterBtn').click(function() {
             // 선택된 지역
-            let selectedLocation = $('#selectedCode').val();
-            if(!selectedLocation){
-                alert("지역을 먼저 선택해주세요.");
-            }else{
-                let dong = $('#selectedAddr').val().split(',').pop().trim();
-                // 선택된 마감 제외 여부
-                let selectedClose = false;
-                if($('[type=checkbox]').is(':checked')) selectedClose = true;
-                // 선택된 기간
-                let selectedSdate = $('#filterSdate').val() || null;
-                let selectedEdate = $('#filterEdate').val() || null;
-                // 선택된 돌봄 방법
-                let selectedCareWay = $('input[name="careWayBtn"].selected').val();
-                let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
-                // 선택된 반려동물 종
-                let selectedSpecies = $('input[name="speciesBtn"].selected').val();
-                let species = selectedSpecies ? selectedSpecies.substring(1) : null;
-                // 정렬 순
-                let selectedOrder = $('#orderWay').val();
-                // alert("지역: "+selectedLocation+", 마감 여부 : "+selectedClose+", 시작일: "+selectedSdate+", 종료일: "+selectedEdate+", 돌봄 방법 : "+careWay+", 동물 종 : "+species+", 정렬 :"+selectedOrder);
+            let selectedLocation = $('#selectedCode').val() || null;
+            // 선택된 마감 제외 여부
+            let selectedClose = false;
+            if($('[type=checkbox]').is(':checked')) selectedClose = true;
+            // 선택된 기간
+            let selectedSdate = $('#filterSdate').val() || null;
+            let selectedEdate = $('#filterEdate').val() || null;
+            // 선택된 돌봄 방법
+            let selectedCareWay = $('input[name="careWayBtn"].selected').val();
+            let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
+            // 선택된 반려동물 종
+            let selectedSpecies = $('input[name="speciesBtn"].selected').val();
+            let species = selectedSpecies ? selectedSpecies.substring(1) : null;
+            // 정렬 순
+            let selectedOrder = $('#orderWay').val();
+            // alert("지역: "+selectedLocation+", 마감 여부 : "+selectedClose+", 시작일: "+selectedSdate+", 종료일: "+selectedEdate+", 돌봄 방법 : "+careWay+", 동물 종 : "+species+", 정렬 :"+selectedOrder);
 
-                $.ajax({
-                    // 요청
-                    url: "/api/search/filter",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({
-                        closeFilter: selectedClose,
-                        sdate: selectedSdate,
-                        edate: selectedEdate,
-                        location: selectedLocation,
-                        careWay: careWay,
-                        species: species,
-                        orderBy: selectedOrder
-                    }),
-                    // 응답
-                    success: function(data){
-                        console.log(data);
-                        var html = "";
-                        data.forEach(function(item){
-                            html += "<div class='opening-card' data-no='" + item.no + "'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
-                                +item.pets[0].base64Image
-                                + "' ><span class='opening-card-species' style='display:none'>#"
-                                + item.pets[0].species
-                                +"</span> <span class='opening-card-loc' style='display:none'>#"
-                                +dong
-                                +"</span></div> <div class='opening-card-date'> <span>"
-                                +item.sDate.split('T')[0]
-                                +"</span> &nbsp;~&nbsp; <span>"
-                                +item.eDate.split('T')[0]
-                                +"</span> </div> <div class='opening-card-careway'> <p>"
-                                +item.careWay
-                                +"</p> </div> <div class='opening-card-priceper'> <span class='opening-card-price'>"
-                                +item.price
-                                +"</span>원&nbsp;/&nbsp; <span class='opening-card-per'>"
-                                +item.per
-                                +"</span> </div> </div>";
-                        })
-                        $('#list-card-section').html(html);
-                    },
-                    error: function(xhr, status, error){
-                        console.log("에러 발생 : ", xhr.responseText);
-                    }
-                }); // ajax
-            }
+            // 비동기 (3) 필터 조건 주기
+            $.ajax({
+                // 요청
+                data: JSON.stringify({
+                    closeFilter: selectedClose,
+                    sdate: selectedSdate,
+                    edate: selectedEdate,
+                    location: selectedLocation,
+                    careWay: careWay,
+                    species: species,
+                    orderBy: selectedOrder
+                }),
+                // 응답
+                success: function(data){
+                    renderOpenings(data);
+                },
+                error: function(xhr, status, error){
+                    console.log("에러 발생 : ", xhr.responseText);
+                }
+            }); // ajax
         }); // 필터 적용 버튼 클릭
 
-        // 필터 적용 3
+        // 필터 적용 (3)
         $('#orderWay').change(function(){
-            let selectedLocation = $('#selectedCode').val();
-            if(!selectedLocation){
-                alert("지역을 먼저 선택해주세요.");
-            }else {
-                let dong = $('#selectedAddr').val().split(',').pop().trim();
-                let selectedClose = false;
-                if ($('[type=checkbox]').is(':checked')) selectedClose = true;
-                let selectedSdate = $('#filterSdate').val() || null;
-                let selectedEdate = $('#filterEdate').val() || null;
-                let selectedCareWay = $('input[name="careWayBtn"].selected').val();
-                let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
-                let selectedSpecies = $('input[name="speciesBtn"].selected').val();
-                let species = selectedSpecies ? selectedSpecies.substring(1) : null;
-                let selectedOrder = $('#orderWay').val();
+            let selectedLocation = $('#selectedCode').val() || null;
+            let selectedClose = false;
+            if ($('[type=checkbox]').is(':checked')) selectedClose = true;
+            let selectedSdate = $('#filterSdate').val() || null;
+            let selectedEdate = $('#filterEdate').val() || null;
+            let selectedCareWay = $('input[name="careWayBtn"].selected').val();
+            let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
+            let selectedSpecies = $('input[name="speciesBtn"].selected').val();
+            let species = selectedSpecies ? selectedSpecies.substring(1) : null;
+            let selectedOrder = $('#orderWay').val();
 
-                $.ajax({
-                    // 요청
-                    url: "/api/search/filter",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({
-                        closeFilter: selectedClose,
-                        sdate: selectedSdate,
-                        edate: selectedEdate,
-                        location: selectedLocation,
-                        careWay: careWay,
-                        species: species,
-                        orderBy: selectedOrder
-                    }),
-                    // 응답
-                    success: function (data) {
-                        console.log(data);
-                        var html = "";
-                        data.forEach(function (item) {
-                            html += "<div class='opening-card' data-no='" + item.no + "'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
-                                +item.pets[0].base64Image
-                                + "' ><span class='opening-card-species' style='display:none'>#"
-                                + item.pets[0].species
-                                +"</span> <span class='opening-card-loc' style='display:none'>#"
-                                +dong
-                                +"</span></div> <div class='opening-card-date'> <span>"
-                                +item.sDate.split('T')[0]
-                                +"</span> &nbsp;~&nbsp; <span>"
-                                +item.eDate.split('T')[0]
-                                +"</span> </div> <div class='opening-card-careway'> <p>"
-                                +item.careWay
-                                +"</p> </div> <div class='opening-card-priceper'> <span class='opening-card-price'>"
-                                +item.price
-                                +"</span>원&nbsp;/&nbsp; <span class='opening-card-per'>"
-                                +item.per
-                                +"</span> </div> </div>";
-                        })
-                        $('#list-card-section').html(html);
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("에러 발생 : ", xhr.responseText);
-                    }
-                }); // ajax
-            }
+            // 비동기 (4) 정렬 조건 주기
+            $.ajax({
+                // 요청
+                data: JSON.stringify({
+                    closeFilter: selectedClose,
+                    sdate: selectedSdate,
+                    edate: selectedEdate,
+                    location: selectedLocation,
+                    careWay: careWay,
+                    species: species,
+                    orderBy: selectedOrder
+                }),
+                // 응답
+                success: function (data) {
+                    renderOpenings(data);
+                }
+            }); // ajax
         });// 정렬 적용 변경
 
         $(document).on('click', '.opening-card', function () {

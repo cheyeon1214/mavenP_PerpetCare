@@ -17,7 +17,8 @@ public class SearchTest {
 
     @Test
     public void searchOpenings() throws Exception{
-        Condition condition = new Condition(true, LocalDateTime.of(2025, 7, 1, 0, 0, 0), LocalDateTime.of(2025, 7, 31, 0, 0, 0), "1165010100", "잠시 맡아주세요", "고양이", null);
+        // Condition condition = new Condition(true, LocalDateTime.of(2025, 7, 1, 0, 0, 0), LocalDateTime.of(2025, 7, 31, 0, 0, 0), "1165010100", "잠시 맡아주세요", "고양이", null);
+        Condition condition = new Condition(null, null, null, null, null, null, "recent");
         try {
             Reader r = Resources.getResourceAsReader("config/SqlMapConfig.xml");
             SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
