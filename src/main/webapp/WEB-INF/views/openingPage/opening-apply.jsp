@@ -444,7 +444,7 @@ textarea::placeholder {
         <input type="submit" class="submit-button" value="내 프로필로 지원하기">
     </form>
     </div>
-    <%@ include file="/components/footer.html" %>
+    <%@ include file="/components/footer.jsp" %>
 
 
 </body>

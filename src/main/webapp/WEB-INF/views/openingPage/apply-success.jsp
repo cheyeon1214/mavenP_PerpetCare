@@ -285,5 +285,6 @@
         src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
         type="module"
 ></script>
+<%@ include file="/components/footer.jsp" %>
 </body>
 </html>

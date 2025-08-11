@@ -59,4 +59,7 @@ public class OpeningService {
         return openingDAO.getOpening(no);
     }
 
+    public void closeOpening(int no) {
+        openingDAO.closeOpening(no);
+    }
 }

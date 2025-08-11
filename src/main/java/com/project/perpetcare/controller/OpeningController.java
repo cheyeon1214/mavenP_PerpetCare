@@ -236,8 +236,6 @@ public class OpeningController {
             for(Opening my : reject){
                 System.out.println(reject);
             }
-
-
             model.addAttribute("user", user);
             model.addAttribute("accept", accept);
             model.addAttribute("reject", reject);
@@ -290,5 +288,28 @@ public class OpeningController {
             }
         }
         return openings;
+    }
+
+    @PostMapping("/end")
+    @ResponseBody
+    public String endOpening(@RequestParam int no) {
+        try {
+            openingService.closeOpening(no);
+            applyService.rejectOthers(no);
+            return "ok";
+        } catch (Exception e) {
+            return "error: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public String deleteOpening(int no) {
+        try {
+            openingService.deleteOpening(no);
+            return "ok";
+        } catch (Exception e) {
+            return "error";
+        }
     }
 }

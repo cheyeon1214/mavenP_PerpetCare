@@ -67,6 +67,30 @@
         });
     });
 
+    $(document).on('click', '.end-btn', function () {
+        const oNo = $(this).data('no'); // 공고 번호 가져오기
+        if (!oNo) {
+            alert("공고 번호가 없습니다.");
+            return;
+        }
+
+        if (confirm("정말 이 공고를 마감하시겠습니까?")) {
+            $.ajax({
+                url: '/opening/end',
+                type: 'POST',
+                data: { no: oNo },
+                success: function (res) {
+                    alert("공고가 마감되었습니다.");
+                    location.reload(); // 페이지 새로고침
+                },
+                error: function (err) {
+                    alert("마감 처리 중 오류가 발생했습니다.");
+                    console.error(err);
+                }
+            });
+        }
+    });
+
 </script>
 </head>
 <style>
@@ -252,7 +276,7 @@ body{
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 200px;
+    margin-bottom: 100px;
 }
 
 .chart-card {
@@ -291,6 +315,21 @@ body{
 }
 .rejected-row {
     background-color: #F6F6F6 !important;
+}
+
+.end-btn{
+    display: block;
+    font-weight: 600;
+    margin: auto;
+    width: 300px;
+    height: 50px;
+    font-size: 22px;
+    color: white;
+    background-color: #FD9596;
+    border: none;
+    border-radius: 15px;
+    margin-bottom: 100px;
+    box-shadow: 0 4px 5px rgba(0,0,0,0.1);
 }
 
 </style>
@@ -419,7 +458,10 @@ body{
         </div>
     </div>
 
-    <div class="footer-space"></div>
+    <div class="footer-space">
+        <input type="button" class="end-btn" value="마감하기" data-no="${opening.no}">
+    </div>
+
 <script>
 const genderF = ${gender.f};
 const genderM = ${gender.m};
@@ -497,5 +539,6 @@ new Chart(ctx2, {
     }
 });
 </script>
+    <%@ include file="/components/footer.jsp" %>
 </body>
 </html>

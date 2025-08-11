@@ -62,4 +62,8 @@ public class ApplyService {
     public List<ApplyUserDTO> getApplyList(String email) {
         return applyDAO.getApplyList(email);
     }
+
+    public void rejectOthers(int no) {
+        applyDAO.rejectOthers(no, 0);
+    }
 }

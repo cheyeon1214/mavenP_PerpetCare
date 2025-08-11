@@ -449,10 +449,48 @@
                     $(".location-btn").html(address);
                     $('#locModal').modal('hide');
                 }
-
             }); // modal btn click
 
         }); // ready
+        // 카드 클릭 → applyList 이동 (edit 모드면 이동 금지)
+        $(document).on('click', '.opening-section', function (e) {
+            const form = $(this).closest('form.opening-section-wrapper');
+
+            // 편집 중이면 카드 클릭 막기
+            if (form.hasClass('is-editing')) return;
+
+            const oNo = $(this).data('no');
+            if (!oNo) return;
+            window.location.href = "/applyList?no=" + oNo;
+        });
+
+        $(document).on('click', '.delete-btn', function (e) {
+            e.stopPropagation(); // 카드 클릭 이벤트 막기
+
+            if (!confirm("정말 이 공고를 삭제하시겠습니까?")) {
+                return;
+            }
+
+            const form = $(this).closest('form');
+            const no = form.find('input[name="no"]').val();
+
+            $.ajax({
+                url: '/opening/delete',
+                type: 'POST',
+                data: { no: no },
+                success: function (res) {
+                    if (res === 'ok') {
+                        alert("삭제가 완료되었습니다.");
+                        location.reload();
+                    } else {
+                        alert("삭제 중 문제가 발생했습니다.");
+                    }
+                },
+                error: function () {
+                    alert("서버와 통신 중 오류가 발생했습니다.");
+                }
+            });
+        });
 
         function toggleEdit(btn){
 
@@ -543,7 +581,7 @@
                 <input type="hidden" name="close" value="${op.close}">
                 <input type="hidden" name="isMatch" value="${op.isMatch}">
                 <input type="hidden" name="detail" value="${op.detail}">
-                <div class="opening-section">
+                <div class="opening-section" data-no="${op.no}">
                     <div class="opening-section-line">
                         <div class="opening-pet-img">
                             <img src="data:image/jpeg;base64,${firstPets[op.no].base64Image}" alt="petImg" class="pet-img">
@@ -599,7 +637,7 @@
                     </div>
                 </div>
                 <div class="two-btn">
-                    <input type="button" class="blue-btn" value="삭제">
+                    <input type="button" class="blue-btn delete-btn" value="삭제">
                     <input type="button" class="white-btn" value="수정" onclick="toggleEdit(this)">
                 </div>
                 </form>

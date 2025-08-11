@@ -607,7 +607,7 @@ $(document).ready(function() {
                     <input type="submit" class="submit-button" value="작성하기">
                 </div>
             </form>
-            <%@ include file="/components/footer.html" %>
+            <%@ include file="/components/footer.jsp" %>
         </div>
     </div>
     <!-- The Modal -->

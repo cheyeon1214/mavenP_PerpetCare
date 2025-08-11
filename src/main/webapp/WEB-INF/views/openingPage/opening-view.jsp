@@ -350,7 +350,7 @@
                     </form>
                 </c:if>
                 </div>
-            <%@ include file="/components/footer.html" %>
+            <%@ include file="/components/footer.jsp" %>
             </div>
 
         </div>
