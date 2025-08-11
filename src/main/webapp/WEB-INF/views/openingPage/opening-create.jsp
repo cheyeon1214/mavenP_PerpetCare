@@ -103,7 +103,7 @@
 
         const startDisplay = start.replace("T", " ");
         const endDisplay = end.replace("T", " ");
-        $(".location-btn.period").attr("value", startDisplay +" ~ "+ endDisplay);
+        $(".date-btn").attr("value", startDisplay +" ~ "+ endDisplay);
 
         console.log("시작 LocalDateTime:", start);
         console.log("종료 LocalDateTime:", end);
@@ -111,7 +111,7 @@
         $("#sDateHidden").val(start);
         $("#eDateHidden").val(end);
 
-        $(".location-btn.period").focus();
+        $(".date-btn").focus();
         
         $("#myModal").modal("hide");
     });
@@ -401,6 +401,19 @@ $(document).ready(function() {
     #myModal .modal-dialog {
         margin-top: 150px; 
     }
+    #myModal .modal-footer {
+        display: flex;
+        justify-content: center;
+    }
+    #myModal .modal-footer > button {
+        width: 40%;
+        background-color: #64DAFE;
+        color: white;
+        border: #64DAFE;
+        border-radius: 10px;
+        padding: 10px 0;
+        margin: 0 5px;
+    }
 
     /* 지역 검색 모달창 */
     #modal-body-first, .modal-footer {
@@ -426,7 +439,7 @@ $(document).ready(function() {
         cursor: pointer;
         font-weight: bold;
     }
-    .modal-footer > button {
+    #locModal .modal-footer > button {
         width: 80%;
         background-color: #64DAFE;
         color: white;
@@ -545,13 +558,12 @@ $(document).ready(function() {
                         <input type="hidden" id="selectedCode" name="selectedCode" />
                         <input type="hidden" id="selectedAddr" name="selectedAddr" />
                     </div>
-                    <input type="hidden" name="location">
                     <div class="method-line">
                         <!-- 서버로 전송될 날짜값들 -->
                         <input type="hidden" name="sDate" id="sDateHidden">
                         <input type="hidden" name="eDate" id="eDateHidden">
                         <div class="method-text">돌봄기간</div>
-                        <input type="button" class="date-btn period" value="날짜를 선택해주세요" data-toggle="modal" data-target="#myModal">
+                        <input type="button" class="date-btn" value="날짜를 선택해주세요" data-toggle="modal" data-target="#myModal">
                     </div>
                     
                 </div>

@@ -69,5 +69,12 @@
 		SELECT lcode, address
 		FROM Location
 		WHERE address LIKE concat('%', #{VALUE}, '%')
+		ORDER BY address;
+	</select>
+
+	<select id="searchAddr" parameterType="string" resultType="string">
+		SELECT address
+		FROM Location
+		WHERE lcode = #{VALUE}
 	</select>
 </mapper>

@@ -25,4 +25,8 @@ public class SearchDAO {
         System.out.println("rvoprint = "+rvo);
         return rvo;
     }
+
+    public String searchAddr(String lcode) throws Exception {
+        return sqlSession.selectOne(NS+"searchAddr", lcode);
+    }
 }

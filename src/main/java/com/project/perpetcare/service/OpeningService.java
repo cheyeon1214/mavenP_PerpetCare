@@ -2,6 +2,7 @@ package com.project.perpetcare.service;
 
 import com.project.perpetcare.dao.AuthDAO;
 import com.project.perpetcare.dao.OpeningDAO;
+import com.project.perpetcare.dao.SearchDAO;
 import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.domain.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class OpeningService {
 
     @Autowired
     private OpeningDAO openingDAO;
+
+    @Autowired
+    private SearchDAO searchDAO;
 
     public void addOpening(Opening opening)throws Exception{
         openingDAO.addOpening(opening);
@@ -32,11 +36,18 @@ public class OpeningService {
     }
 
     public List<Opening> getUserOpening(String email) throws Exception{
-        return openingDAO.getUserOpening(email);
+        List<Opening> openings = openingDAO.getUserOpening(email);
+        for(Opening o: openings) {
+            String lcode = o.getLocation();
+            o.setLocation(searchDAO.searchAddr(lcode)); // 주소 코드 -> 주소명으로 바꿔서 출력
+        }
+        return openings;
     }
 
     public Opening getOpening(int no) throws Exception{
-        return openingDAO.getOpening(no);
+        Opening opening = openingDAO.getOpening(no);
+        opening.setLocation(searchDAO.searchAddr(opening.getLocation()));
+        return opening;
     }
 
 }
