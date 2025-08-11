@@ -50,4 +50,9 @@ public class OpeningService {
         return opening;
     }
 
+    public Opening getOpeningOfLcode(int no) throws Exception{
+        // 공고 수정을 위한 DB 에서 lcode 그대로 가져오기
+        return openingDAO.getOpening(no);
+    }
+
 }
