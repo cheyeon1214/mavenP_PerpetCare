@@ -35,7 +35,9 @@
 		<include refid="select-openings" />
 		<where>
 			o.o_createdAt &lt;= now()
-			AND o.o_location = #{location}
+			<if test="location != null">
+				AND o.o_location = #{location}
+			</if>
 			<if test="closeFilter == true">
 				AND o.o_close != 1 AND o.isMatch != 1
 			</if>

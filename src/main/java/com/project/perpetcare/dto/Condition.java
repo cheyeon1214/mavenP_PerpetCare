@@ -1,14 +1,11 @@
 package com.project.perpetcare.dto;
 
-import com.project.perpetcare.domain.Pet;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class Condition {
     private Boolean closeFilter; // 컬럼명 o_close
-    private LocalDateTime sdate; // 컬럼명 o_sdate
-    private LocalDateTime edate; // 컬럼명 o_edate
+    private LocalDate sdate; // 컬럼명 o_sdate
+    private LocalDate edate; // 컬럼명 o_edate
     private String location; // 컬럼명 o_location
     private String careWay; // 컬럼명 o_careway
     private String species; // Opening -> Pet -> species 를 가져온다
@@ -16,7 +13,7 @@ public class Condition {
 
     public Condition() {
     }
-    public Condition(Boolean closeFilter, LocalDateTime sdate, LocalDateTime edate, String location, String careWay, String species, String orderBy) {
+    public Condition(Boolean closeFilter, LocalDate sdate, LocalDate edate, String location, String careWay, String species, String orderBy) {
         this.closeFilter = closeFilter;
         this.sdate = sdate;
         this.edate = edate;
@@ -32,16 +29,16 @@ public class Condition {
     public void setCloseFilter(Boolean closeFilter) {
         this.closeFilter = closeFilter;
     }
-    public LocalDateTime getSdate() {
+    public LocalDate getSdate() {
         return sdate;
     }
-    public void setSdate(LocalDateTime sdate) {
+    public void setSdate(LocalDate sdate) {
         this.sdate = sdate;
     }
-    public LocalDateTime getEdate() {
+    public LocalDate getEdate() {
         return edate;
     }
-    public void setEdate(LocalDateTime edate) {
+    public void setEdate(LocalDate edate) {
         this.edate = edate;
     }
     public String getLocation() {
