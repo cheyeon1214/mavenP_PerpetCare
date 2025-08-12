@@ -357,6 +357,8 @@
         });
 
 
+
+
         // 추가하기
         $('#button-add-pet').on('click', function () {
             $('.pet-add-section').append($addForm.show()); // hide 했기 때문에 show 필수
@@ -374,7 +376,38 @@
                 $('#addPreview').attr('src', e.target.result);
             };
             reader.readAsDataURL(file);
+        }); // 이미지 변경 반영
+        $('#editImage').on('change', function () {
+          const file = this.files && this.files[0];
+          if (!file) return;
+          // console.log(file.name, file.size, file.type);
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            $('.editPreview').attr('src', e.target.result);
+          };
+          reader.readAsDataURL(file);
         }) // 이미지 변경 반영
+
+      $(document).on('submit', '.petEditForm', function(e){
+        const $form = $(this);
+        const no =  $form.find('[name="no"]').val();
+        const uEmail =  $form.find('[name="uEmail"]').val();
+        const name    = $form.find('[name="name"]').val()?.trim();
+        const species = $form.find('[name="species"]').val();
+        const breed   = $form.find('[name="breed"]').val()?.trim();
+        const gender  = $form.find('[name="gender"]:checked').val(); // 라디오 주의
+        const bDate   = $form.find('[name="bDate"]').val();
+
+        // 수정에서는 이미지 선택 optional
+        if (!name)   { alert('이름을 입력해주세요.');   e.preventDefault(); return; }
+        if (!species){ alert('종을 선택해주세요.');    e.preventDefault(); return; }
+        if (!breed)  { alert('품종을 입력해주세요.');  e.preventDefault(); return; }
+        if (!gender) { alert('성별을 선택해주세요.');  e.preventDefault(); return; }
+        if (!bDate)  { alert('생년월일을 입력해주세요.'); e.preventDefault(); return; }
+
+        // 통과 → e.preventDefault() 하지 않음 = 기본 submit 진행
+      });
+
         $(document).on('submit', '#petAddForm', function (e) {
             // 기본 전송 막음
             e.preventDefault();
@@ -412,7 +445,7 @@
                 alert("추가할 반려동물이 태어난 일을 입력해주세요.");
                 return;
             }
-            // this.submit();
+            $form[0].submit();
             // 네이티브 전송 (재귀X)
             HTMLFormElement.prototype.submit.call(this);
             // 추가 폼 숨기기
@@ -503,10 +536,11 @@
                     <div class="pet-section" data-pet-no="${pet.no}">
                     <form id="petEditForm" action="/updatePet" method="post" enctype="multipart/form-data"
                                   novalidate>
+                                  <input type="hidden" name="no" value="${pet.no}">
                                 <div class="my-pet-box-edit">
                                     <div class="display-flex">
                                         <div class="my-pet-img-edit">
-                                            <img id="editPreview" src="data:image/jpeg;base64,${pet.base64Image}">
+                                            <img class="editPreview" src="data:image/jpeg;base64,${pet.base64Image}">
                                             <input type="file" id="editImage" name="imageFile" accept="image/*">
                                         </div>
                                         <div class="my-pet-info-edit">
@@ -556,7 +590,8 @@
                                         </div>
                                     </div>
                                     <div class="button-row">
-                                        <button type="button" class="button-complete" name="completeBtn">완료</button>
+                                    <input type="hidden" name="uEmail" value="${user.email}">
+                                        <input type="submit" class="button-complete" name="completeBtn" value="완료" data-email="${user.email}">
                                     </div>
                                 </div>
                             </form>

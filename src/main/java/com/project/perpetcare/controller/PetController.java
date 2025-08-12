@@ -106,13 +106,17 @@ public class PetController {
         try {
             if (!imageFile.isEmpty()) {
                 pet.setImage(imageFile.getBytes()); // MultipartFile → byte[]
+            }else{
+                Pet prePet = petService.getPet(pet.getNo());
+                pet.setImage(prePet.getImage());
             }
+            System.out.println("pet update: "+pet);
             User user = (User) session.getAttribute("user");
             String uEmail = user.getEmail();
             pet.setuEmail(uEmail);
             petService.updatePet(pet);
             msg = "updatePet 호출";
-            path = "redirect:/petPage";
+            path = "redirect:/pet?email="+uEmail;
         }catch (Exception e){
             msg = "updatePet 실패";
             System.out.println(e);
