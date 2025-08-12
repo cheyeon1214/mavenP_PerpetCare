@@ -29,8 +29,8 @@ public class ProfileController {
     @Autowired
     private PetService petService;
 
-    @GetMapping("/experiencePage/{email}")
-    public String getProfile(HttpSession session, Model model,@RequestParam("email") String owner) {
+    @GetMapping("/experience")
+    public String getProfile(HttpSession session, Model model,String email) {
         User user = (User) session.getAttribute("user");
         boolean isOwner = false;
         if(user == null) {
@@ -38,33 +38,34 @@ public class ProfileController {
         }
         User profile = null;
         try{
-            if(owner.equals(user.getEmail())){
+            if(email.equals(user.getEmail())){
                 profile = user; //내거다 = isOwner false
+
             }else{
-                profile = profileService.getUserInfo(owner);
+                profile = profileService.getUserInfo(email);
                 System.out.println("profile :: "+profile);
                 isOwner = true; //남의꺼 = isOwner true
             }
             model.addAttribute("isOwner", isOwner);
             model.addAttribute("profile", profile);
             // 시터 경험
-            List<Experience> sitterList = profileService.getSitterExperience(user.getEmail());
+            List<Experience> sitterList = profileService.getSitterExperience(profile.getEmail());
             session.setAttribute("sitterList", sitterList);
             // 돌봄 경험
-            List<Experience> ownerList = profileService.getOwnerExperience(user.getEmail());
+            List<Experience> ownerList = profileService.getOwnerExperience(profile.getEmail());
             session.setAttribute("ownerList", ownerList);
             // 평가 개수
-            int rateNum = rateService.getRateNum(user.getEmail());
+            int rateNum = rateService.getRateNum(profile.getEmail());
             session.setAttribute("rateNum", rateNum);
             // 부정 평가 비율
             if(rateNum != 0) {
-                double nRatioOfRate = rateService.getNRatioOfRate(user.getEmail());
+                double nRatioOfRate = rateService.getNRatioOfRate(profile.getEmail());
                 double negativeRatio = Math.round(nRatioOfRate*100)/100.0;
                 double positiveRatio = 1 - negativeRatio;
                 session.setAttribute("negativeRatio", negativeRatio);
                 session.setAttribute("positiveRatio", positiveRatio);
                 // 주요 평가 내용
-                List<Map<String,Integer>> rateList = rateService.getUserTopRate(user.getEmail());
+                List<Map<String,Integer>> rateList = rateService.getUserTopRate(profile.getEmail());
                 Map<String, Integer> textList = new LinkedHashMap<>();
                 for(Map<String, Integer> m : rateList) {
                     for(Map.Entry<String, Integer> entry : m.entrySet()) {
