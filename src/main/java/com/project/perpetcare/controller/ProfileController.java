@@ -29,9 +29,64 @@ public class ProfileController {
     @Autowired
     private PetService petService;
 
+    @GetMapping("/experiencePage/{email}")
+    public String getProfile(HttpSession session, Model model,@RequestParam("email") String owner) {
+        User user = (User) session.getAttribute("user");
+        boolean isOwner = false;
+        if(user == null) {
+            return "redirect:/login";
+        }
+        User profile = null;
+        try{
+            if(owner.equals(user.getEmail())){
+                profile = user; //내거다 = isOwner false
+            }else{
+                profile = profileService.getUserInfo(owner);
+                System.out.println("profile :: "+profile);
+                isOwner = true; //남의꺼 = isOwner true
+            }
+            model.addAttribute("isOwner", isOwner);
+            model.addAttribute("profile", profile);
+            // 시터 경험
+            List<Experience> sitterList = profileService.getSitterExperience(user.getEmail());
+            session.setAttribute("sitterList", sitterList);
+            // 돌봄 경험
+            List<Experience> ownerList = profileService.getOwnerExperience(user.getEmail());
+            session.setAttribute("ownerList", ownerList);
+            // 평가 개수
+            int rateNum = rateService.getRateNum(user.getEmail());
+            session.setAttribute("rateNum", rateNum);
+            // 부정 평가 비율
+            if(rateNum != 0) {
+                double nRatioOfRate = rateService.getNRatioOfRate(user.getEmail());
+                double negativeRatio = Math.round(nRatioOfRate*100)/100.0;
+                double positiveRatio = 1 - negativeRatio;
+                session.setAttribute("negativeRatio", negativeRatio);
+                session.setAttribute("positiveRatio", positiveRatio);
+                // 주요 평가 내용
+                List<Map<String,Integer>> rateList = rateService.getUserTopRate(user.getEmail());
+                Map<String, Integer> textList = new LinkedHashMap<>();
+                for(Map<String, Integer> m : rateList) {
+                    for(Map.Entry<String, Integer> entry : m.entrySet()) {
+                        String code = entry.getKey();
+                        String text = RateType.getRate(code);
+                        Integer count = entry.getValue();
+                        textList.put(text, count);
+                    }
+                }
+                session.setAttribute("rateList", textList);
+            }
+            return "profilePage/experiencePage";
+        } catch (Exception e) {
+            model.addAttribute("status", 500);
+            return "Error";
+        }
+
+    }
+
 
     @GetMapping("/experiencePage")
-    public String getProfile(HttpSession session, Model model) {
+    public String getProfile2(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if(user == null) {
             return "redirect:/login";
