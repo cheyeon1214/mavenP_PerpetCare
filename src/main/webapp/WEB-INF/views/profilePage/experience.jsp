@@ -57,13 +57,13 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     </div>
               </div>
             </div>
-              <c:choose>
-                <c:when test="${isOwner == false}">
                 <div class="edit-btn-wrapper1">
+                <c:choose>
+                <c:when test="${isOwner == false}">
                 <button class="edit-btn" onclick="location.href='${pageContext.request.contextPath}/myInfo'">수정</button>
-                </div>
                 </c:when>
               </c:choose>
+                </div>
 
             <div class="nav">
               <a href="/petPage">반려동물</a>
@@ -145,8 +145,9 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                         </form>
                     </div>
                 </div>
-                <!-- 수정 버튼 -->
-                <div class="edit-btn-wrapper2">
+                <c:choose>
+                    <c:when test="${!isOwner}">
+                        <div class="edit-btn-wrapper2">
                     <button id="edit-save-btn"   class="btn hidden">수정</button>
                     <button id="delete-cancel-btn" class="btn hidden">삭제</button>
                 </div>
@@ -154,6 +155,10 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 <div id="add-btn-wrapper" class="hidden">
                 <button class="add-btn">+ 돌봄 이력 추가하기</button>
                 </div>
+                    </c:when>
+                </c:choose>
+                <!-- 수정 버튼 -->
+
                 <!-- 폼 -->
                 <div id="careFormWrapper" class="py-4 mx-auto" style="display: none; max-width: 1050px;">
                 <div class="card shadow p-3 mb-2" id="add-form">

@@ -1,24 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib
         uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>myPage</title>
+    <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../css/global.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Bootstrap CSS -->
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-    />
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../../../css/global.css" />
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- jQuery ... jQuery 가 Bootstrap 보다 앞에 와야 함 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
     <style>
@@ -98,10 +97,7 @@
             font-weight: 700;
         }
 
-        .grade-badge {
-            height: 16px;
-            vertical-align: middle;
-        }
+        .grade-badge {  height: 16px;  vertical-align: middle; margin-top: 4px; cursor: pointer;}
 
         .edit-btn-wrapper1 {
             display: flex;
@@ -246,13 +242,11 @@
             display: flex;
             width: 100%;
             align-items: center;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-            border-radius: 20px;
+
             margin-top: 20px;
             padding: 20px;
             justify-content: space-between;
         }
-
         .user-img{
             width: 100px;
             height: 100px;
@@ -266,7 +260,8 @@
 
         }
 
-        .rate-btn{
+        .review-btn{
+            margin-right: 20px;
             padding: 4px 20px;
         }
 
@@ -296,16 +291,134 @@
         .non-matching{
             justify-content: center;
         }
+        .reviews-wrapper{
+            display: flex;
+            justify-content: space-around;
+        }
 
-        /*.apply-status-section{*/
-        /*    background-color: gray;*/
-        /*    border: 1px solid gray;*/
-        /*    margin-top: -60px;*/
-        /*    height: 50px;*/
-        /*    width: 100px;*/
-        /*}*/
+        .positive-reviews{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .negative-reviews{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .p-btn, .n-btn{
+            width: 400px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);*/
+            border: none;
+            background-color: white;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .p-btn{
+            box-shadow: 0 0 7px rgba(253, 149, 150, 0.8);
+        }
+
+        .n-btn{
+            box-shadow: 0 0 7px rgba(100, 218, 254, 0.8);
+        }
+
+        .review-notice{
+            text-align: center;
+            font-size: 19px;
+            font-weight: 600;
+            margin-top: 30px;
+            padding-bottom: 30px;
+        }
+
+        /* 클릭된 상태 */
+        .p-btn.selected {
+            background-color: rgba(253, 149, 150, 0.8);
+            color: white;
+        }
+        .n-btn.selected {
+            background-color: rgba(100, 218, 254, 0.8);
+            color: white;
+        }
+        .apply-section-wrapper{
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+            border-radius: 20px;
+        }
     </style>
 </head>
+<script>
+    $(document).on("click", ".review-btn", function (e) {
+        e.stopPropagation();
+        const $btn  = $(this);
+        const $wrap = $btn.closest('.apply-section-wrapper');
+        const $box  = $wrap.find('.reviewBox');
+
+        // 열고 닫기
+        $box.stop(true,true).slideToggle(250);
+
+        // 버튼 상태 토글
+        const mode = $btn.data('mode') || 'review';
+        if (mode === 'review') {
+            $btn.data('mode','submit').val('제출하기');
+        } else {
+            // 제출 시도
+            const selected = $wrap.find('.option-btn.selected');
+            if (!selected.length) {
+                alert('평가 항목을 하나 선택해주세요.');
+                return;
+            }
+            const text = selected.val();
+            $wrap.find('.rateValue').val(text);
+
+            const codeMap = {
+                "답장이 빠르고 매너가 좋아요.": "P06",
+                "급여 지급이 빨라요.": "P07",
+                "시간 약속을 잘 지켜요.": "P08",
+                "돌봄 근무 내용이 기재된 내용과 같아요.": "P09",
+                "아이가 친화적이라 어려움이 없어요.": "P10",
+                "답장이 느리고 매너가 별로에요.": "N06",
+                "급여 지급이 늦어요.": "N07",
+                "시간 약속을 잘 지키지 못해요.": "N08",
+                "돌봄 근무 내용이 기재된 내용과 달라요.": "N09",
+                "공고자의 과한 서비스 요구가 있어요.": "N10"
+            };
+            const code = codeMap[text] || 'other';
+
+            const oNo   = $btn.data('ono')   || $wrap.data('ono');
+            const email = $btn.data('email') || $wrap.data('email');
+
+            $.ajax({
+                url: '/rate/add',
+                type: 'POST',
+                data: { oNo: oNo, toEmail: email, code: code },
+                success: function(){
+                    alert('평가가 등록되었습니다.');
+                    $btn
+                        .val('평가완료')
+                        .prop('disabled', true)
+                        .addClass('done');
+                    $box.slideUp(200);
+                    $wrap.find('.option-btn').removeClass('selected');
+                },
+                error: function(){
+                    alert('등록 중 오류가 발생했습니다.');
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '.option-btn', function(){
+        const $wrap = $(this).closest('.apply-section-wrapper');
+        $wrap.find('.option-btn').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+
+
+</script>
 <body>
 <div class="page-container">
     <%@ include file="/components/header.jsp" %>
@@ -331,13 +444,14 @@
                         <div class="info-middle">
                             <img
                                     class="grade-badge"
+                                    id="gradeBadge"
                                     src="../../../image/grade/grade_${user.grade}.svg"
                                     alt="grade-badge"
                             />
                         </div>
                         <div class="info-right">
                             <div class="grade">${user.grade}</div>
-                            <div class="gender">${user.gender}</div>
+                            <div class="gender">${user.genderStr}</div>
                             <div class="age">${user.ageGroup}</div>
                         </div>
                     </div>
@@ -391,8 +505,9 @@
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
-                            <span>${op.price}</span>
-                            /
+                            <div class="card-text">
+                            <span><fmt:formatNumber value="${op.price}" pattern="#,###"/></span>
+                                  /
                             <span>${op.per}</span>
 <%--                            <div class="card-text">${op.price} / ${op.per}</div>--%>
                         </div>
@@ -458,7 +573,10 @@
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
-                            <div class="card-text">${op.price} / ${op.per}</div>
+                            <div class="card-text">
+                            <span><fmt:formatNumber value="${op.price}" pattern="#,###"/></span>
+                                  /
+                            <span>${op.per}</span></div>
                         </div>
                     </div>
 
@@ -484,27 +602,59 @@
                     </div>
                 </div>
                 <c:set var="acc" value="${userProfile[op.no]}"/>
-                <div class="apply-profile">
-                    <div class="apply-left">
-                        <div class="user-profile">
-                            <img src="../../../image/profile_${acc.image}.svg" alt="user-img" class="user-img">
-                            <div class="user-info">
-                                <div class="user-text">
-                                    <span class="user-bold-text">Email</span>
-                                    <span class="user-thin-text">${acc.email}</span>
-                                </div>
-                                <div class="user-text">
-                                    <span class="user-bold-text">Grade</span>
-                                    <span class="user-thin-text">
-                                        <img src="../../../image/grade/grade_${acc.grade}.svg" alt="user-grade" class="grade-img">
-                                        ${acc.grade}
-                                    </span>
+                <div class="apply-section-wrapper" data-ono="${op.no}" data-email="${acc.email}">
+                    <div class="apply-profile">
+                        <div class="apply-left">
+                            <div class="user-profile">
+                                <img src="../../../image/profile_${acc.image}.svg" alt="user-img" class="user-img">
+                                <div class="user-info">
+                                    <div class="user-text">
+                                        <span class="user-bold-text">Email</span>
+                                        <span class="user-thin-text">${acc.email}</span>
+                                    </div>
+                                    <div class="user-text">
+                                        <span class="user-bold-text">Grade</span>
+                                        <span class="user-thin-text">
+                                            <img src="../../../image/grade/grade_${acc.grade}.svg" alt="user-grade" class="grade-img">
+                                            ${acc.grade}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="rate-btn">
+                            <c:choose>
+                                <c:when test="${isRatedMap[op.no]}">
+                                    <input type="button" value="평가완료" class="blue-btn review-btn" disabled>
+                                </c:when>
+                                <c:otherwise>
+                                    <input type="button" value="평가하기" class="blue-btn review-btn">
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <div class="rate-btn">
-                        <input type="button" value="평가하기" class="blue-btn rate-btn">
+                    <div class="reviewBox" style="display:none;">
+                        <div class="reviews-wrapper">
+                            <div class="positive-reviews">
+                                <input class="option-btn p-btn" type="button" value="답장이 빠르고 매너가 좋아요.">
+                                <input class="option-btn p-btn" type="button" value="급여 지급이 빨라요.">
+                                <input class="option-btn p-btn" type="button" value="시간 약속을 잘 지켜요.">
+                                <input class="option-btn p-btn" type="button" value="돌봄 근무 내용이 기재된 내용과 같아요.">
+                                <input class="option-btn p-btn" type="button" value="아이가 친화적이라 어려움이 없어요.">
+                            </div>
+                            <div class="negative-reviews">
+                                <input class="option-btn n-btn" type="button" value="답장이 느리고 매너가 별로에요.">
+                                <input class="option-btn n-btn" type="button" value="급여 지급이 늦어요.">
+                                <input class="option-btn n-btn" type="button" value="시간 약속을 잘 지키지 못해요.">
+                                <input class="option-btn n-btn" type="button" value="돌봄 근무 내용이 기재된 내용과 달라요.">
+                                <input class="option-btn n-btn" type="button" value="공고자의 과한 서비스 요구가 있어요.">
+                            </div>
+                        </div>
+
+                        <div class="review-notice">
+                            가장 가까운 평가 하나만 선택해주세요.
+                        </div>
+                        <input type="hidden" id="rateValue">
                     </div>
                 </div>
                 </c:forEach>
@@ -530,7 +680,10 @@
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
-                            <div class="card-text">${op.price} / ${op.per}</div>
+                            <div class="card-text">
+                            <span><fmt:formatNumber value="${op.price}" pattern="#,###"/></span>
+                                  /
+                            <span>${op.per}</span></div>
                         </div>
                     </div>
 
@@ -563,6 +716,12 @@
             </main>
     </div>
 
+    <jsp:include page="../../../components/gradeModal.jsp" />
 </div>
 </body>
+<script>
+    $('#gradeBadge').on('click', function(){
+        $('#gradeModal').modal('show');
+    });
+</script>
 </html>
