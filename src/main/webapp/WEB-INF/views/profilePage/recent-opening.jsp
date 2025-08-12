@@ -273,7 +273,9 @@
                         "  </div>" +
                         "  <div class='opening-card-careway'><p>" + (item.careWay || '') + "</p></div>" +
                         "  <div class='opening-card-priceper'>" +
-                        "    <span class='opening-card-price'>" + (item.price ? item.price.toLocaleString() : '') + "</span>원 / " +
+                        "    <span class='opening-card-price'>"
+                        + (item.price ? parseInt(item.price, 10).toLocaleString() : '')
+                        + "</span>원 / " +
                         "    <span class='opening-card-per'>" + (item.per || '') + "</span>" +
                         "  </div>" +
                         "</div>";

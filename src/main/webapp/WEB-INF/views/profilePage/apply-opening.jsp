@@ -29,7 +29,7 @@
         }
 
         .container{
-            margin-left: 400px;
+            margin-right: 200px !important;
         }
 
         .apply-container {
@@ -416,6 +416,13 @@
         $(this).addClass('selected');
     });
 
+    $(document).on('click', '.user-img', function () {
+        const email = $(this).data('email');
+        if (!email) return;
+
+        window.location.href = "/experience?email=" + email;
+    });
+
 
 
 </script>
@@ -501,7 +508,6 @@
                                 ~
                                 ${op.eDateStr}
                             </span>
-<%--                            <div class="card-text">2025-08-08 ~ 2025-08-09</div>--%>
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
@@ -509,7 +515,6 @@
                             <span><fmt:formatNumber value="${op.price}" pattern="#,###"/></span>
                                   /
                             <span>${op.per}</span>
-<%--                            <div class="card-text">${op.price} / ${op.per}</div>--%>
                         </div>
                     </div>
                     </div>
@@ -607,7 +612,7 @@
                     <div class="apply-profile">
                         <div class="apply-left">
                             <div class="user-profile">
-                                <img src="../../../image/profile_${acc.image}.svg" alt="user-img" class="user-img">
+                                <img src="../../../image/profile_${acc.image}.svg" alt="user-img" class="user-img" data-email="${acc.email}">
                                 <div class="user-info">
                                     <div class="user-text">
                                         <span class="user-bold-text">Email</span>

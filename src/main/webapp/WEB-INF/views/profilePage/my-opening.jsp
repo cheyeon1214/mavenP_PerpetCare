@@ -30,7 +30,7 @@
         }
 
         .container{
-            margin-left: 400px;
+            margin-right: 200px !important;
         }
 
         .opening-container {
@@ -335,14 +335,31 @@
             justify-content: center;
         }
 
+        /* 편집 모드에서 보이기만 */
         .edit-mode { display: none; }
-        /* is-editing 상태일 때만 편집 모드 보이기 */
         .opening-section-wrapper.is-editing .view-mode { display: none; }
-        .opening-section-wrapper.is-editing .edit-mode{
-            display: initial;
-            border-radius: 15px;
+        .opening-section-wrapper.is-editing .edit-mode { display: initial; }
+
+        /* 테두리/패딩은 실제 입력 필드에만 */
+        .opening-section-wrapper.is-editing input.edit-mode,
+        .opening-section-wrapper.is-editing textarea.edit-mode,
+        .opening-section-wrapper.is-editing button.edit-mode{
+            border-radius: 12px;
             border: 1.5px solid #FD9596;
             padding: 4px 9px;
+        }
+
+        /* 드롭다운 래퍼는 테두리X, 버튼만 스타일 */
+        .opening-section-wrapper.is-editing .edit-per-dropdown { border: 0; padding: 0; background: transparent; }
+        .opening-section-wrapper.is-editing .edit-per-dropdown .per-btn,
+        .opening-section-wrapper.is-editing .edit-care-dropdown .care-btn
+        {
+            border: 1.5px solid #FD9596;
+            border-radius: 12px;
+            padding: 4px 12px;
+            background: #fff;
+            font-size: 19px;
+            margin-bottom: 3px;
         }
 
         .opening-section-wrapper.is-editing .edit-price { width:10ch; }   /* 가격 */
@@ -634,6 +651,28 @@
         });
 
 
+        $(document).on('click', '.edit-per-dropdown .dropdown-item', function (e) {
+            e.preventDefault();
+            const val = $(this).data('value');
+            const $dd = $(this).closest('.edit-per-dropdown');
+            $dd.find('.per-btn').text(val);
+            $dd.find('input[name="per"]').val(val);
+        });
+
+        $(document).on('click', '.edit-care-dropdown .dropdown-item', function (e) {
+            e.preventDefault();
+            const val = $(this).data('value');
+            const $dd = $(this).closest('.edit-care-dropdown');
+            $dd.find('.care-btn').text(val);
+            $dd.find('input[name="careWay"]').val(val);
+        });
+
+        $(document).on('click', '.user-img', function () {
+            const email = $(this).data('email');
+            if (!email) return;
+
+            window.location.href = "/experience?email=" + email;
+        });
 
     </script>
 </head>
@@ -728,7 +767,6 @@
                             </span>
                             <input type="hidden" name="sDate" value="${op.sDate}">
                             <input type="hidden" name="eDate" value="${op.eDate}">
-<%--                            <div class="card-text">2025-08-08 ~ 2025-08-09</div>--%>
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
@@ -736,8 +774,17 @@
                             <input class="edit-mode edit-price" type="text" name="price" value="${op.price}">
                             /
                             <span class="view-mode">${op.per}</span>
-                            <input class="edit-mode edit-per" type="text" name="per" value="${op.per}">
-<%--                            <div class="card-text">${op.price} / ${op.per}</div>--%>
+                            <div class="edit-mode dropdown edit-per-dropdown">
+                              <button class="btn btn-light dropdown-toggle per-btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ${op.per}
+                              </button>
+                              <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" data-value="시급">시급</a>
+                                <a class="dropdown-item" href="#" data-value="일급">일급</a>
+                                <a class="dropdown-item" href="#" data-value="건당">건당</a>
+                              </div>
+                              <input type="hidden" name="per" value="${op.per}">
+                            </div>
                         </div>
                     </div>
 
@@ -747,7 +794,18 @@
                                   <div class="card-text-title">돌봄 방법</div>
                                   <div class="card-text">
                                     <span class="view-mode">${op.careWay}</span>
-                                    <input class="edit-mode edit-care" type="text" name="careWay" value="${op.careWay}">
+                                    <!-- 드롭다운(편집 모드 전용) -->
+                                    <div class="edit-mode dropdown edit-care-dropdown">
+                                        <button class="btn btn-light dropdown-toggle care-btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            ${op.careWay}
+                                        </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#" data-value="잠시 맡아주세요">잠시 맡아주세요</a>
+                                        <a class="dropdown-item" href="#" data-value="여기로 와주세요">여기로 와주세요</a>
+                                    </div>
+                                      <!-- 실제 폼으로 전송될 값 -->
+                                      <input type="hidden" name="careWay" value="${op.careWay}">
+                                    </div>
                                   </div>
                             </div>
                             <div class="card-section-method">
@@ -801,7 +859,7 @@
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">돌봄 기간</div>
-                            <div class="card-text">2025-08-08 ~ 2025-08-09</div>
+                            <div class="card-text">${op.sDateStr} ~ ${op.eDateStr}</div>
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
@@ -835,7 +893,7 @@
                     <div class="apply-profile">
                         <div class="apply-left">
                             <div class="user-profile">
-                                <img src="../../../image/profile_${acc.uImage}.svg" alt="user-img" class="user-img">
+                                    <img src="../../../image/profile_${acc.uImage}.svg" alt="user-img" class="user-img" data-email="${acc.uEmail}">
                                 <div class="user-info">
                                     <div class="user-text">
                                         <span class="user-bold-text">Email</span>
@@ -898,7 +956,7 @@
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">돌봄 기간</div>
-                            <div class="card-text">2025-08-08 ~ 2025-08-09</div>
+                            <div class="card-text">${op.sDateStr} ~ ${op.eDateStr}</div>
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>

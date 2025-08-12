@@ -5,6 +5,11 @@
   min-height: 100vh;
 }
 
+.container{
+  margin-right: 200px !important;
+  margin-top: 35px;
+}
+
 .experience-container {
   display: flex;
   margin-top: 100px;
