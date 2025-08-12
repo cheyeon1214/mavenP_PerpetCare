@@ -3,22 +3,20 @@
         uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>myPage</title>
+    <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../css/global.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Bootstrap CSS -->
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-    />
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../../../css/global.css" />
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- jQuery ... jQuery 가 Bootstrap 보다 앞에 와야 함 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
     <style>
@@ -98,10 +96,7 @@
             font-weight: 700;
         }
 
-        .grade-badge {
-            height: 16px;
-            vertical-align: middle;
-        }
+        .grade-badge {  height: 16px;  vertical-align: middle; margin-top: 4px; cursor: pointer;}
 
         .edit-btn-wrapper1 {
             display: flex;
@@ -331,6 +326,7 @@
                         <div class="info-middle">
                             <img
                                     class="grade-badge"
+                                    id="gradeBadge"
                                     src="../../../image/grade/grade_${user.grade}.svg"
                                     alt="grade-badge"
                             />
@@ -563,6 +559,12 @@
             </main>
     </div>
 
+    <jsp:include page="../../../components/gradeModal.jsp" />
 </div>
 </body>
+<script>
+    $('#gradeBadge').on('click', function(){
+        $('#gradeModal').modal('show');
+    });
+</script>
 </html>
