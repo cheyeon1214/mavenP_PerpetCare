@@ -9,7 +9,7 @@
     padding:5px;
 }
 .close{
-    margin: 10px;
+    margin: 10px 10px 0 10px;
 }
 .grade-each {
     display: flex;

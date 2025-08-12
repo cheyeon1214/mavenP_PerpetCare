@@ -34,7 +34,7 @@
         <div class="modal-body">
           <div class="grade-each">
             <div class="grade-each-image">
-              <img src="${pageContext.request.contextPath}/image/grade_05_platinum.png">
+              <img src="${pageContext.request.contextPath}/image/grade/grade_Platinum.svg">
             </div>
             <div class="grade-each-text">
                 <p class="grade-each-title">Platinum</p>
@@ -43,7 +43,7 @@
           </div>
           <div class="grade-each">
             <div class="grade-each-image">
-              <img src="${pageContext.request.contextPath}/image/grade_04_gold.png">
+              <img src="${pageContext.request.contextPath}/image/grade/grade_Gold.svg">
             </div>
             <div class="grade-each-text">
               <p class="grade-each-title">Gold</p>
@@ -53,7 +53,7 @@
           </div>
           <div class="grade-each">
             <div class="grade-each-image">
-              <img src="${pageContext.request.contextPath}/image/grade_03_silver.png">
+              <img src="${pageContext.request.contextPath}/image/grade/grade_Silver.svg">
             </div>
             <div class="grade-each-text">
               <p><span class="grade-each-title">Silver</span><span class="grade-each-sub">&nbsp;&nbsp;🌟시작 레벨 🌟</span></p>
@@ -63,7 +63,7 @@
           </div>
           <div class="grade-each">
             <div class="grade-each-image">
-              <img src="${pageContext.request.contextPath}/image/grade_02_bronze.png">
+              <img src="${pageContext.request.contextPath}/image/grade/grade_Bronze.svg">
             </div>
             <div class="grade-each-text">
               <p class="grade-each-title">Bronze</p>
@@ -72,7 +72,7 @@
           </div>
           <div class="grade-each">
             <div class="grade-each-image">
-              <img src="${pageContext.request.contextPath}/image/grade_01_iron.png">
+              <img src="${pageContext.request.contextPath}/image/grade/grade_Iron.svg">
             </div>
             <div class="grade-each-text">
               <p class="grade-each-title">Iron</p>
