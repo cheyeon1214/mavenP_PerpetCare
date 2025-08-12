@@ -98,7 +98,14 @@ public class Pet {
     }
 
     public String getGender() {
-        return gender;
+        if (gender == null || gender.isEmpty()) {
+            return "모름";
+        }
+        else if(gender.equals("f")){
+            return "암컷";
+        }else{
+            return "수컷";
+        }
     }
 
     public void setGender(String gender) {

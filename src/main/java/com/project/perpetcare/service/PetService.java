@@ -27,6 +27,9 @@ public class PetService {
     public List<Pet> getPets(String uEmail)throws Exception{
         return petDAO.getPets(uEmail);
     }
+    public Pet getPet(int no) throws Exception {
+        return petDAO.getPet(no);
+    }
     public void encodePetImages(List<Pet> pets) {
         if (pets != null) {
             for (Pet pet : pets) {

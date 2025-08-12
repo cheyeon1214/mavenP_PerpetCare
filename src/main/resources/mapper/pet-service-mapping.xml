@@ -39,4 +39,7 @@
 <delete id="deletePet" parameterType="int">
 	delete from pet where p_no=#{no}
 </delete>
+<select id="getPet" parameterType="int" resultMap="petResultMap">
+	SELECT * FROM PET WHERE p_no=#{VALUE}
+</select>
 </mapper>
