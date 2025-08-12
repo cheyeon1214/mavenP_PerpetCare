@@ -675,7 +675,7 @@
                     </div>
                 </div>
                 <div class="edit-btn-wrapper1">
-                    <button class="edit-btn">수정</button>
+                    <button class="edit-btn" onclick="location.href='${pageContext.request.contextPath}/myInfo'">수정</button>
                 </div>
                 <div class="nav">
                     <a href="#">반려동물</a>
@@ -685,7 +685,7 @@
                     <a href="/opening/recent">최근 본 공고</a>
                 </div>
             </div>
-            <div class="logout"><a href="#">로그아웃</a></div>
+            <div class="logout"><a href="/logout">로그아웃</a></div>
         </aside>
 
         <!-- Main Content -->
@@ -732,7 +732,7 @@
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
-                            <span class="view-mode">${op.price}</span>
+                            <span class="view-mode"><fmt:formatNumber value="${op.price}" pattern="#,###"/></span>
                             <input class="edit-mode edit-price" type="text" name="price" value="${op.price}">
                             /
                             <span class="view-mode">${op.per}</span>

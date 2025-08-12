@@ -368,7 +368,7 @@
                     </div>
                 </div>
                 <div class="edit-btn-wrapper1">
-                    <button class="edit-btn">수정</button>
+                    <button class="edit-btn" onclick="location.href='${pageContext.request.contextPath}/myInfo'">수정</button>
                 </div>
                 <div class="nav">
                     <a href="#">반려동물</a>

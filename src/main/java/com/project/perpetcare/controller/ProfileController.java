@@ -122,7 +122,7 @@ public class ProfileController {
                 }
                 session.setAttribute("rateList", textList);
             }
-            return "experience";
+            return "profilePage/experience";
         } catch (Exception e) {
             model.addAttribute("status", 500);
             model.addAttribute("error", "Internal Server Error");

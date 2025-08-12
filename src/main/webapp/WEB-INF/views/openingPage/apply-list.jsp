@@ -238,6 +238,7 @@ body{
     height: 100px;
     border-radius: 10px;
     object-fit: cover;
+    cursor: pointer;
 }
 
 
@@ -415,7 +416,7 @@ body{
                                     <img src="../../../image/profile_1.svg" class="user-profile" alt="userImg"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="../../../image/profile_${apply.uImage}.svg" class="user-profile" alt="userImg"/>
+                                    <img src="../../../image/profile_${apply.uImage}.svg" class="user-profile" alt="userImg" data-email="${apply.uEmail}"/>
                                 </c:otherwise>
                             </c:choose>
                         </td>
@@ -537,6 +538,13 @@ new Chart(ctx2, {
             }
         }
     }
+});
+
+$(document).on('click', '.user-profile', function () {
+    const email = $(this).data('email');
+    if (!email) return;
+
+    window.location.href = "/experience?email=" + email;
 });
 </script>
     <%@ include file="/components/footer.jsp" %>

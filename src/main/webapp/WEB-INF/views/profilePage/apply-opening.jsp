@@ -457,7 +457,7 @@
                     </div>
                 </div>
                 <div class="edit-btn-wrapper1">
-                    <button class="edit-btn">수정</button>
+                    <button class="edit-btn" onclick="location.href='${pageContext.request.contextPath}/myInfo'">수정</button>
                 </div>
                 <div class="nav">
                     <a href="#">반려동물</a>
@@ -467,7 +467,7 @@
                     <a href="/opening/recent">최근 본 공고</a>
                 </div>
             </div>
-            <div class="logout"><a href="#">로그아웃</a></div>
+            <div class="logout"><a href="/logout">로그아웃</a></div>
         </aside>
 
         <!-- Main Content -->
@@ -511,6 +511,7 @@
                             <span>${op.per}</span>
 <%--                            <div class="card-text">${op.price} / ${op.per}</div>--%>
                         </div>
+                    </div>
                     </div>
 
                     <div class="opening-section-line">
@@ -656,7 +657,7 @@
                         </div>
                         <input type="hidden" id="rateValue">
                     </div>
-                </div>
+                    </div>
                 </c:forEach>
 
                 <!-- 마감된 공고 -->
@@ -706,7 +707,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="apply-profile non-matching">
+                <div class="apply-profile opening-section non-matching">
                     <div class="non-match-text">매칭이 되지 않았습니다.</div>
                 </div>
                 </c:forEach>

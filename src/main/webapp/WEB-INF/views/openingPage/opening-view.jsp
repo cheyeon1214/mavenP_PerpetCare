@@ -219,7 +219,8 @@
                 <div class="profile-card">
                     <div class="card-section">
                         <div class="card-left">
-                            <img src="../../../image/profile_${owner.image}.svg" alt="profileImg">
+                            <img class="user-profile" data-email="${owner.email}"
+                            src="../../../image/profile_${owner.image}.svg" alt="profileImg">
                         </div>
                         <div class="card-right">
                             <div class="card-right-name">
@@ -354,6 +355,13 @@
             </div>
 
         </div>
+<script>
+    $(document).on('click', '.user-profile', function () {
+        const email = $(this).data('email');
+        if (!email) return;
 
+        window.location.href = "/experience?email=" + email;
+    });
+</script>
 </body>
 </html>
