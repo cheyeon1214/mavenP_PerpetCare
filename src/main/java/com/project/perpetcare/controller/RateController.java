@@ -20,7 +20,6 @@ public class RateController {
     @Autowired
     private RateService rateService;
 
-    // 컨트롤러
     @PostMapping("/rate/add")
     @ResponseBody
     public String addRate(@RequestParam int oNo,

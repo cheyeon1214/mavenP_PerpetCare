@@ -203,6 +203,7 @@ public class OpeningController {
             List<Opening> pending = new ArrayList<>();
             Map<Integer, Pet> firstPets = new HashMap<>();
             Map<Integer, User> userProfile = new HashMap<>();
+            Map<Integer, Boolean> isRatedMap = new HashMap<>();
             DateTimeFormatter F = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
             for(ApplyUserDTO myApply : myApplyList){
@@ -225,20 +226,13 @@ public class OpeningController {
                     accept.add(op);
                     User profile = profileService.getUserInfo(op.getuEmail());
                     userProfile.put(op.getNo(),  profile);
+                    boolean rated = rateService.hasRated(user.getEmail(), op.getNo());
+                    isRatedMap.put(op.getNo(), rated);
                 }else if(myApply.getaStatus().equals(ApplyStatus.reject.name())){
                     reject.add(op);
                 }else if(myApply.getaStatus().equals(ApplyStatus.pending.name())){
                     pending.add(op);
                 }
-            }
-            for(Opening my : pending){
-                System.out.println(pending);
-            }
-            for(Opening my : accept){
-                System.out.println(accept);
-            }
-            for(Opening my : reject){
-                System.out.println(reject);
             }
             model.addAttribute("user", user);
             model.addAttribute("accept", accept);
@@ -246,12 +240,11 @@ public class OpeningController {
             model.addAttribute("pending", pending);
             model.addAttribute("firstPets", firstPets);
             model.addAttribute("userProfile", userProfile);
+            model.addAttribute("isRatedMap", isRatedMap);
             return "profilePage/applyOpening";
         } catch (Exception e) {
-//            model.addAttribute("error", "Internal Server Error");
-//            model.addAttribute("message", e.getMessage());
-//            return "Error";
-            e.printStackTrace();
+            model.addAttribute("error", "Internal Server Error");
+            model.addAttribute("message", e.getMessage());
             return "Error";
         }
 
