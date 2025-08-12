@@ -26,4 +26,7 @@ public class PetDAO {
     public List<Pet> getPets(String uEmail)throws Exception{
         return sqlSession.selectList(NS+"getPets",uEmail);
     }
+    public Pet getPet(int no) throws Exception {
+        return sqlSession.selectOne(NS+"getPet", no);
+    }
 }

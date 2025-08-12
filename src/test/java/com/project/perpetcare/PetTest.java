@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.Reader;
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -58,7 +59,11 @@ public class PetTest {
         List<Pet> list = session.selectList(NS+"getPets","codus@naver.com");
         for(Pet p : list) System.out.println(p);
         System.out.println("=============getPets 완료==============");
-        session.commit();
-        session.close();
+    }
+    @Test
+    public void getPet() throws Exception {
+        SqlSession session = getSqlSession();
+        Pet pet = session.selectOne(NS+"getPet",4);
+        System.out.println(pet);
     }
 }
