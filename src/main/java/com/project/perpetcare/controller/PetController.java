@@ -7,6 +7,7 @@ import com.project.perpetcare.service.PetService;
 import java.util.Base64;
 import java.util.List;
 
+import com.project.perpetcare.service.ProfileService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ public class PetController {
     @Autowired
     private PetService petService;
 
+    @Autowired
+    private ProfileService profileService;
+
     @GetMapping("/pet/getOne")
     public Pet getOnePet(@RequestParam("no") int no) {
         try {
@@ -37,11 +41,20 @@ public class PetController {
         String path = "redirect:/Error.jsp";
         String msg = "getPets 실패";
         List<Pet> pets = null;
+        User profile = null;
+        boolean isOwner = false;
         try {
             User user = (User) session.getAttribute("user");
-            boolean isOwner = (user != null) && user.getEmail().equals(owner);
+            if(owner.equals(user.getEmail())){
+                profile = user; //내거다 = isOwner false
+            }else{
+                profile = profileService.getUserInfo(owner);
+                System.out.println("profile :: "+profile);
+                isOwner = true; //남의꺼 = isOwner true
+            }
             model.addAttribute("isOwner", isOwner);
-            pets = petService.getPets(owner);
+            model.addAttribute("profile", profile);
+            pets = petService.getPets(profile.getEmail());
             petService.encodePetImages(pets);
             path = "profilePage/myPet";
             msg = "getPets 성공";
@@ -51,33 +64,10 @@ public class PetController {
         return new ModelAndView(path, "pets", pets);
     }
 
-    @GetMapping("/petPage")
-    public ModelAndView getPets(HttpSession session){
-        String path="redirect:/Error.jsp";
-        String msg = "";
-        List<Pet> pets = null;
-        try {
-            User user = (User) session.getAttribute("user");
-            String uEmail = user.getEmail();
-            session.setAttribute("uEmail", uEmail);
-            pets = petService.getPets(uEmail);
-            petService.encodePetImages(pets);
-
-            msg = "getPets 호출";
-            path= "profilePage/petPage";
-        }catch(Exception e){
-            msg="getPets 실패";
-            System.out.println(e);
-        }
-        return new ModelAndView(path,"petList",pets);
-    }
-    //요청/petPage?uEmail=codus@naver.com
-    //파라미터값 전달해주기
-
     //펫 등록 + 이미지
     @PostMapping("/registerPet")
     public ModelAndView registerPet(Pet pet, @RequestParam("imageFile") MultipartFile imageFile,HttpSession session) {
-        String path="redirect:/Error.jsp";
+        String path="Error";
         try {
             User user = (User) session.getAttribute("user");
             if (user == null || user.getEmail() == null) {
@@ -91,7 +81,7 @@ public class PetController {
             petService.insertPet(pet); // pet.image (byte[]) 저장
             path = "redirect:/pet?email="+user.getEmail();
         } catch (Exception e) {
-            e.printStackTrace();
+            return new ModelAndView(path, "message", "등록 중에 오류가 발생했습니다.");
         }
         return new ModelAndView(path);
     }
@@ -135,23 +125,5 @@ public class PetController {
         }catch (Exception e){
             return "error";
         }
-    }
-
-    //태란이 펫페이지로 이동
-    @GetMapping("/petPage2")
-    public String getPets2(Model model, HttpSession session){
-
-        List<Pet> pets = null;
-        try {
-            User user = (User) session.getAttribute("user");
-            String uEmail = user.getEmail();
-            session.setAttribute("uEmail", uEmail);
-            pets = petService.getPets(uEmail);
-            petService.encodePetImages(pets);
-
-        }catch(Exception e){
-            return "Error";
-        }
-        return "profilePage/petPage2";
     }
 }

@@ -231,5 +231,8 @@
             location.href='/search';
         }); // click
     }); // ready
+        $(document).on('click', '.opening-text', function () {
+        window.location.href = "/opening/create";
+    });
 </script>
 </html>

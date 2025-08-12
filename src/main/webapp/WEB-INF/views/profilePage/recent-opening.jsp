@@ -373,7 +373,7 @@
                     <button class="edit-btn" onclick="location.href='${pageContext.request.contextPath}/myInfo'">수정</button>
                 </div>
                 <div class="nav">
-                    <a href="#">반려동물</a>
+                    <a href="/pet?email=${user.email}">반려동물</a>
                     <a href="/experiencePage" >경험</a>
                     <a href="/opening/mine">올린 공고</a>
                     <a href="/opening/myApply">신청한 공고</a>

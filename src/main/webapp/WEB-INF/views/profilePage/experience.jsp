@@ -66,8 +66,8 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 </div>
 
             <div class="nav">
-              <a href="/petPage">반려동물</a>
-              <a href="/experiencePage" class="active">경험</a>
+              <a href="/pet?email=${profile.email}">반려동물</a>
+              <a href="/experience?email=${profile.email}" class="active">경험</a>
               <c:choose>
                 <c:when test="${isOwner == false}">
               <a href="/opening/mine">올린 공고</a>

@@ -140,18 +140,9 @@ public class ProfileController {
         return "profilePage/edit-profile";
     }
 
-
-
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/home.html";
     }
-
-
-
-
-
-
 }

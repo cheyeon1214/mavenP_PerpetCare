@@ -218,6 +218,7 @@ body {
   line-height: 1.4;
   z-index: 2;
   animation: pulse 1.5s ease-in-out infinite;
+  cursor: pointer;
 }
 
 /*-----park 1 animation-----*/

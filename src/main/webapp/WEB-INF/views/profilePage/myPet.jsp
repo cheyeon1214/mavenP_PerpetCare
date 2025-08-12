@@ -311,6 +311,7 @@
         justify-content: space-around;
         text-align: center;
         padding: 5px 20px;
+        align-items: center;
     }
 
     .my-pet-info-title-edit, .my-pet-info-title-add {
@@ -327,7 +328,7 @@
     }
 
     [type='date'] {
-        width: 210px;
+        width: 200px;
         text-align: center;
         color: dimgray;
     }
@@ -339,6 +340,21 @@
 
     .my-pet-info-text-edit > label, .my-pet-info-text-add > label {
         padding: 0 7px;
+    }
+    .empty-pet{
+      width: 700px;
+      margin: 50px auto 30px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .select-species{
+      width: 188px;
+      padding: 3px 0;
     }
 </style>
 <script>
@@ -490,12 +506,12 @@
             <div class="sidebar-top">
                 <div class="profile">
                     <img
-                            src="../../..${user.imagePath}"
+                            src="../../..${profile.imagePath}"
                             alt="프로필"
                             class="profile-img"
                     />
                     <div class="info">
-                        <div class="name">${user.name}</div>
+                        <div class="name">${profile.name}</div>
                     </div>
                     <div class="info">
                         <div class="info-left">
@@ -506,32 +522,56 @@
                         <div class="info-middle">
                             <img
                                     class="grade-badge"
-                                    src="../../../image/grade/grade_${user.grade}.svg"
+                                    src="../../../image/grade/grade_${profile.grade}.svg"
                                     alt="grade-badge"
                             />
                         </div>
                         <div class="info-right">
-                            <div class="grade">${user.grade}</div>
-                            <div class="gender">${user.genderStr}</div>
-                            <div class="age">${user.ageGroup}</div>
+                            <div class="grade">${profile.grade}</div>
+                            <div class="gender">${profile.genderStr}</div>
+                            <div class="age">${profile.ageGroup}</div>
                         </div>
                     </div>
                 </div>
                 <div class="edit-btn-wrapper1">
-                    <button class="edit-btn">수정</button>
+                <c:choose>
+                <c:when test="${isOwner == false}">
+                <button class="edit-btn" onclick="location.href='${pageContext.request.contextPath}/myInfo'">수정</button>
+                </c:when>
+              </c:choose>
                 </div>
+
+
+                <c:choose>
+                <c:when test="${!isOwner}">
                 <div class="nav">
-                    <a href="#" class="active">반려동물</a>
+                    <a href="/pet?email=${profile.email}" class="active">반려동물</a>
                     <a href="/experiencePage">경험</a>
                     <a href="/opening/mine">올린 공고</a>
                     <a href="/opening/myApply">신청한 공고</a>
-                    <a href="#">최근 본 공고</a>
+                    <a href="/opening/recent">최근 본 공고</a>
                 </div>
+                </c:when>
+                <c:otherwise>
+                  <div class="nav">
+                    <a href="/pet?email=${profile.email}" class="active">반려동물</a>
+                    <a href="/experience?email=${profile.email}">경험</a>
+                </div>
+                </c:otherwise>
+                </c:choose>
+
             </div>
-            <div class="logout"><a href="#">로그아웃</a></div>
+            <c:choose>
+                <c:when test="${!isOwner}">
+                <div class="logout"><a href="/logout">로그아웃</a></div>
+                </c:when>
+            </c:choose>
+
         </aside>
         <div class="container">
             <div class="pet-main">
+                <c:choose>
+                <c:when test="${pets.size() != 0}">
                 <c:forEach var="pet" items="${pets}">
                     <div class="pet-section" data-pet-no="${pet.no}">
                     <form id="petEditForm" action="/updatePet" method="post" enctype="multipart/form-data"
@@ -551,7 +591,7 @@
                                             </div>
                                             <div class="my-pet-info-row-edit">
                                                 <span class="my-pet-info-title-edit">종</span>
-                                                <select name="species">
+                                                <select name="species" class="select-species">
                                                     <option value="">반려동물 종을 선택해주세요</option>
                                                     <option value="개" ${pet.species == '개' ? 'selected' : ''}>개</option>
                                                     <option value="고양이" ${pet.species == '고양이' ? 'selected' : ''}>고양이
@@ -590,8 +630,8 @@
                                         </div>
                                     </div>
                                     <div class="button-row">
-                                    <input type="hidden" name="uEmail" value="${user.email}">
-                                        <input type="submit" class="button-complete" name="completeBtn" value="완료" data-email="${user.email}">
+                                    <input type="hidden" name="uEmail" value="${profile.email}">
+                                        <input type="submit" class="button-complete" name="completeBtn" value="완료" data-email="${profile.email}">
                                     </div>
                                 </div>
                             </form>
@@ -625,18 +665,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <c:if test="${isOwner}">
+                            <c:if test="${!isOwner}">
                                 <div class="button-row">
-                                    <button type="button" class="button-delete" data-email="${user.email}">삭제</button>
-                                    <button type="button" class="button-update" data-email="${user.email}">수정</button>
+                                    <button type="button" class="button-delete" data-email="${profile.email}">삭제</button>
+                                    <button type="button" class="button-update" data-email="${profile.email}">수정</button>
                                 </div>
                             </c:if>
                         </div>
                     </div>
                 </c:forEach>
+                </c:when>
+                <c:otherwise>
+                  <div class="empty-pet">등록된 반려동물이 없습니다.</div>
+                </c:otherwise>
+                </c:choose>
 
                 <c:choose>
-                    <c:when test="${isOwner}">
+                    <c:when test="${!isOwner}">
                         <div id="button-add-pet">
                             <svg width="30" height="30" viewBox="0 0 40 40" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -663,7 +708,7 @@
                                             </div>
                                             <div class="my-pet-info-row-add">
                                                 <span class="my-pet-info-title-add">종</span>
-                                                <select name="species" required="required">
+                                                <select class="select-species" name="species" required="required">
                                                     <option value="">반려동물 종을 선택해주세요</option>
                                                     <option value="개" ${pet.species == '개' ? 'selected' : ''}>개</option>
                                                     <option value="고양이" ${pet.species == '고양이' ? 'selected' : ''}>고양이
@@ -701,7 +746,7 @@
                                         </div>
                                     </div>
                                     <div class="button-row">
-                                        <input type="hidden" name="uEmail" value="${user.email}">
+                                        <input type="hidden" name="uEmail" value="${profile.email}">
                                         <input type="submit" class="button-add" name="addBtn" value="등록">
                                         <button type="button" class="button-cancel" name="cancelBtn">취소</button>
                                     </div>

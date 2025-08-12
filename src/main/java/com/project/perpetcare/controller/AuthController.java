@@ -27,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String doLogin(User pvo, HttpSession session){
+    public String doLogin(User pvo, HttpSession session, Model model){
         System.out.println("pvo>>"+pvo);
         try{
             User rvo = authService.login(pvo);
@@ -39,9 +39,8 @@ public class AuthController {
                 return "redirect:/login.jsp";
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            session.setAttribute("msg","로그인 중 문제가 발생했습니다.");
-            return "redirect:/error.jsp";
+            model.addAttribute("message",e.getMessage());
+            return "Error";
         }
     }
 
@@ -51,7 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String doRegister(User pvo, String rrn ,HttpSession session){
+    public String doRegister(User pvo, String rrn ,HttpSession session, Model model){
         try{
             String[] part = rrn.split("-");
 
@@ -71,8 +70,8 @@ public class AuthController {
                 return "redirect:home.jsp";
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/error.jsp";
+            model.addAttribute("message",e.getMessage());
+            return "Error";
         }
     }
 
