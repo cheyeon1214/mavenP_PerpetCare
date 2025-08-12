@@ -42,6 +42,7 @@ public class PetController {
             boolean isOwner = (user != null) && user.getEmail().equals(owner);
             model.addAttribute("isOwner", isOwner);
             pets = petService.getPets(owner);
+            petService.encodePetImages(pets);
             path = "profilePage/myPet";
             msg = "getPets 성공";
         } catch (Exception e) {
