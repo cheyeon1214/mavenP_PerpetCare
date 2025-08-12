@@ -523,7 +523,7 @@ $(document).ready(function() {
                                     <div class="pet-text">${pet.species}</div>
                                     <div class="pet-text">${pet.breed}</div>
                                     <c:choose>
-                                        <c:when test="${pet.gender == 'f'}">
+                                        <c:when test="${pet.genderStr == 'f'}">
                                             <div class="pet-text">암컷</div>
                                         </c:when>
                                         <c:otherwise>

@@ -228,7 +228,7 @@
                 <div class="pet-text">${firstPet.species}</div>
                 <div class="pet-text">${firstPet.breed}</div>
                 <c:choose>
-                    <c:when test="${firstPet.gender == 'f'}">
+                    <c:when test="${firstPet.genderStr == 'f'}">
                         <div class="pet-text">암컷</div>
                     </c:when>
                     <c:otherwise>

@@ -2,9 +2,7 @@ package com.project.perpetcare.domain;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Blob;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Pet {
     private int no; //p_no
@@ -98,6 +96,9 @@ public class Pet {
     }
 
     public String getGender() {
+        return gender;
+    }
+    public String getGenderStr() {
         if (gender == null || gender.isEmpty()) {
             return "모름";
         }
