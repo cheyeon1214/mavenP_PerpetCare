@@ -20,7 +20,7 @@ public class SearchPageController {
             return "search"; // 결과 페이지 경로 /WEB-INF/views/search .jsp
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error";
+            return "/Error.jsp";
         }
     }
 }

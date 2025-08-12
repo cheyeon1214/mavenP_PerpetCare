@@ -4,7 +4,6 @@ import com.project.perpetcare.domain.Pet;
 import com.project.perpetcare.domain.User;
 import com.project.perpetcare.service.PetService;
 
-import java.util.Base64;
 import java.util.List;
 
 import com.project.perpetcare.service.ProfileService;
@@ -38,7 +37,7 @@ public class PetController {
 
     @GetMapping("/pet")
     public ModelAndView petPage(@RequestParam("email") String owner, HttpSession session, Model model) {
-        String path = "redirect:/Error.jsp";
+        String path = "/Error.jsp";
         String msg = "getPets 실패";
         List<Pet> pets = null;
         User profile = null;
@@ -67,7 +66,7 @@ public class PetController {
     //펫 등록 + 이미지
     @PostMapping("/registerPet")
     public ModelAndView registerPet(Pet pet, @RequestParam("imageFile") MultipartFile imageFile,HttpSession session) {
-        String path="Error";
+        String path= "/Error.jsp";
         try {
             User user = (User) session.getAttribute("user");
             if (user == null || user.getEmail() == null) {
@@ -90,7 +89,7 @@ public class PetController {
     // 펫 수정
     @PostMapping("/updatePet")
     public ModelAndView updatePet(@ModelAttribute Pet pet,@RequestParam("imageFile") MultipartFile imageFile,HttpSession session) {
-        String path="redirect:/Error.jsp";
+        String path= "/Error.jsp";
         String msg="";
 
         try {
@@ -118,7 +117,7 @@ public class PetController {
     @PostMapping("/deletePet")
     @ResponseBody
     public String deletePet(int no) {
-        String path="redirect:/Error.jsp";
+        String path="Error";
         try{
             petService.deletePet(no);
             return "ok";

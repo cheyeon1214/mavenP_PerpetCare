@@ -2,7 +2,6 @@ package com.project.perpetcare.controller;
 
 import com.project.perpetcare.dao.AuthDAO;
 import com.project.perpetcare.domain.User;
-import com.project.perpetcare.domain.enums.Grade;
 import com.project.perpetcare.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class AuthController {
             }
         } catch (Exception e) {
             model.addAttribute("message",e.getMessage());
-            return "Error";
+            return "/Error.jsp";
         }
     }
 
@@ -71,7 +70,7 @@ public class AuthController {
             }
         } catch (Exception e) {
             model.addAttribute("message",e.getMessage());
-            return "Error";
+            return "/Error.jsp";
         }
     }
 
