@@ -169,13 +169,20 @@
   .my-pet-box, .my-pet-box-edit, .my-pet-box-add {
     margin-bottom: 20px;
   }
-  .my-pet-img {
+  .my-pet-img, .my-pet-img-edit, .my-pet-img-add {
     width: 200px;
     height:200px;
     background-color: lightgray;
     border-radius: 20px;
     position: relative;
   }
+  .my-pet-img img, .my-pet-img-edit img, .my-pet-img-add img {
+     width: 200px;
+     height:200px;
+     border-radius: 20px;
+    object-fit: cover;
+    display:block;
+   }
   .my-pet-name {
     position: absolute;
     width: 80px;
@@ -308,19 +315,73 @@
 </style>
 <script>
 $(document).ready(function(){
-  // 수정하기
+  // 수정 폼 & 추가 폼 숨겨두기
   const $editForm = $('.my-pet-box-edit'); // jQuery 객체
   // $editForm.hide();
+  const $addForm = $('#petAddForm');
+  $addForm.hide();
 
   // 추가하기
-  const $addForm = $('.my-pet-box-add');
-  // $addForm.hide();
   $('#button-add-pet').on('click', function(){
-    $('.pet-add-section').append($editForm);
+    $('.pet-add-section').append($addForm.show()); // hide 했기 때문에 show 필수
   }); // add click
-  $('.button-complete').on('click', function(){
-    $('.pet-add-section').detach($editForm);
-  })
+  $('.button-cancel').on('click', function(){
+    $addForm.hide().detach();
+  }); // 추가 취소 버튼
+
+  $('#petImage').on('change', function(){
+    const file = this.files && this.files[0];
+    if(!file) return;
+    // console.log(file.name, file.size, file.type);
+    const reader = new FileReader();
+    reader.onload = function(e){
+      $('#addPreview').attr('src', e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }) // 이미지 변경 반영
+  $(document).on('submit', '#petAddForm', function(e){
+    // 기본 전송 막음
+    e.preventDefault();
+    // 변수 저장
+    const $form = $('#petAddForm');
+    const uEmail = $form.find('[name="uEmail"]').val();
+    const name = $form.find('input[name="name"]').val()?.trim();
+    const image = $form.find('input[name="imageFile"]')[0]?.files[0];
+    const species = $form.find('select[name="species"]').val();
+    const breed = $form.find('[name="breed"]').val()?.trim();
+    const gender = $form.find('[name="gender"]').val();
+    const bDate = $form.find('[name="bDate"]').val();
+    // 누락 항목 확인
+    if(!name) {
+      alert("추가할 반려동물 이름을 입력해주세요.");
+      return;
+    }
+    if(!image) {
+      alert("추가할 반려동물 사진을 추가해주세요.");
+      return;
+    }
+    if(!species) {
+      alert("추가할 반려동물 종을 선택해주세요.");
+      return;
+    }
+    if(!breed) {
+      alert("추가할 반려동물 품종을 입력해주세요.");
+      return;
+    }
+    if(!gender) {
+      alert("추가할 반려동물 성별을 선택해주세요.");
+      return;
+    }
+    if(!bDate) {
+      alert("추가할 반려동물이 태어난 일을 입력해주세요.");
+      return;
+    }
+    // this.submit();
+    // 네이티브 전송 (재귀X)
+    HTMLFormElement.prototype.submit.call(this);
+    // 추가 폼 숨기기
+    $addForm.hide().detach();
+  }); // 추가 등록 버튼
 
   // 삭제하기
   $(".button-delete").on('click', function() {
@@ -337,7 +398,7 @@ $(document).ready(function(){
       success: function(data){
         if(data === "ok"){
           alert("반려동물 정보가 삭제되었습니다.");
-          location.href = "/pet?uEmail=${uEmail}";
+          location.href = "/pet?email="+uEmail;
         } else {
           alert("삭제 중 문제가 발생했습니다.")
         }
@@ -406,7 +467,7 @@ $(document).ready(function(){
             <div class="my-pet-box pet-view-mode" data-pet-no="${pet.no}">
               <div class="display-flex">
                 <div class="my-pet-img">
-                  <img class="my-pet-image" src="/image/${user.imagePath}" width="200" height="200">
+                  <img class="my-pet-image" src="data:image/jpeg;base64,${pet.base64Image}" width="200" height="200">
                   <span class="my-pet-name">${pet.name}</span>
                 </div>
                 <div class="my-pet-info">
@@ -423,7 +484,7 @@ $(document).ready(function(){
                   <div class="my-pet-info-row have-dashed">
                     <span class="my-pet-info-title">성별</span>
                     <hr>
-                    <span class="my-pet-info-text">${pet.gender}</span>
+                    <span class="my-pet-info-text">${pet.genderStr}</span>
                   </div>
                   <div class="my-pet-info-row">
                     <span class="my-pet-info-title">나이</span>
@@ -436,7 +497,7 @@ $(document).ready(function(){
                 <c:when test="${isOwner}">
                   <div class="button-row">
                     <button type="button" class="button-delete" name="deleteBtn" data-email="${user.email}">삭제</button>
-                    <button type="button" class="button-update" name="updateBtn">수정</button>
+                    <button type="button" class="button-update" name="updateBtn" data-email="${user.email}">수정</button>
                   </div>
                   <div class="pet-edit-section">
                   </div>
@@ -444,51 +505,54 @@ $(document).ready(function(){
               </c:choose>
             </div>
           </c:forEach>
-          <div class="my-pet-box-edit">
-            <div class="display-flex">
-              <div class="my-pet-img">
-                <img src="">
+          <form id="petEditForm" action="/updatePet" method="post" enctype="multipart/form-data" novalidate>
+            <div class="my-pet-box-edit">
+              <div class="display-flex">
+                <div class="my-pet-img-edit">
+                  <img id="editPreview" src="data:image/jpeg;base64,${pet.base64Image}">
+                  <input type="file" id="editImage" name="imageFile" accept="image/*">
+                </div>
+                <div class="my-pet-info-edit">
+                  <div class="my-pet-info-row-edit">
+                    <span class="my-pet-info-title-edit">이름</span>
+                    <input type="text" name="name" value="${pet.name}" placeholder="${pet.name}">
+                  </div>
+                  <div class="my-pet-info-row-edit">
+                    <span class="my-pet-info-title-edit">종</span>
+                    <select name="species">
+                      <option value="">반려동물 종을 선택해주세요</option>
+                      <option value="개" ${pet.species == '개' ? 'selected' : ''}>개</option>
+                      <option value="고양이" ${pet.species == '고양이' ? 'selected' : ''}>고양이</option>
+                      <option value="토끼" ${pet.species == '토끼' ? 'selected' : ''}>토끼</option>
+                      <option value="물고기" ${pet.species == '물고기' ? 'selected' : ''}>물고기</option>
+                      <option value="새" ${pet.species == '새' ? 'selected' : ''}>새</option>
+                      <option value="햄스터" ${pet.species == '햄스터' ? 'selected' : ''}>햄스터</option>
+                      <option value="기타" ${pet.species == '기타' ? 'selected' : ''}>기타</option>
+                    </select>
+                  </div>
+                  <div class="my-pet-info-row-edit">
+                    <span class="my-pet-info-title-edit">품종</span>
+                    <input type="text" name="breed" value="${pet.breed}" placeholder="${pet.breed}">
+                  </div>
+                  <div class="my-pet-info-row-edit">
+                    <span class="my-pet-info-title-edit">성별</span>
+                    <span class="my-pet-info-text-edit">
+                      <label><input type="radio" name="gender" value="f" ${pet.gender == 'f' ? 'checked' : ''}> 여</label>
+                      <label><input type="radio" name="gender" value="m" ${pet.gender == 'm' ? 'checked' : ''}> 남</label>
+                      <label><input type="radio" name="gender" value="n" ${pet.gender == 'n' ? 'checked' : ''}> 모름</label>
+                    </span>
+                  </div>
+                  <div class="my-pet-info-row-edit">
+                    <span class="my-pet-info-title-edit">생년월일</span>
+                    <input type="date" name="bDate" value="${pet.bDate}">
+                  </div>
+                </div>
               </div>
-              <div class="my-pet-info-edit">
-                <div class="my-pet-info-row-edit">
-                  <span class="my-pet-info-title-edit">이름</span>
-                  <input type="text" name="name" value="${pet.name}" placeholder="${pet.name}">
-                </div>
-                <div class="my-pet-info-row-edit">
-                  <span class="my-pet-info-title-edit">종</span>
-                  <select name="species">
-                    <option value="">반려동물 종을 선택해주세요</option>
-                    <option value="개" ${pet.species == '개' ? 'selected' : ''}>개</option>
-                    <option value="고양이" ${pet.species == '고양이' ? 'selected' : ''}>고양이</option>
-                    <option value="토끼" ${pet.species == '토끼' ? 'selected' : ''}>토끼</option>
-                    <option value="물고기" ${pet.species == '물고기' ? 'selected' : ''}>물고기</option>
-                    <option value="새" ${pet.species == '새' ? 'selected' : ''}>새</option>
-                    <option value="햄스터" ${pet.species == '햄스터' ? 'selected' : ''}>햄스터</option>
-                    <option value="기타" ${pet.species == '기타' ? 'selected' : ''}>기타</option>
-                  </select>
-                </div>
-                <div class="my-pet-info-row-edit">
-                  <span class="my-pet-info-title-edit">품종</span>
-                  <input type="text" name="breed" value="${pet.breed}" placeholder="${pet.breed}">
-                </div>
-                <div class="my-pet-info-row-edit">
-                  <span class="my-pet-info-title-edit">성별</span>
-                  <span class="my-pet-info-text-edit">
-                    <label><input type="radio" name="gender" value="f" ${pet.gender == 'f' ? 'checked' : ''}> 여</label>
-                    <label><input type="radio" name="gender" value="m" ${pet.gender == 'm' ? 'checked' : ''}> 남</label>
-                    <label><input type="radio" name="gender" value="n" ${pet.gender == 'n' ? 'checked' : ''}> 모름</label>
-                  </span>
-                </div>
-                <div class="my-pet-info-row-edit">
-                  <span class="my-pet-info-title-edit">생년월일</span>
-                  <input type="date" name="bDate" value="${pet.bDate}">
-                </div>
+              <div class="button-row">
+                <button type="button" class="button-complete" name="completeBtn">완료</button>
               </div>
             </div>
-            <div class="button-row">
-              <button type="button" class="button-complete" name="completeBtn">완료</button>
-            </div>
-          </div>
+          </form>
           <c:choose>
             <c:when test="${isOwner}">
               <div id="button-add-pet">
@@ -498,23 +562,21 @@ $(document).ready(function(){
                 <span>반려동물 추가하기</span>
               </div>
               <div class="pet-add-section">
-                <form action="registerPet" method="post">
+                <form id="petAddForm" action="/registerPet" method="post" enctype="multipart/form-data" novalidate>
                   <div class="my-pet-box-add">
                     <div class="display-flex">
-                      <div class="my-pet-img">
-                        <label>
-                          <img src="data:image/jpeg;base64,${pet.base64Image}">
-                          <input type="file" id="petImage" accept="image/*">
-                        </label>
+                      <div class="my-pet-img-add">
+                        <img id="addPreview" src="/image/pet_default_profile.png">
+                        <input type="file" id="petImage" name="imageFile" accept="image/*" required="required">
                       </div>
                       <div class="my-pet-info-add">
                         <div class="my-pet-info-row-add">
                           <span class="my-pet-info-title-add">이름</span>
-                          <input type="text" name="name" value="${pet.name}" placeholder="${pet.name}">
+                          <input type="text" name="name" value="${pet.name}" placeholder="${pet.name}" required="required">
                         </div>
                         <div class="my-pet-info-row-add">
                           <span class="my-pet-info-title-add">종</span>
-                          <select name="species">
+                          <select name="species" required="required">
                             <option value="">반려동물 종을 선택해주세요</option>
                             <option value="개" ${pet.species == '개' ? 'selected' : ''}>개</option>
                             <option value="고양이" ${pet.species == '고양이' ? 'selected' : ''}>고양이</option>
@@ -527,28 +589,29 @@ $(document).ready(function(){
                         </div>
                         <div class="my-pet-info-row-add">
                           <span class="my-pet-info-title-add">품종</span>
-                          <input type="text" name="breed" value="${pet.breed}" placeholder="${pet.breed}">
+                          <input type="text" name="breed" value="${pet.breed}" placeholder="${pet.breed}" required="required">
                         </div>
                         <div class="my-pet-info-row-add">
                           <span class="my-pet-info-title-add">성별</span>
                           <span class="my-pet-info-text-add">
-                            <label><input type="radio" name="gender" value="f" ${pet.gender == 'f' ? 'checked' : ''}> 여</label>
+                            <label><input type="radio" name="gender" value="f" ${pet.gender == 'f' ? 'checked' : ''} required="required"> 여</label>
                             <label><input type="radio" name="gender" value="m" ${pet.gender == 'm' ? 'checked' : ''}> 남</label>
                             <label><input type="radio" name="gender" value="n" ${pet.gender == 'n' ? 'checked' : ''}> 모름</label>
                           </span>
                         </div>
                         <div class="my-pet-info-row-add">
                           <span class="my-pet-info-title-add">생년월일</span>
-                          <input type="date" name="bDate" value="${pet.bDate}">
+                          <input type="date" name="bDate" value="${pet.bDate}" required="required">
                         </div>
                       </div>
                     </div>
                     <div class="button-row">
+                      <input type="hidden" name="uEmail" value="${user.email}">
                       <input type="submit" class="button-add" name="addBtn" value="등록">
                       <button type="button" class="button-cancel" name="cancelBtn">취소</button>
                     </div>
                   </div>
-                </form>>
+                </form>
               </div>
             </c:when>
           </c:choose>
