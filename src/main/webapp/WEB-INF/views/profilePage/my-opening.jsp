@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>myPage</title>
@@ -97,10 +98,7 @@
             font-weight: 700;
         }
 
-        .grade-badge {
-            height: 16px;
-            vertical-align: middle;
-        }
+        .grade-badge {  height: 16px;  vertical-align: middle; margin-top: 4px; cursor: pointer;}
 
         .edit-btn-wrapper1 {
             display: flex;
@@ -664,13 +662,14 @@
                         <div class="info-middle">
                             <img
                                     class="grade-badge"
+                                    id="gradeBadge"
                                     src="../../../image/grade/grade_${user.grade}.svg"
                                     alt="grade-badge"
                             />
                         </div>
                         <div class="info-right">
                             <div class="grade">${user.grade}</div>
-                            <div class="gender">${user.gender}</div>
+                            <div class="gender">${user.genderStr}</div>
                             <div class="age">${user.ageGroup}</div>
                         </div>
                     </div>
@@ -681,7 +680,7 @@
                 <div class="nav">
                     <a href="#">반려동물</a>
                     <a href="/experiencePage" >경험</a>
-                    <a href="#" class="active">올린 공고</a>
+                    <a href="/opening/mine" class="active">올린 공고</a>
                     <a href="/opening/myApply">신청한 공고</a>
                     <a href="/opening/recent">최근 본 공고</a>
                 </div>
@@ -806,7 +805,7 @@
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
-                            <div class="card-text">${op.price} / ${op.per}</div>
+                            <div class="card-text"><fmt:formatNumber value="${op.price}" pattern="#,###"/> / ${op.per}</div>
                         </div>
                     </div>
 
@@ -903,7 +902,7 @@
                         </div>
                         <div class="card-text-section">
                             <div class="card-text-title">가격</div>
-                            <div class="card-text">${op.price} / ${op.per}</div>
+                            <div class="card-text"><fmt:formatNumber value="${op.price}" pattern="#,###"/> / ${op.per}</div>
                         </div>
                     </div>
 
@@ -960,6 +959,13 @@
             </div>
         </div>
     </div>
+    <jsp:include page="../../../components/gradeModal.jsp" />
 </div>
 </body>
+<script>
+    //모달창
+    $('#gradeBadge').on('click', function(){
+        $('#gradeModal').modal('show');
+    });
+</script>
 </html>

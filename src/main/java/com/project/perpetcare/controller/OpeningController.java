@@ -4,7 +4,6 @@ import com.project.perpetcare.domain.Opening;
 import com.project.perpetcare.domain.Pet;
 import com.project.perpetcare.domain.User;
 import com.project.perpetcare.domain.enums.ApplyStatus;
-import com.project.perpetcare.domain.enums.Grade;
 import com.project.perpetcare.dto.ApplyUserDTO;
 import com.project.perpetcare.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -160,7 +158,7 @@ public class OpeningController {
             model.addAttribute("acceptedByOpening", acceptedByOpening);
             model.addAttribute("isRatedMap", isRatedMap);
 
-            return "profilePage/myOpening";
+            return "profilePage/my-opening";
         } catch (Exception e) {
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
@@ -246,7 +244,7 @@ public class OpeningController {
             model.addAttribute("pending", pending);
             model.addAttribute("firstPets", firstPets);
             model.addAttribute("userProfile", userProfile);
-            return "profilePage/applyOpening";
+            return "profilePage/apply-opening";
         } catch (Exception e) {
 //            model.addAttribute("error", "Internal Server Error");
 //            model.addAttribute("message", e.getMessage());
@@ -262,7 +260,7 @@ public class OpeningController {
         User user = (User) session.getAttribute("user");
         if (user == null) return "redirect:/login";
         model.addAttribute("user", user);
-        return "profilePage/recentOpening";
+        return "profilePage/recent-opening";
     }
 
     @GetMapping("/by-ids")

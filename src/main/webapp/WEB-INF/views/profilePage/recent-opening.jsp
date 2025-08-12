@@ -6,13 +6,11 @@
     <title>myPage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="/css/global.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Bootstrap CSS -->
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -93,10 +91,7 @@
             font-weight: 700;
         }
 
-        .grade-badge {
-            height: 16px;
-            vertical-align: middle;
-        }
+        .grade-badge {  height: 16px;  vertical-align: middle; margin-top: 4px; cursor: pointer;}
 
         .edit-btn-wrapper1 {
             display: flex;
@@ -278,7 +273,7 @@
                         "  </div>" +
                         "  <div class='opening-card-careway'><p>" + (item.careWay || '') + "</p></div>" +
                         "  <div class='opening-card-priceper'>" +
-                        "    <span class='opening-card-price'>" + (item.price || '') + "</span>원&nbsp;/&nbsp;" +
+                        "    <span class='opening-card-price'>" + (item.price ? item.price.toLocaleString() : '') + "</span>원 / " +
                         "    <span class='opening-card-per'>" + (item.per || '') + "</span>" +
                         "  </div>" +
                         "</div>";
@@ -360,13 +355,14 @@
                         <div class="info-middle">
                             <img
                                     class="grade-badge"
+                                    id="gradeBadge"
                                     src="../../../image/grade/grade_${user.grade}.svg"
                                     alt="grade-badge"
                             />
                         </div>
                         <div class="info-right">
                             <div class="grade">${user.grade}</div>
-                            <div class="gender">${user.gender}</div>
+                            <div class="gender">${user.genderStr}</div>
                             <div class="age">${user.ageGroup}</div>
                         </div>
                     </div>
@@ -375,14 +371,14 @@
                     <button class="edit-btn">수정</button>
                 </div>
                 <div class="nav">
-                    <a href="#" class="active">반려동물</a>
+                    <a href="#">반려동물</a>
                     <a href="/experiencePage" >경험</a>
                     <a href="/opening/mine">올린 공고</a>
                     <a href="/opening/myApply">신청한 공고</a>
-                    <a href="#">최근 본 공고</a>
+                    <a href="/opening/recent" class="active">최근 본 공고</a>
                 </div>
             </div>
-            <div class="logout"><a href="#">로그아웃</a></div>
+            <div class="logout"><a href="/logout">로그아웃</a></div>
         </aside>
 
         <!-- Main Content -->
@@ -390,33 +386,39 @@
             <main class="pet-main">
 
                 <div id="list-card-section">
-                    <div class="opening-card">
-                        <div class="opening-card-image">
-                            <img src="${pageContext.request.contextPath}/image/petImage3.png">
-                            <span class="opening-card-species" style="display:none">#고양이</span>
-                            <span class="opening-card-loc" style="display:none">#혜화동</span>
-                        </div>
-                        <div class="opening-card-date">
-                            <span>2025-08-15</span>
-                            &nbsp;~&nbsp;
-                            <span>2025-08-17</span>
-                        </div>
-                        <div class="opening-card-careway">
-                            <p>여기로 와주세요</p>
-                        </div>
-                        <div class="opening-card-priceper">
-                            <span class="opening-card-price">20000</span>
-                            원&nbsp;/&nbsp;
-                            <span class="opening-card-per">건당</span>
-                        </div>
-                    </div>
+<%--                    <div class="opening-card">--%>
+<%--                        <div class="opening-card-image">--%>
+<%--                            <img src="${pageContext.request.contextPath}/image/petImage3.png">--%>
+<%--                            <span class="opening-card-species" style="display:none">#고양이</span>--%>
+<%--                            <span class="opening-card-loc" style="display:none">#혜화동</span>--%>
+<%--                        </div>--%>
+<%--                        <div class="opening-card-date">--%>
+<%--                            <span>2025-08-15</span>--%>
+<%--                            &nbsp;~&nbsp;--%>
+<%--                            <span>2025-08-17</span>--%>
+<%--                        </div>--%>
+<%--                        <div class="opening-card-careway">--%>
+<%--                            <p>여기로 와주세요</p>--%>
+<%--                        </div>--%>
+<%--                        <div class="opening-card-priceper">--%>
+<%--                            <span class="opening-card-price">20000</span>--%>
+<%--                            원&nbsp;/&nbsp;--%>
+<%--                            <span class="opening-card-per">건당</span>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
 
                 </div>
 
             </main>
         </div>
     </div>
-
+    <jsp:include page="../../../components/gradeModal.jsp" />
 </div>
 </body>
+<script>
+    //모달창
+    $('#gradeBadge').on('click', function(){
+        $('#gradeModal').modal('show');
+    });
+</script>
 </html>
