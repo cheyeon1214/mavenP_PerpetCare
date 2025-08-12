@@ -28,13 +28,13 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <aside class="sidebar">
           <div class="sidebar-top">
             <div class="profile">
-              <img
-                src="../../..${user.imagePath}"
-                alt="프로필"
-                class="profile-img"
-              />
+                <img
+                    src="../../..${profile.imagePath}"
+                    alt="프로필"
+                    class="profile-img"
+                  />
               <div class="info">
-                    <div class="name">${user.name}</div>
+                    <div class="name">${profile.name}</div>
               </div>
               <div class="info">
                     <div class="info-left">
@@ -46,36 +46,42 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                         <img
                         class="grade-badge"
                         id="gradeBadge"
-                        src="../../../image/grade/grade_${user.grade}.svg"
+                        src="../../../image/grade/grade_${profile.grade}.svg"
                         alt="grade-badge"
                         />
                     </div>
                     <div class="info-right">
-                        <div class="grade">${user.grade}</div>
-                        <div class="gender">${user.gender}</div>
-                        <div class="age">${user.ageGroup}</div>
+                        <div class="grade">${profile.grade}</div>
+                        <div class="gender">${profile.gender}</div>
+                        <div class="age">${profile.ageGroup}</div>
                     </div>
               </div>
             </div>
-              <c:if test="${not empty user}">
+              <c:choose>
+                <c:when test="${isOwner == false}">
                 <div class="edit-btn-wrapper1">
                 <button class="edit-btn" onclick="location.href='${pageContext.request.contextPath}/myInfo'">수정</button>
                 </div>
-              </c:if>
+                </c:when>
+              </c:choose>
 
             <div class="nav">
               <a href="/petPage">반려동물</a>
               <a href="/experiencePage" class="active">경험</a>
-              <c:if test="${not empty user}">
+              <c:choose>
+                <c:when test="${isOwner == false}">
               <a href="/opening/mine">올린 공고</a>
               <a href="/opening/myApply">신청한 공고</a>
               <a href="/opening/recent">최근 본 공고</a>
-              </c:if>
+                </c:when>
+              </c:choose>
             </div>
           </div>
-        <c:if test="${not empty user}">
-          <div class="logout"><a href="/logout">로그아웃</a></div>
-        </c:if>
+        <c:choose>
+            <c:when test="${isOwner == false}">
+            <div class="logout"><a href="/logout">로그아웃</a></div>
+            </c:when>
+        </c:choose>
         </aside>
 
         <!-- Main Content -->
