@@ -2,6 +2,14 @@
     color: #00bcd4;
     margin-top: 20px;
     margin-left: 120px;
+    font-weight: bold;
+    font-size: 26px;
+}
+.modal-header{
+    padding:5px;
+}
+.close{
+    margin: 10px;
 }
 .grade-each {
     display: flex;

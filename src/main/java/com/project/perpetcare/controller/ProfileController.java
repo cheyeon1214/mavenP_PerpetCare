@@ -1,7 +1,6 @@
 package com.project.perpetcare.controller;
 
 import com.project.perpetcare.domain.Experience;
-import com.project.perpetcare.domain.Pet;
 import com.project.perpetcare.domain.User;
 import com.project.perpetcare.domain.enums.RateType;
 import com.project.perpetcare.service.AuthService;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -77,7 +75,7 @@ public class ProfileController {
                 }
                 session.setAttribute("rateList", textList);
             }
-            return "profilePage/experiencePage";
+            return "profilePage/experience";
         } catch (Exception e) {
             model.addAttribute("status", 500);
             return "Error";
@@ -89,6 +87,8 @@ public class ProfileController {
     @GetMapping("/experiencePage")
     public String getProfile2(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
+        model.addAttribute("profile", user);
+        model.addAttribute("isOwner", false);
         if(user == null) {
             return "redirect:/login";
         }
@@ -122,7 +122,7 @@ public class ProfileController {
                 }
                 session.setAttribute("rateList", textList);
             }
-            return "profilePage/experiencePage";
+            return "experience";
         } catch (Exception e) {
             model.addAttribute("status", 500);
             model.addAttribute("error", "Internal Server Error");
@@ -137,7 +137,7 @@ public class ProfileController {
         if(user == null) {
             return "redirect:/login";
         }
-        return "profilePage/myInfo";
+        return "profilePage/edit-profile";
     }
 
 

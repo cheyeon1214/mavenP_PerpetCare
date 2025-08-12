@@ -52,7 +52,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     </div>
                     <div class="info-right">
                         <div class="grade">${profile.grade}</div>
-                        <div class="gender">${profile.gender}</div>
+                        <div class="gender">${profile.genderStr}</div>
                         <div class="age">${profile.ageGroup}</div>
                     </div>
               </div>
