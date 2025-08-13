@@ -343,13 +343,23 @@
                     ${opening.detail}
                 </div>
 
-               <c:if test="${user.email != opening.uEmail}">
-                    <div id="button-wrapper"></div>
+              <c:if test="${user.email != opening.uEmail}">
+              <div id="button-wrapper">
+                <c:choose>
+                  <c:when test="${opening.close == true}">
+                    <button type="button" class="submit-button" disabled style="background:#ccc; cursor:not-allowed;">
+                      마감된 공고
+                    </button>
+                  </c:when>
+                  <c:otherwise>
                     <form action="/apply" method="get">
-                        <input type="hidden" name="no" value="${opening.no}">
-                        <input type="submit" class="submit-button" value="지원하기">
+                      <input type="hidden" name="no" value="${opening.no}">
+                      <input type="submit" class="submit-button" value="지원하기">
                     </form>
-                </c:if>
+                  </c:otherwise>
+                </c:choose>
+              </div>
+            </c:if>
                 </div>
             <%@ include file="/components/footer.jsp" %>
             </div>

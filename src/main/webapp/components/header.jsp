@@ -50,7 +50,7 @@
 		</a>
 	</div>
 	<div class="header-right">
-        <a href="/petPage" id="profile-link">
+        <a href="/pet?email=${user.email}" id="profile-link">
             <!-- profile 경로 설정 해야함 -->
             <img alt="" src="../../..${user.imagePath}" id="profile" />
         </a>

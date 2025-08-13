@@ -182,6 +182,7 @@
         background-color: lightgray;
         border-radius: 20px;
         position: relative;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     }
 
     .my-pet-img img, .my-pet-img-edit img, .my-pet-img-add img {
@@ -212,6 +213,7 @@
         border-radius: 20px;
         padding-top: 5px;
         padding-left: 75px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     }
 
     .my-pet-info-row {
@@ -563,7 +565,10 @@
             </div>
             <c:choose>
                 <c:when test="${!isOwner}">
-                <div class="logout"><a href="/logout">로그아웃</a></div>
+                <div class="logout"><a href="/logout"
+                   onclick="return confirm('정말 로그아웃하시겠습니까?');">
+                   로그아웃
+                </a>  </div>
                 </c:when>
             </c:choose>
 

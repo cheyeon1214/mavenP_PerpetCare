@@ -79,7 +79,12 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
           </div>
         <c:choose>
             <c:when test="${isOwner == false}">
-            <div class="logout"><a href="/logout">로그아웃</a></div>
+            <div class="logout">
+                <a href="/logout"
+                   onclick="return confirm('정말 로그아웃하시겠습니까?');">
+                   로그아웃
+                </a>
+            </div>
             </c:when>
         </c:choose>
         </aside>

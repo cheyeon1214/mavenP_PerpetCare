@@ -380,7 +380,10 @@
                     <a href="/opening/recent" class="active">최근 본 공고</a>
                 </div>
             </div>
-            <div class="logout"><a href="/logout">로그아웃</a></div>
+            <div class="logout"><a href="/logout"
+                   onclick="return confirm('정말 로그아웃하시겠습니까?');">
+                   로그아웃
+                </a>  </div>
         </aside>
 
         <!-- Main Content -->

@@ -203,7 +203,7 @@
         }
         .opening-pet-img{
             margin-top: -80px;
-            width: 300px;
+            width: 265px;
         }
 
         .card-text-section{
@@ -442,6 +442,7 @@
             font-size: 18px;
             font-weight: 500;
         }
+
 
         .p-btn{
             box-shadow: 0 0 7px rgba(253, 149, 150, 0.8);
@@ -724,7 +725,12 @@
                     <a href="/opening/recent">최근 본 공고</a>
                 </div>
             </div>
-            <div class="logout"><a href="/logout">로그아웃</a></div>
+            <div class="logout">
+            <a href="/logout"
+                   onclick="return confirm('정말 로그아웃하시겠습니까?');">
+                   로그아웃
+                </a>
+            </div>
         </aside>
 
         <!-- Main Content -->
@@ -811,7 +817,7 @@
                             <div class="card-section-method">
                                 <div class="card-text-title">돌봄 주소</div>
                                 <div class="card-text">
-                                    <span class="view-mode">${op.location}</span>
+                                    <span class="view-mode location-width">${op.location}</span>
                                     <button type="button" class="edit-mode edit-location location-btn" data-toggle="modal" data-target="#locModal">${op.location}</button>
                                     <input type="hidden" id="selectedCode" name="location" value="${op.location}"/>
                                     <input type="hidden" id="selectedAddr" name="selectedAddr" />
