@@ -23,17 +23,14 @@ public class PetController {
     @Autowired
     private PetService petService;
 
-    @Autowired
-    private ProfileService profileService;
-
-    @GetMapping("/pet/getOne")
-    public Pet getPet(@RequestParam("no") int no) {
-        try {
-            return petService.getPet(no);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    @GetMapping("/pet/getOne")
+//    public Pet getPet(@RequestParam("no") int no) {
+//        try {
+//            return petService.getPet(no);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     //펫 등록 + 이미지
     @PostMapping("/registerPet")
@@ -88,12 +85,11 @@ public class PetController {
     @PostMapping("/deletePet")
     @ResponseBody
     public String deletePet(int no) {
-        String path="Error";
         try{
             petService.deletePet(no);
             return "ok";
         }catch (Exception e){
-            return "error";
+            return "fail";
         }
     }
 }

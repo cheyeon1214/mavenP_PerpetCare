@@ -44,6 +44,7 @@ public class UserController {
             rateService.addUserRate(new Rate(0, from, toEmail, oNo, code, LocalDateTime.now()));
         } catch (Exception e) {
             e.printStackTrace();
+            return "fail";
         }
 
         return "ok";
@@ -66,13 +67,12 @@ public class UserController {
             ));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of("ok", false));
+            return ResponseEntity.status(500).body(Map.of("fail", false));
         }
     }
 
     private int normalizeAvatar(Object avatar) {
         if (avatar == null) return 1;
-
         // 숫자로 온 경우
         try {
             int n = Integer.parseInt(String.valueOf(avatar));
@@ -106,7 +106,7 @@ public class UserController {
             return ResponseEntity.ok(Map.of("ok", true));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of("ok", false));
+            return ResponseEntity.status(500).body(Map.of("fail", false));
         }
     }
 

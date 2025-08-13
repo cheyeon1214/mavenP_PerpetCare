@@ -245,7 +245,7 @@ public class ProfilePageController {
     }
 
     @GetMapping("/myInfo")
-    public String updateInfo(HttpSession session, Model model) {
+    public String updateInfo(HttpSession session) {
         User user = (User) session.getAttribute("user");
         if(user == null) {
             return "redirect:/login";

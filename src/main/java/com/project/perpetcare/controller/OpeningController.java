@@ -33,9 +33,6 @@ public class OpeningController {
     @Autowired
     private PetService petService;
 
-    @Autowired
-    private RateService rateService;
-
     @GetMapping("/detail")
     public String getOpening(int no, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -158,7 +155,7 @@ public class OpeningController {
             applyService.rejectOthers(no);
             return "ok";
         } catch (Exception e) {
-            return "error: " + e.getMessage();
+            return "fail: " + e.getMessage();
         }
     }
 
@@ -169,7 +166,7 @@ public class OpeningController {
             openingService.deleteOpening(no);
             return "ok";
         } catch (Exception e) {
-            return "error";
+            return "fail";
         }
     }
 }

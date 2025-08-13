@@ -49,7 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String doRegister(User pvo, String rrn ,HttpSession session, Model model){
+    public String doRegister(User pvo, String rrn , Model model){
         try{
             String[] part = rrn.split("-");
 
