@@ -60,7 +60,7 @@ public class ApplyController {
             model.addAttribute("status", 500);
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
     }
 
@@ -82,7 +82,7 @@ public class ApplyController {
                 return "openingPage/apply-success";
             } catch (Exception e) {
                 model.addAttribute("message", e.getMessage());
-                return "/Error.jsp";
+                return "/WEB-INF/views/Error.jsp";
             }
 
         }
@@ -107,7 +107,7 @@ public class ApplyController {
             return "openingPage/apply-list";
         }catch (Exception e){
             model.addAttribute("message", e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
 
         }

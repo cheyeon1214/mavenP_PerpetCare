@@ -57,7 +57,7 @@ public class OpeningController {
         }catch (Exception e){
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
 
     }
@@ -78,7 +78,7 @@ public class OpeningController {
             model.addAttribute("status", 500);
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
     }
 
@@ -102,7 +102,7 @@ public class OpeningController {
             model.addAttribute("status", 500);
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
     }
 
@@ -162,7 +162,7 @@ public class OpeningController {
         } catch (Exception e) {
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
     }
 
@@ -182,7 +182,7 @@ public class OpeningController {
 
             return "redirect:/opening/mine";
         }catch (Exception e){
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
 
     }
@@ -243,7 +243,7 @@ public class OpeningController {
         } catch (Exception e) {
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
 
     }

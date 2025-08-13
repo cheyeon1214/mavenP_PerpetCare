@@ -78,7 +78,7 @@ public class ProfileController {
             return "profilePage/experience";
         } catch (Exception e) {
             model.addAttribute("status", 500);
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
 
     }
@@ -127,7 +127,7 @@ public class ProfileController {
             model.addAttribute("status", 500);
             model.addAttribute("error", "Internal Server Error");
             model.addAttribute("message", e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
     }
 

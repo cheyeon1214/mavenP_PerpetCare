@@ -153,7 +153,6 @@
                             <p>Taeran Lee</p>
                             <p>Yoenjung Jang</p>
                             <p>Chaeyeon Kawk</p>
-                            <p>Kahyun Park</p>
                         </div>
 
                         <div class="footer-right">

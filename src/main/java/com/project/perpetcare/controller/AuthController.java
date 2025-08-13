@@ -39,7 +39,7 @@ public class AuthController {
             }
         } catch (Exception e) {
             model.addAttribute("message",e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
     }
 
@@ -70,7 +70,7 @@ public class AuthController {
             }
         } catch (Exception e) {
             model.addAttribute("message",e.getMessage());
-            return "/Error.jsp";
+            return "/WEB-INF/views/Error.jsp";
         }
     }
 

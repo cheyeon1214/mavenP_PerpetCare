@@ -37,7 +37,7 @@ public class PetController {
 
     @GetMapping("/pet")
     public ModelAndView petPage(@RequestParam("email") String owner, HttpSession session, Model model) {
-        String path = "/Error.jsp";
+        String path = "Error";
         String msg = "getPets 실패";
         List<Pet> pets = null;
         User profile = null;
@@ -66,7 +66,7 @@ public class PetController {
     //펫 등록 + 이미지
     @PostMapping("/registerPet")
     public ModelAndView registerPet(Pet pet, @RequestParam("imageFile") MultipartFile imageFile,HttpSession session) {
-        String path= "/Error.jsp";
+        String path= "Error";
         try {
             User user = (User) session.getAttribute("user");
             if (user == null || user.getEmail() == null) {
@@ -89,7 +89,7 @@ public class PetController {
     // 펫 수정
     @PostMapping("/updatePet")
     public ModelAndView updatePet(@ModelAttribute Pet pet,@RequestParam("imageFile") MultipartFile imageFile,HttpSession session) {
-        String path= "/Error.jsp";
+        String path= "Error";
         String msg="";
 
         try {
