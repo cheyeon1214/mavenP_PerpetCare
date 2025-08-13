@@ -374,10 +374,10 @@
                 </div>
                 <div class="nav">
                     <a href="/pet?email=${user.email}">반려동물</a>
-                    <a href="/experiencePage" >경험</a>
-                    <a href="/opening/mine">올린 공고</a>
-                    <a href="/opening/myApply">신청한 공고</a>
-                    <a href="/opening/recent" class="active">최근 본 공고</a>
+                    <a href="/experience?email=${user.email}" >경험</a>
+                    <a href="/my-opening">올린 공고</a>
+                    <a href="/apply-opening">신청한 공고</a>
+                    <a href="/recent-opening" class="active">최근 본 공고</a>
                 </div>
             </div>
             <div class="logout"><a href="/logout"

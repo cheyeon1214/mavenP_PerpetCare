@@ -184,7 +184,7 @@
         }
         .opening-pet-img{
             margin-top: -80px;
-            width: 300px;
+            width: 270px;
         }
 
         .card-text-section{
@@ -204,7 +204,6 @@
         .card-text-section-left{
             width: 290px;
             padding: 30px;
-
         }
 
         .card-text-section-prefer{
@@ -468,10 +467,10 @@
                 </div>
                 <div class="nav">
                     <a href="/pet?email=${user.email}">반려동물</a>
-                    <a href="/experiencePage" >경험</a>
-                    <a href="/opening/mine">올린 공고</a>
-                    <a href="/opening/myApply" class="active">신청한 공고</a>
-                    <a href="/opening/recent">최근 본 공고</a>
+                    <a href="/experience?email=${user.email}" >경험</a>
+                    <a href="/my-opening">올린 공고</a>
+                    <a href="/apply-opening" class="active">신청한 공고</a>
+                    <a href="/recent-opening">최근 본 공고</a>
                 </div>
             </div>
             <div class="logout"><a href="/logout"

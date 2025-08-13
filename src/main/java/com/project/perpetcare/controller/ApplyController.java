@@ -59,8 +59,8 @@ public class ApplyController {
         } catch (Exception e) {
             model.addAttribute("status", 500);
             model.addAttribute("error", "Internal Server Error");
-            model.addAttribute("message", e.getMessage());
-            return "/WEB-INF/views/Error.jsp";
+            model.addAttribute("message", "페이지를 불러오는 도중 문제가 발생했습니다.");
+            return "Error";
         }
     }
 
@@ -81,13 +81,13 @@ public class ApplyController {
                 //return "redirect:/applyList?no=" + apply.getoNo();
                 return "openingPage/apply-success";
             } catch (Exception e) {
-                model.addAttribute("message", e.getMessage());
-                return "/WEB-INF/views/Error.jsp";
+                model.addAttribute("message", "공고에 지원하는 도중 에러가 발생했습니다.");
+                return "Error";
             }
 
         }
 
-    @GetMapping("/applyList")
+    @GetMapping("/apply-list")
     public String getApplyList(int no,Model model){
         try{
             Opening opening = openingService.getOpening(no);
@@ -106,28 +106,28 @@ public class ApplyController {
             model.addAttribute("applies", applies);
             return "openingPage/apply-list";
         }catch (Exception e){
-            model.addAttribute("message", e.getMessage());
-            return "/WEB-INF/views/Error.jsp";
+            model.addAttribute("message", "지원자 리스트를 불러오는 도중 문제가 발생했습니다.");
+            return "Error";
         }
 
         }
 
-        @PostMapping("/acceptApply")
-        @ResponseBody
-        public String acceptApply ( int aNo, int oNo) throws Exception {
-            applyService.acceptAndRejectOthers(aNo, oNo);
-            return "ok";
-        }
+    @PostMapping("/acceptApply")
+    @ResponseBody
+    public String acceptApply ( int aNo, int oNo) throws Exception {
+        applyService.acceptAndRejectOthers(aNo, oNo);
+        return "ok";
+    }
 
-        @PostMapping("/rejectApply")
-        @ResponseBody
-        public ResponseEntity<?> rejectApply ( @RequestParam("aNo") int aNo){
-            try {
-                applyService.updateApplyStatus(ApplyStatus.reject, aNo);
-                return ResponseEntity.ok().build();
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("거절 처리 실패");
-            }
+    @PostMapping("/rejectApply")
+    @ResponseBody
+    public ResponseEntity<?> rejectApply ( @RequestParam("aNo") int aNo){
+        try {
+            applyService.updateApplyStatus(ApplyStatus.reject, aNo);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("거절 처리 실패");
         }
+    }
 
     }

@@ -38,8 +38,8 @@ public class AuthController {
                 return "redirect:/login.jsp";
             }
         } catch (Exception e) {
-            model.addAttribute("message",e.getMessage());
-            return "/WEB-INF/views/Error.jsp";
+            model.addAttribute("message","로그인을 하는 도중 문제가 발생했습니다.");
+            return "Error";
         }
     }
 
@@ -69,8 +69,8 @@ public class AuthController {
                 return "redirect:home.jsp";
             }
         } catch (Exception e) {
-            model.addAttribute("message",e.getMessage());
-            return "/WEB-INF/views/Error.jsp";
+            model.addAttribute("message","회원가입 하는 도중 문제가 발생했습니다.");
+            return "Error";
         }
     }
 

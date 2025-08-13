@@ -70,9 +70,9 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
               <a href="/experience?email=${profile.email}" class="active">경험</a>
               <c:choose>
                 <c:when test="${isOwner == false}">
-              <a href="/opening/mine">올린 공고</a>
-              <a href="/opening/myApply">신청한 공고</a>
-              <a href="/opening/recent">최근 본 공고</a>
+                    <a href="/my-opening">올린 공고</a>
+                    <a href="/apply-opening">신청한 공고</a>
+                    <a href="/recent-opening">최근 본 공고</a>
                 </c:when>
               </c:choose>
             </div>

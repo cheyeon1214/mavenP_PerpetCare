@@ -26,7 +26,7 @@ public class SearchController {
     PetService petService;
 
     @GetMapping("/location")
-    public List<Location> searchLoc(@RequestParam String word) {
+    public List<Location> searchByLoc(@RequestParam String word) {
         try {
             return searchService.searchLoc(word);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class SearchController {
     }
 
     @PostMapping("/filter")
-    public List<Opening> searchOpenings(@RequestBody Condition condition) {
+    public List<Opening> searchByFilter(@RequestBody Condition condition) {
         System.out.println("필터 조건 : "+condition);
         try{
             List<Opening> openings = searchService.searchOpenings(condition);

@@ -548,10 +548,10 @@
                 <c:when test="${!isOwner}">
                 <div class="nav">
                     <a href="/pet?email=${profile.email}" class="active">반려동물</a>
-                    <a href="/experiencePage">경험</a>
-                    <a href="/opening/mine">올린 공고</a>
-                    <a href="/opening/myApply">신청한 공고</a>
-                    <a href="/opening/recent">최근 본 공고</a>
+                    <a href="/experience?email=${profile.email}">경험</a>
+                    <a href="/my-opening">올린 공고</a>
+                    <a href="/apply-opening">신청한 공고</a>
+                    <a href="/recent-opening">최근 본 공고</a>
                 </div>
                 </c:when>
                 <c:otherwise>

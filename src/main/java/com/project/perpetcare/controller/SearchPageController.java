@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SearchPageController {
 
     @GetMapping("/search")
-    public String searchPage(HttpSession session, Model model) {
+    public String getSearch(HttpSession session, Model model) {
         try{
             User user = (User) session.getAttribute("user");
             if(user == null) {
@@ -19,8 +19,8 @@ public class SearchPageController {
             model.addAttribute("user", user);
             return "search"; // 결과 페이지 경로 /WEB-INF/views/search .jsp
         } catch (Exception e) {
-            e.printStackTrace();
-            return "/WEB-INF/views/Error.jsp";
+            model.addAttribute("error", "페이지를 불러오는 도중 문제가 발생했습니다.");
+            return "Error";
         }
     }
 }

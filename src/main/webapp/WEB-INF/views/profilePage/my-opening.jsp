@@ -203,7 +203,7 @@
         }
         .opening-pet-img{
             margin-top: -80px;
-            width: 265px;
+            width: 270px;
         }
 
         .card-text-section{
@@ -223,7 +223,6 @@
         .card-text-section-left{
             width: 290px;
             padding: 30px;
-
         }
 
         .card-text-section-prefer{
@@ -529,7 +528,6 @@
             }); // modal btn click
 
         }); // ready
-        // 카드 클릭 → applyList 이동 (edit 모드면 이동 금지)
         $(document).on('click', '.opening-section', function (e) {
             const form = $(this).closest('form.opening-section-wrapper');
 
@@ -538,7 +536,7 @@
 
             const oNo = $(this).data('no');
             if (!oNo) return;
-            window.location.href = "/applyList?no=" + oNo;
+            window.location.href = "/apply-list?no=" + oNo;
         });
 
         $(document).on('click', '.delete-btn', function (e) {
@@ -719,10 +717,10 @@
                 </div>
                 <div class="nav">
                     <a href="/pet?email=${user.email}">반려동물</a>
-                    <a href="/experiencePage" >경험</a>
-                    <a href="/opening/mine" class="active">올린 공고</a>
-                    <a href="/opening/myApply">신청한 공고</a>
-                    <a href="/opening/recent">최근 본 공고</a>
+                    <a href="/experience?email=${user.email}" >경험</a>
+                    <a href="/my-opening" class="active">올린 공고</a>
+                    <a href="/apply-opening">신청한 공고</a>
+                    <a href="/recent-opening">최근 본 공고</a>
                 </div>
             </div>
             <div class="logout">

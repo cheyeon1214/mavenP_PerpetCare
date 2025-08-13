@@ -25,7 +25,7 @@ public class ExperienceController {
 
 
     @PostMapping("/update")
-    public ResponseEntity<?> update(HttpSession session, Experience experience) {
+    public ResponseEntity<?> updateExperience(HttpSession session, Experience experience) {
         User user = (User) session.getAttribute("user");
         if (user == null) return ResponseEntity.status(401).body(Map.of("ok", false));
 
@@ -44,7 +44,7 @@ public class ExperienceController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<?> delete(HttpSession session,int no) {
+    public ResponseEntity<?> deleteExperience(HttpSession session,int no) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.status(401).body(Map.of("ok", false));

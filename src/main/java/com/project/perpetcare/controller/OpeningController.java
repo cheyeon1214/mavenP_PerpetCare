@@ -55,9 +55,8 @@ public class OpeningController {
             model.addAttribute("owner", owner);
             return "openingPage/opening-view";
         }catch (Exception e){
-            model.addAttribute("error", "Internal Server Error");
-            model.addAttribute("message", e.getMessage());
-            return "/WEB-INF/views/Error.jsp";
+            model.addAttribute("message", "공고 정보를 불러오는 도중 문제가 발생했습니다.");
+            return "Error";
         }
 
     }
@@ -75,15 +74,13 @@ public class OpeningController {
             model.addAttribute("pets", pets);
             return "openingPage/opening-create";
         } catch (Exception e) {
-            model.addAttribute("status", 500);
-            model.addAttribute("error", "Internal Server Error");
-            model.addAttribute("message", e.getMessage());
-            return "/WEB-INF/views/Error.jsp";
+            model.addAttribute("message", "페이지를 불러오는 도중 문제가 발생했습니다.");
+            return "Error";
         }
     }
 
     @PostMapping("/create")
-    public String doCreateOpening(Opening opening, String petIds, Model model){
+    public String createOpening(Opening opening, String petIds, Model model){
         try{
             opening.setCreatedAt(LocalDateTime.now());
 //            opening.setLocation("1111016900");
@@ -99,70 +96,8 @@ public class OpeningController {
 
             return "redirect:/opening/detail?no=" + openingNo;
         } catch (Exception e) {
-            model.addAttribute("status", 500);
-            model.addAttribute("error", "Internal Server Error");
-            model.addAttribute("message", e.getMessage());
-            return "/WEB-INF/views/Error.jsp";
-        }
-    }
-
-    @GetMapping("/mine")
-    public String getMyOpening(Model model, HttpSession session){
-        User user = (User) session.getAttribute("user");
-        if (user == null) return "redirect:/login";
-
-        try {
-            List<Opening> openings = openingService.getUserOpening(user.getEmail());
-
-            List<Opening> ongoing = new ArrayList<>();
-            List<Opening> closed  = new ArrayList<>();
-            List<Opening> matched = new ArrayList<>();
-            Map<Integer, Boolean> isRatedMap = new HashMap<>();
-
-            Map<Integer, Pet> firstPets = new HashMap<>();
-            Map<Integer, ApplyUserDTO> acceptedByOpening = new HashMap<>();
-
-            DateTimeFormatter F = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-            for (Opening op : openings) {
-                List<Pet> pets = op.getPets();
-                op.setsDateStr(op.getsDate() != null ? op.getsDate().toLocalDate().format(F) : "");
-                op.seteDateStr(op.geteDate() != null ? op.geteDate().toLocalDate().format(F) : "");
-                if (pets != null && !pets.isEmpty()) {
-                    petService.encodePetImages(pets);
-                    firstPets.put(op.getNo(), pets.get(0));
-                }
-
-                if (op.getIsMatch()) {
-                    matched.add(op);
-
-                    List<ApplyUserDTO> applicants = applyService.getApplicants(op.getNo());
-                    if (applicants != null) {
-                        ApplyUserDTO accepted = applicants.stream()
-                                .filter(a -> ApplyStatus.accept.name().equals(a.getaStatus()))
-                                .findFirst().orElse(null);
-                        if (accepted != null) acceptedByOpening.put(op.getNo(), accepted);
-                        boolean rated = rateService.hasRated(user.getEmail(), op.getNo());
-                        isRatedMap.put(op.getNo(), rated);
-                    }
-                } else if (op.isClose()) {
-                    closed.add(op);
-                } else {
-                    ongoing.add(op);
-                }
-            }
-            model.addAttribute("user", user);
-            model.addAttribute("ongoing", ongoing);
-            model.addAttribute("closed",  closed);
-            model.addAttribute("matched", matched);
-            model.addAttribute("firstPets", firstPets);
-            model.addAttribute("acceptedByOpening", acceptedByOpening);
-            model.addAttribute("isRatedMap", isRatedMap);
-
-            return "profilePage/my-opening";
-        } catch (Exception e) {
-            model.addAttribute("error", "Internal Server Error");
-            model.addAttribute("message", e.getMessage());
-            return "/WEB-INF/views/Error.jsp";
+            model.addAttribute("message", "공고를 게시하는 도중 문제가 발생했습니다.");
+            return "Error";
         }
     }
 
@@ -182,78 +117,10 @@ public class OpeningController {
 
             return "redirect:/opening/mine";
         }catch (Exception e){
-            return "/WEB-INF/views/Error.jsp";
+            model.addAttribute("message", "공고를 수정하는 도중 문제가 발생했습니다.");
+            return "Error";
         }
 
-    }
-
-    @GetMapping("/myApply")
-    public String getMyApplyOpening(Model model, HttpSession session){
-        User user = (User) session.getAttribute("user");
-        if (user == null) return "redirect:/login";
-        try{
-            List<ApplyUserDTO> myApplyList = applyService.getApplyList(user.getEmail());
-            for(ApplyUserDTO myApply : myApplyList){
-                System.out.println(myApply);
-            }
-            List<Opening> accept = new ArrayList<>();
-            List<Opening> reject  = new ArrayList<>();
-            List<Opening> pending = new ArrayList<>();
-            Map<Integer, Pet> firstPets = new HashMap<>();
-            Map<Integer, User> userProfile = new HashMap<>();
-            Map<Integer, Boolean> isRatedMap = new HashMap<>();
-            DateTimeFormatter F = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-
-            for(ApplyUserDTO myApply : myApplyList){
-                Opening op = openingService.getOpening(myApply.getoNo());
-                if (op == null) {
-                    System.err.println("[myApply] Opening not found or filtered by join. oNo=" + myApply.getoNo()
-                            + ", aNo=" + myApply.getaNo() + ", status=" + myApply.getaStatus());
-                    continue; // 일단 건너뛴다
-                }
-
-                // 날짜 문자열 세팅 (null 세이프)
-                if (op.getsDate() != null) op.setsDateStr(op.getsDate().toLocalDate().format(F));
-                if (op.geteDate() != null) op.seteDateStr(op.geteDate().toLocalDate().format(F));
-                List<Pet> pets = op.getPets();
-                if (pets != null && !pets.isEmpty()) {
-                    petService.encodePetImages(pets);
-                    firstPets.put(op.getNo(), pets.get(0));
-                }
-                if(myApply.getaStatus().equals(ApplyStatus.accept.name())){
-                    accept.add(op);
-                    User profile = profileService.getUserInfo(op.getuEmail());
-                    userProfile.put(op.getNo(),  profile);
-                    boolean rated = rateService.hasRated(user.getEmail(), op.getNo());
-                    isRatedMap.put(op.getNo(), rated);
-                }else if(myApply.getaStatus().equals(ApplyStatus.reject.name())){
-                    reject.add(op);
-                }else if(myApply.getaStatus().equals(ApplyStatus.pending.name())){
-                    pending.add(op);
-                }
-            }
-            model.addAttribute("user", user);
-            model.addAttribute("accept", accept);
-            model.addAttribute("reject", reject);
-            model.addAttribute("pending", pending);
-            model.addAttribute("firstPets", firstPets);
-            model.addAttribute("userProfile", userProfile);
-            model.addAttribute("isRatedMap", isRatedMap);
-            return "profilePage/apply-opening";
-        } catch (Exception e) {
-            model.addAttribute("error", "Internal Server Error");
-            model.addAttribute("message", e.getMessage());
-            return "/WEB-INF/views/Error.jsp";
-        }
-
-    }
-
-    @GetMapping("/recent")
-    public String getRecentOpening(Model model, HttpSession session){
-        User user = (User) session.getAttribute("user");
-        if (user == null) return "redirect:/login";
-        model.addAttribute("user", user);
-        return "profilePage/recent-opening";
     }
 
     @GetMapping("/by-ids")
@@ -262,8 +129,6 @@ public class OpeningController {
         if (ids == null || ids.isEmpty()) {
             return Collections.emptyList();
         }
-
-        // 중복 제거 + 최대 6개로 제한
         List<Integer> safeIds = ids.stream()
                 .filter(Objects::nonNull)
                 .distinct()
