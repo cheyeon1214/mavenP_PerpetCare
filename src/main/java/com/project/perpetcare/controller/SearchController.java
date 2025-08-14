@@ -37,17 +37,14 @@ public class SearchController {
 
     @PostMapping("/filter")
     public List<Opening> searchByFilter(@RequestBody Condition condition) {
-        System.out.println("필터 조건 : "+condition);
+        // System.out.println("필터 조건 : "+condition);
         try{
             List<Opening> openings = searchService.searchOpenings(condition);
-            System.out.println("opening 사이즈 : "+openings.size());
-            ArrayList<Pet> pets = null;
             for(Opening opening : openings){
                 String[] adds = searchService.searchAddr(opening.getLocation()).split(",");
                 String dong = adds[adds.length-1].trim();
-                pets = opening.getPets();
-                petService.encodePetImages(pets);
-                opening.setLocation(dong);
+                opening.setLocation(dong); // 코드 -> 주소명
+                petService.encodePetImages(opening.getPets()); // 이미지 인코딩
                 // System.out.println("controller test : "+opening);
             }
             return openings;
