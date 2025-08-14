@@ -60,6 +60,7 @@
 		JOIN PostPet ON Opening.o_no = PostPet.o_no
 		JOIN Pet ON PostPet.p_no = Pet.p_no
 		WHERE Opening.u_email = #{VALUE}
+		ORDER BY Opening.o_createdAt DESC
 	</select>
 
 	<select id="getOpening" parameterType="Integer" resultMap="openingResultMap">

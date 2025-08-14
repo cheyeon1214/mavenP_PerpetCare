@@ -624,7 +624,7 @@
 
                 // 서버 전송 (엔드포인트/파라미터 맞게 수정)
                 $.ajax({
-                    url: '/rate/add',
+                    url: '/user/rate/add',
                     type: 'POST',
                     data: { oNo: oNo, toEmail: email, code: code },
                     success: function(){

@@ -390,7 +390,7 @@
             const email = $btn.data('email') || $wrap.data('email');
 
             $.ajax({
-                url: '/rate/add',
+                url: '/user/rate/add',
                 type: 'POST',
                 data: { oNo: oNo, toEmail: email, code: code },
                 success: function(){
