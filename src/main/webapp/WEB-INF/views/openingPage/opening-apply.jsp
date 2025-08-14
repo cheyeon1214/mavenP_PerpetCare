@@ -63,7 +63,7 @@ body{
 }
 
 .card-pet-left{
-    margin-left: 30px;
+    margin-left: 20px;
     padding-left: 20px;
     display: flex;
     flex-direction: column;

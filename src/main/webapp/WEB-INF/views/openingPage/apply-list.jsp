@@ -35,7 +35,7 @@
                     },
                     success: function(res) {
                         alert("수락 처리 및 이메일 전송이 완료되었습니다.");
-                        location.href = "/applyList?no=" + oNo; // 새로고침
+                        location.href = "/apply-list?no=" + oNo; // 새로고침
                     },
                     error: function() {
                         alert("처리 중 오류가 발생했습니다.");
@@ -57,7 +57,7 @@
                     },
                     success: function () {
                         alert("거절 처리 완료");
-                        location.href = "/applyList?no=" + oNo;
+                        location.href = "/apply-list?no=" + oNo;
                     },
                     error: function () {
                         alert("거절 처리 중 오류 발생");
@@ -397,6 +397,8 @@ body{
             </div>
         </div>
         <div class="title">지원자 리스트</div>
+        <c:choose>
+        <c:when test="${not empty applies}">
         <table class="applicant-table">
             <thead>
                 <tr>
@@ -445,6 +447,11 @@ body{
                 </c:forEach>
             </tbody>
         </table>
+        </c:when>
+            <c:otherwise>
+                <p style="text-align:center;">지원자가 없습니다.</p>
+            </c:otherwise>
+        </c:choose>
 
         <div class="title">지원자 통계</div>
         <div class="chart-container">

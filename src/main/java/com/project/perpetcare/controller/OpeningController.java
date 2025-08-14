@@ -112,7 +112,7 @@ public class OpeningController {
             openingService.updateOpening(opening);  // careWay, location, prefer 등 업데이트
 
 
-            return "redirect:/opening/mine";
+            return "redirect:/my-opening";
         }catch (Exception e){
             model.addAttribute("message", "공고를 수정하는 도중 문제가 발생했습니다.");
             return "Error";

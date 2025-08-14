@@ -53,9 +53,9 @@ public class AuthService {
 
         String gender=null;
         if(genderCode.equals("1") || genderCode.equals("3")){
-            gender = "M";
+            gender = "m";
         }else if(genderCode.equals("2") || genderCode.equals("4")){
-            gender = "F";
+            gender = "f";
         }
         System.out.println("gender>>"+gender);
         user.setGender(gender);
@@ -107,7 +107,7 @@ public class AuthService {
         Map<String,Object> userInfo=response.getBody();
         String email = (String)userInfo.get("email");
         String name = (String) userInfo.get("name");
-        String gender ="N";
+        String gender ="n";
         String phone ="";
 
 

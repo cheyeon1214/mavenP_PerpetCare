@@ -183,6 +183,7 @@
             box-shadow: 0 1px 6px rgba(0,0,0,0.4);
             border-radius: 20px;
             cursor: pointer;
+            width: 100%;
         }
 
         .opening-section.empty-section{
@@ -213,6 +214,7 @@
 
         .pet-main{
             margin-left: 50px;
+            width: 100%;
         }
 
         .card-text-title{
@@ -227,7 +229,7 @@
 
         .card-text-section-prefer{
             padding: 30px;
-            margin-right: 100px;
+            margin-right: 50px;
         }
 
         .card-section-method{

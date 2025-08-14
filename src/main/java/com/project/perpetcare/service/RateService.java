@@ -36,14 +36,6 @@ public class RateService {
         return rateDAO.getNRatioOfRate(email);
     }
 
-    public void updateUserGrade(User user) throws Exception {
-        rateDAO.updateUserGrade(user);
-    }
-
-    public String getUserGrade(String email) throws Exception {
-        return rateDAO.getUserGrade(email);
-    }
-
     public List<Map<String, Integer>> getUserTopRate(String email) throws Exception {
         return rateDAO.getUserTopRate(email);
     }

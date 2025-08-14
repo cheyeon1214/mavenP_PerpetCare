@@ -39,7 +39,7 @@
 		WHERE a_no = #{no}
 	</update>
 
-	<update id="rejectOthers">
+	<update id="rejectOthers" parameterType="map">
 		UPDATE Apply
 		SET a_status = 'reject'
 		WHERE o_no = #{oNo}

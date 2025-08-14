@@ -46,13 +46,10 @@ public class ApplyService {
     public void acceptAndRejectOthers(int aNo, int oNo) throws Exception {
         // 1. 해당 지원자 수락
         applyDAO.updateApplyStatus(ApplyStatus.accept, aNo);
-
         // 2. 다른 지원자들 모두 거절
         applyDAO.rejectOthers(oNo, aNo);
-
         // 3. 공고 닫기
         openingDAO.closeOpening(oNo);
-
         openingDAO.matchOpening(oNo);
 
         // 4) 이메일/공고/펫 정보 조회
@@ -71,13 +68,8 @@ public class ApplyService {
             exp.setSpecies(firstPet.getSpecies());
             exp.setBreed(firstPet.getBreed());
         }
-
         // 6) 저장
         profileDAO.addExperience(exp);
-
-//        // 4. 이메일 전송 (수락자에게)
-//        ApplyUserDTO accepted = applyDAO.getApplyUserById(aNo); // 수락자 정보 가져오기
-//        emailService.sendAcceptanceEmail(accepted.getuEmail()); // 이메일 전송
     }
 
     public Map<String, Integer> getGenderStats(int oNo) {

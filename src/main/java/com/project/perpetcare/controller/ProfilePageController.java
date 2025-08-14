@@ -89,16 +89,18 @@ public class ProfilePageController {
             // 평가 개수
             int rateNum = rateService.getRateNum(profile.getEmail());
             session.setAttribute("rateNum", rateNum);
+            double negativeRatio = 0.0;
+            double positiveRatio = 0.0;
+
+            Map<String, Integer> textList = new LinkedHashMap<>();
             // 부정 평가 비율
             if(rateNum != 0) {
                 double nRatioOfRate = rateService.getNRatioOfRate(profile.getEmail());
-                double negativeRatio = Math.round(nRatioOfRate*100)/100.0;
-                double positiveRatio = 1 - negativeRatio;
-                session.setAttribute("negativeRatio", negativeRatio);
-                session.setAttribute("positiveRatio", positiveRatio);
+                negativeRatio = Math.round(nRatioOfRate*100)/100.0;
+                positiveRatio = 1 - negativeRatio;
                 // 주요 평가 내용
                 List<Map<String,Integer>> rateList = rateService.getUserTopRate(profile.getEmail());
-                Map<String, Integer> textList = new LinkedHashMap<>();
+                System.out.println("rateList :: "+rateList.size());
                 for(Map<String, Integer> m : rateList) {
                     for(Map.Entry<String, Integer> entry : m.entrySet()) {
                         String code = entry.getKey();
@@ -107,8 +109,10 @@ public class ProfilePageController {
                         textList.put(text, count);
                     }
                 }
-                session.setAttribute("rateList", textList);
             }
+            model.addAttribute("rateList", textList);
+            model.addAttribute("negativeRatio", negativeRatio);
+            model.addAttribute("positiveRatio", positiveRatio);
             return "profilePage/experience";
         } catch (Exception e) {
             model.addAttribute("message", "페이지를 불러오는 도중 문제가 발생했습니다.");
