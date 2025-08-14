@@ -357,47 +357,45 @@
 
     $(document).ready(function(){
 
-        // 공고 리스트 검색 공통 ajax 기본 옵션 설정
         $.ajaxSetup({
             // 요청
             url: "/api/search/filter",
             type: "POST",
             contentType: 'application/json; charset=utf-8',
             data: 'json',
-            // 오류 시 콘솔 출력
-            error: function(xhr, status, error){
+            error: function(xhr, status, error){ // 오류 시 콘솔 출력
                 console.log("에러 발생 : ", xhr.responseText);
             }
-        }); // set up
+        }); // 필터 검색 ajax 공통 부분 set up
 
         function renderOpenings(data, closeModal=false){
-            console.log(data);
+            // console.log(data);
             var html = "";
             data.forEach(function(item){
-                html += "<div class='opening-card' data-no='" + item.no + "'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
-                    +item.pets[0].base64Image
+                html += "<div class='opening-card' data-no='"
+                    + item.no
+                    + "'> <div class='opening-card-image'> <img src='data:image/jpeg;base64,"
+                    + item.pets[0].base64Image
                     + "' ><span class='opening-card-species' style='display:none'>#"
                     + item.pets[0].species
-                    +"</span> <span class='opening-card-loc' style='display:none'>#"
-                    +item.location
-                    +"</span></div> <div class='opening-card-date'> <span>"
-                    +item.sDate.split('T')[0]
-                    +"</span> &nbsp;~&nbsp; <span>"
-                    +item.eDate.split('T')[0]
-                    +"</span> </div> <div class='opening-card-careway'> <p>"
-                    +item.careWay
-                    +"</p> </div> <div class='opening-card-priceper'><span class='opening-card-price'>"
+                    + "</span> <span class='opening-card-loc' style='display:none'>#"
+                    + item.location
+                    + "</span></div> <div class='opening-card-date'> <span>"
+                    + item.sDate.split('T')[0]
+                    + "</span> &nbsp;~&nbsp; <span>"
+                    + item.eDate.split('T')[0]
+                    + "</span> </div> <div class='opening-card-careway'> <p>"
+                    + item.careWay
+                    + "</p> </div> <div class='opening-card-priceper'><span class='opening-card-price'>"
                     + (item.price ? parseInt(item.price, 10).toLocaleString() : '')
                     + "</span>원 / " +"<span class='opening-card-per'>"
-                    +item.per
-                    +"</span> </div> </div>";
+                    + item.per
+                    + "</span> </div> </div>";
             })
             $('#list-card-section').html(html);
 
-            // 모달창에서 호출하는 경우만
-            if(closeModal) {
-                $('#locModal').modal('hide');
-            }
+            // 모달창에서 호출하는 경우에는 닫아주기
+            if(closeModal) { $('#locModal').modal('hide') }
         }
 
         // 처음 search page 들어올 때부터 condition이 default 로 호출하기
@@ -561,13 +559,12 @@
             let selectedEdate = $('#filterEdate').val() || null;
             // 선택된 돌봄 방법
             let selectedCareWay = $('input[name="careWayBtn"].selected').val();
-            let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
+            let careWay = selectedCareWay ? selectedCareWay.substring(1) : null;
             // 선택된 반려동물 종
             let selectedSpecies = $('input[name="speciesBtn"].selected').val();
             let species = selectedSpecies ? selectedSpecies.substring(1) : null;
             // 정렬 순
             let selectedOrder = $('#orderWay').val();
-            // alert("지역: "+selectedLocation+", 마감 여부 : "+selectedClose+", 시작일: "+selectedSdate+", 종료일: "+selectedEdate+", 돌봄 방법 : "+careWay+", 동물 종 : "+species+", 정렬 :"+selectedOrder);
 
             // 비동기 (3) 필터 조건 주기
             $.ajax({
@@ -599,7 +596,7 @@
             let selectedSdate = $('#filterSdate').val() || null;
             let selectedEdate = $('#filterEdate').val() || null;
             let selectedCareWay = $('input[name="careWayBtn"].selected').val();
-            let careWay = selectedCareWay ? selectedCareWay.substring(1) : null; // 선택된 값이 있는 경우만 substring 가능
+            let careWay = selectedCareWay ? selectedCareWay.substring(1) : null;
             let selectedSpecies = $('input[name="speciesBtn"].selected').val();
             let species = selectedSpecies ? selectedSpecies.substring(1) : null;
             let selectedOrder = $('#orderWay').val();
@@ -761,5 +758,6 @@
                     </div>--%>
         </div>
     </div>
+</div>
 </body>
 </html>
