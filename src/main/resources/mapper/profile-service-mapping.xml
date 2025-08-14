@@ -84,7 +84,12 @@
 
 	<update id="updateUserExperience" parameterType="HashMap">
 		UPDATE experience
-		SET e_sdate=#{experience.sDate},e_edate=#{experience.eDate},
+		SET e_sdate=#{experience.sDate},
+		e_edate=
+		<choose>
+			<when test="eDate != null and eDate != ''">#{experience.eDate,jdbcType=DATE}</when>
+			<otherwise>null</otherwise>
+		</choose>,
 		e_species=#{experience.species},e_breed=#{experience.breed}
 		WHERE u_email=#{email}
 		AND e_no=#{experience.no}
