@@ -59,7 +59,7 @@
 				ORDER BY o.o_createdAt ASC
 			</when>
 			<when test="orderBy == 'price'">
-				ORDER BY o.o_price DESC
+				ORDER BY CAST(o.o_price AS UNSIGNED) DESC
 			</when>
 			<otherwise>
 				ORDER BY o.o_createdAt DESC
