@@ -135,6 +135,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="video-wrapper">
+                    <div class="video-content">
+                        <h4>당신의 가장 가까운 펫시터</h4>
+                        <h2>PerpetCare</h2>
+                        <h5>혼자 있을 반려동물 걱정은 이제 내려놓으세요.</h5>
+                    </div>
+                    <iframe width="700" height="400" src="https://www.youtube.com/embed/qEEiyycYXMA?si=kx3DE9OJ2bTqC8vf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
             </div>
             <div class="park3">
                 <img
@@ -142,7 +150,6 @@
                         class="park3-img"
                         alt="Park Layer 3"
                 />
-
                 <div class="park-spacer"></div>
                 <div class="footer-content">
                     <img src="image/footer.png" class="footer-img" />
