@@ -13,7 +13,8 @@ public class Condition {
 
     public Condition() {
     }
-    public Condition(Boolean closeFilter, LocalDate sdate, LocalDate edate, String location, String careWay, String species, String orderBy) {
+    public Condition(Boolean closeFilter, LocalDate sdate, LocalDate edate,
+                     String location, String careWay, String species, String orderBy) {
         this.closeFilter = closeFilter;
         this.sdate = sdate;
         this.edate = edate;
@@ -23,9 +24,7 @@ public class Condition {
         this.orderBy = orderBy;
     }
 
-    public Boolean getCloseFilter() {
-        return closeFilter;
-    }
+    public Boolean getCloseFilter() { return closeFilter; }
     public void setCloseFilter(Boolean closeFilter) {
         this.closeFilter = closeFilter;
     }
