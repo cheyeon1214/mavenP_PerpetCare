@@ -103,7 +103,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                           <c:choose>
                             <c:when test="${not empty ownerList}">
                               <c:forEach var="exp" items="${ownerList}">
-                                <div class="pet-care" data-id="${exp.no}"
+                                <div class="pet-care" data-no="${exp.no}"
                                  data-sdate="${exp.sDate}"
                                  data-edate="${exp.eDate}"
                                  data-species="${exp.species}"
@@ -152,18 +152,17 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 </div>
                 <c:choose>
                     <c:when test="${!isOwner}">
+                        <!-- 수정 버튼 -->
                         <div class="edit-btn-wrapper2">
-                    <button id="edit-save-btn"   class="btn hidden">수정</button>
-                    <button id="delete-cancel-btn" class="btn hidden">삭제</button>
-                </div>
-                <!-- 추가 버튼 -->
-                <div id="add-btn-wrapper" class="hidden">
-                <button class="add-btn">+ 돌봄 이력 추가하기</button>
-                </div>
+                            <button id="edit-save-btn"   class="btn hidden">수정</button>
+                            <button id="delete-cancel-btn" class="btn hidden">삭제</button>
+                        </div>
+                        <!-- 추가 버튼 -->
+                        <div id="add-btn-wrapper" class="hidden">
+                        <button class="add-btn">+ 돌봄 이력 추가하기</button>
+                        </div>
                     </c:when>
                 </c:choose>
-                <!-- 수정 버튼 -->
-
                 <!-- 폼 -->
                 <div id="careFormWrapper" class="py-4 mx-auto" style="display: none; max-width: 1050px;">
                 <div class="card shadow p-3 mb-2" id="add-form">
@@ -373,7 +372,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
                 $('.pet-care').removeClass('selected');
                 $(this).addClass('selected');
-                toSelected($(this).data('id'));
+                toSelected($(this).data('no'));
             });
 
             // 추가 폼 닫기
@@ -382,18 +381,18 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     careFormWrapper.stop(true, true).slideUp();
                     $('#edate').prop('disabled', false);
                     $('#edateDisplay').hide();
-                    if (addForm[0]) addForm[0].reset();  // ★ 폼 리셋 (오타 수정)
+                    if (addForm[0]) addForm[0].reset();
                 }
             }
 
             $(document).on('click', '.add-btn', function (e) {
                 e.preventDefault();
-                e.stopPropagation();                              // ★ 전파 차단
+                e.stopPropagation();
                 careFormWrapper.stop(true, true).slideDown();
             });
 
             $('#careFormWrapper').on('click', function (e) {
-                e.stopPropagation();                              // ★ 폼 내부 클릭도 전파 차단
+                e.stopPropagation(); //스크롤 위로 올라가는거 방지
             });
 
             function toIdle() {
@@ -414,9 +413,9 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 addBtn.addClass('hidden')
             } //toIdle
 
-            function toSelected(id) {
+            function toSelected(no) {
                 state = 'selected';
-                selectedId = id;
+                selectedId = no;
                 form.addClass('hidden');
                 view.show();
                 // 수정/삭제 버튼 노출
@@ -438,7 +437,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
             // 선택된 아이템 → 폼 채우기
             function fillFormFromItem(item) {
-                form.find('input[name=no]').val(item.data('id')); // PK
+                form.find('input[name=no]').val(item.data('no')); // PK
                 form.find('input[name=sDate]').val(item.data('sdate'));
                 form.find('input[name=eDate]').val(item.data('edate'));
                 form.find('select[name=species]').val(item.data('species'));
@@ -465,15 +464,15 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 item.data('breed', br);
             }//update
 
-            // ===== 1) pet-care 클릭 → 선택 상태 =====
+            // pet-care 클릭 -> 선택 상태
             $(document).on('click', '.owner .pet-care', function () {
                 if (state === 'editing') return; // 편집 중엔 선택 금지
                 $('.owner .pet-care').removeClass('selected');
                 $(this).addClass('selected');
-                toSelected($(this).data('id'));
+                toSelected($(this).data('no'));
             });//click
 
-            // ===== 2) 수정/완료 버튼 =====
+            // 수정/완료 버튼
             editBtn.on('click', function () {
                 if (state === 'selected') {
                     // 수정 시작: 폼 채우고 편집 상태 진입
@@ -514,7 +513,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     $.ajax({
                         type: 'POST',
                         url: '/experience/delete',
-                        data: { no: item.data('id') },
+                        data: { no: item.data('no') },
                         success: function () {
                             item.remove();
                             toIdle();
@@ -550,7 +549,7 @@ uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                 let noEndSelected = false;
                 const addBtnWrapper = $('#add-btn-wrapper');
 
-                // 1) 수정 버튼 클릭 → 추가 버튼 토글
+                // 1) 수정 버튼 클릭 -> 추가 버튼 토글
                 $('#edit-save-btn').on('click', function () {
                     isEditing = !isEditing;
 
